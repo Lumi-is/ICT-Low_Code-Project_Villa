@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class Tile : Node, IClickable
 {
@@ -12,7 +11,7 @@ public partial class Tile : Node, IClickable
 		// Replace this later with an animation + add sound
 		graphics.Scale = new Vector2(1.2f,1.2f);
 	}
-	public void StopHighlight()
+	public void Reset()
 	{
 		// Replace this later with an animation + add sound
 		graphics.Scale = new Vector2(1.0f,1.0f);
@@ -20,16 +19,6 @@ public partial class Tile : Node, IClickable
 	public void OnClickEvent()
 	{
 		// Open GUI Options for the selected tile
-	}
-	
-	public void OnMouseEntered()
-	{
-		// What happens when mouse enters the tile
-		Highlight();
-	}
-	public void OnMouseExited()
-	{
-		// What happens when mouse exits the tile
-		StopHighlight();
+		graphics.Scale = new Vector2(1.5f,1.5f);
 	}
 }

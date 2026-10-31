@@ -1,33 +1,41 @@
 using Godot;
-using System;
 
 public partial class Interactor : Node2D
 {
-    // Which *clickable* object is mouse currently hovering over?
-    IClickable clickable;
-    Vector2 mousePos;
+	// Which *clickable* object is mouse currently hovering over, and is it clicked?
+	IClickable clickable;
+	Vector2 mousePos;
 
-    public override void _PhysicsProcess(double delta)
-    {
-        var space = GetViewport().World2D.DirectSpaceState;
-        var query = PhysicsRayQueryParameters2D.Create(mousePos, Vector2.Zero);
-        var result = space.IntersectRay(query);
+	public override void _PhysicsProcess(double delta)
+	{
+		var space = GetViewport().World2D.DirectSpaceState;
+		var query = new PhysicsPointQueryParameters2D
+		{
+			CollideWithAreas = true,
+			Position = mousePos
+		};
+		var result = space.IntersectPoint(query, 1);
 
-        if (result.Count > 0)
-        {
-            GD.Print("Hit at point: ", result["position"]);
-        }
-    }
+		if (result.Count == 0)
+		{
+			clickable?.Reset();
+			clickable = null;
+		} else
+		{
+			IClickable castForm = (GodotObject)result[0]["collider"] as IClickable;
+			clickable = castForm;
+			clickable.Highlight();
+			
+			if(Input.IsActionPressed("Mouse1"))
+			{
+				// Testing purposes
+				clickable.OnClickEvent();
+			}
+		}
+	}
 
-    //Get whether or not the object the cursor is hovering over is of interface IClickable??
-    public override void _Process(double delta)
-    {
-        // clickable = ???
-        mousePos = GetGlobalMousePosition();
-
-        if(Input.IsActionJustPressed("Mouse1"))
-        {
-            clickable.OnClickEvent();
-        }
-    }
+	public override void _Process(double delta)
+	{
+		mousePos = GetGlobalMousePosition();
+	}
 }
