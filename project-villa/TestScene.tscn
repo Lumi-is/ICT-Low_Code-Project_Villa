@@ -9,3 +9,4 @@
 texture = ExtResource("1_cguwc")
 
 [node name="CameraMain" parent="Sprite2D" unique_id=300161349 instance=ExtResource("1_mncer")]
+position_smoothing_enabled = true
