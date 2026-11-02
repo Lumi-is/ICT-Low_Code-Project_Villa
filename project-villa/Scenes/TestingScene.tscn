@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cqya0mlgejjau"]
+
+[ext_resource type="Script" uid="uid://jmbksa8gw7qo" path="res://Scripts/Interactor.cs" id="2_utech"]
+[ext_resource type="PackedScene" uid="uid://b2petoaoug7vr" path="res://Scenes/MainCamera.tscn" id="2_v1tjy"]
+[ext_resource type="PackedScene" uid="uid://biov2c0mrqini" path="res://Scenes/DebugClickable.tscn" id="3_utech"]
+
+[node name="Root" type="Node2D" unique_id=1171577489]
+
+[node name="Manager" type="Node2D" parent="." unique_id=714303793]
+script = ExtResource("2_utech")
+
+[node name="CameraMain" parent="." unique_id=300161349 instance=ExtResource("2_v1tjy")]
+position_smoothing_enabled = true
+
+[node name="Tile" parent="." unique_id=510889725 instance=ExtResource("3_utech")]
