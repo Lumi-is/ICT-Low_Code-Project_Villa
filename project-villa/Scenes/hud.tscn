@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://kt10cktyfc0o"]
+
+[node name="HUD" type="CanvasLayer" unique_id=324807081]
+
+[node name="BottomPanel" type="PanelContainer" parent="." unique_id=77875456]
+custom_minimum_size = Vector2(80, 120)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BottomPanel" unique_id=429358879]
+layout_mode = 2
+
+[node name="Resources" type="MarginContainer" parent="BottomPanel/HBoxContainer" unique_id=1777540999]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="CardHandSection" type="MarginContainer" parent="BottomPanel/HBoxContainer" unique_id=1365392736]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CardContainer" type="HBoxContainer" parent="BottomPanel/HBoxContainer/CardHandSection" unique_id=1928089745]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 8
+
+[node name="CardSlot" type="Control" parent="BottomPanel/HBoxContainer/CardHandSection/CardContainer" unique_id=1117410293]
+layout_mode = 2
+
+[node name="CardSlot2" type="Control" parent="BottomPanel/HBoxContainer/CardHandSection/CardContainer" unique_id=903805879]
+layout_mode = 2
+
+[node name="Additional_stuff" type="MarginContainer" parent="BottomPanel/HBoxContainer" unique_id=1633693370]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="BottomPanel/HBoxContainer/Additional_stuff" unique_id=1044296078]
+layout_mode = 2
