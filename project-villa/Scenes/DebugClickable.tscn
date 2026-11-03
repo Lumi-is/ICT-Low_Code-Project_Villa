@@ -9,7 +9,6 @@ size = Vector2(126, 128)
 [node name="Tile" type="Node2D" unique_id=510889725]
 
 [node name="Graphics" type="Sprite2D" parent="." unique_id=1265410453]
-position = Vector2(500, 250)
 texture = ExtResource("2_iufkg")
 
 [node name="Area2D" type="Area2D" parent="Graphics" unique_id=850750638 node_paths=PackedStringArray("graphics")]

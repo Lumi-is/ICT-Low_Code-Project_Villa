@@ -26,7 +26,7 @@ public partial class Interactor : Node2D
 			clickable = castForm;
 			clickable.Highlight();
 			
-			if(Input.IsActionPressed("Mouse1"))
+			if(Input.IsActionJustPressed("Mouse1"))
 			{
 				// Testing purposes
 				clickable.OnClickEvent();

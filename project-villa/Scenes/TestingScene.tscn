@@ -13,3 +13,4 @@ script = ExtResource("2_utech")
 position_smoothing_enabled = true
 
 [node name="Tile" parent="." unique_id=510889725 instance=ExtResource("3_utech")]
+position = Vector2(140, 75)
