@@ -1,8 +1,22 @@
 [gd_scene format=3 uid="uid://kt10cktyfc0o"]
 
+[ext_resource type="Script" uid="uid://bnun5h0gws5b5" path="res://Scripts/Hud.cs" id="1_e0onf"]
+[ext_resource type="PackedScene" uid="uid://84hbqife8kju" path="res://Scenes/PauseMenu.tscn" id="2_pause"]
+[ext_resource type="PackedScene" uid="uid://c4nq1ykcoav21" path="res://Scenes/shop_menu.tscn" id="3_shop"]
+
 [node name="HUD" type="CanvasLayer" unique_id=324807081]
+process_mode = 3
+script = ExtResource("1_e0onf")
+PauseButton = NodePath("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Pause")
+ShopButton = NodePath("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Shop")
+DeckLabel = NodePath("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck")
+ResourcesLabel = NodePath("BottomPanel/HBoxContainer/Stats/HBoxContainer/resources")
+CardContainer = NodePath("BottomPanel/HBoxContainer/CardHandSection/CardContainer")
+PauseMenu = NodePath("PauseMenu")
+ShopMenu = NodePath("ShopMenu")
 
 [node name="BottomPanel" type="PanelContainer" parent="." unique_id=77875456]
+modulate = Color(0.7834272, 0.59918135, 0.2313332, 1)
 custom_minimum_size = Vector2(80, 120)
 anchors_preset = 12
 anchor_top = 1.0
@@ -14,13 +28,29 @@ grow_vertical = 0
 [node name="HBoxContainer" type="HBoxContainer" parent="BottomPanel" unique_id=429358879]
 layout_mode = 2
 
-[node name="Resources" type="MarginContainer" parent="BottomPanel/HBoxContainer" unique_id=1777540999]
+[node name="InteractiveButtons" type="MarginContainer" parent="BottomPanel/HBoxContainer" unique_id=1777540999]
 custom_minimum_size = Vector2(80, 100)
 layout_mode = 2
 
+[node name="VBoxContainer" type="VBoxContainer" parent="BottomPanel/HBoxContainer/InteractiveButtons" unique_id=1468223091]
+layout_mode = 2
+alignment = 1
+
+[node name="Pause" type="Button" parent="BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer" unique_id=191809415]
+custom_minimum_size = Vector2(72, 32)
+layout_mode = 2
+size_flags_vertical = 4
+text = "Pause"
+
+[node name="Shop" type="Button" parent="BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer" unique_id=2056004137]
+custom_minimum_size = Vector2(72, 32)
+layout_mode = 2
+size_flags_vertical = 4
+text = "Shop"
+
 [node name="CardHandSection" type="MarginContainer" parent="BottomPanel/HBoxContainer" unique_id=1365392736]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 6
 
 [node name="CardContainer" type="HBoxContainer" parent="BottomPanel/HBoxContainer/CardHandSection" unique_id=1928089745]
 layout_mode = 2
@@ -28,13 +58,36 @@ size_flags_horizontal = 4
 theme_override_constants/separation = 8
 
 [node name="CardSlot" type="Control" parent="BottomPanel/HBoxContainer/CardHandSection/CardContainer" unique_id=1117410293]
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 
 [node name="CardSlot2" type="Control" parent="BottomPanel/HBoxContainer/CardHandSection/CardContainer" unique_id=903805879]
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 
-[node name="Additional_stuff" type="MarginContainer" parent="BottomPanel/HBoxContainer" unique_id=1633693370]
+[node name="CardSlot3" type="Control" parent="BottomPanel/HBoxContainer/CardHandSection/CardContainer" unique_id=508851215]
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="BottomPanel/HBoxContainer/Additional_stuff" unique_id=1044296078]
+[node name="CardSlot4" type="Control" parent="BottomPanel/HBoxContainer/CardHandSection/CardContainer" unique_id=845045146]
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
+
+[node name="Stats" type="MarginContainer" parent="BottomPanel/HBoxContainer" unique_id=1633693370]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BottomPanel/HBoxContainer/Stats" unique_id=998154281]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="deck" type="Label" parent="BottomPanel/HBoxContainer/Stats/HBoxContainer" unique_id=1136795079]
+layout_mode = 2
+text = "Deck: 4"
+
+[node name="resources" type="Label" parent="BottomPanel/HBoxContainer/Stats/HBoxContainer" unique_id=1297558884]
+layout_mode = 2
+text = "Resources: 100"
+
+[node name="PauseMenu" parent="." unique_id=1837462910 instance=ExtResource("2_pause")]
+
+[node name="ShopMenu" parent="." unique_id=1298374651 instance=ExtResource("3_shop")]

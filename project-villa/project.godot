@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="ProjectVilla"
-run/main_scene="uid://biov2c0mrqini"
+run/main_scene="uid://vee1a5w17b5n"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 

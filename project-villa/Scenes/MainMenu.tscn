@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://vee1a5w17b5n"]
 
-[ext_resource type="Script" uid="uid://1fa3lq134ff2" path="res://Scripts/main_menu.gd" id="1_vigx8"]
+[ext_resource type="Script" uid="uid://cpo8oeja6mga6" path="res://Scripts/MainMenu.cs" id="1_853f1"]
 [ext_resource type="FontFile" uid="uid://di8bfppt6mo4w" path="res://Fonts/ambrosia1.ttf" id="2_vigx8"]
 
 [node name="MainMenu" type="Control" unique_id=1972660414]
@@ -10,7 +10,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_vigx8")
+script = ExtResource("1_853f1")
+GameScenePath = "res://Scenes/TestingScene.tscn"
+PlayButton = NodePath("VBoxContainer/StartButton")
+QuitButton = NodePath("VBoxContainer/QuitButton")
 
 [node name="Background" type="TextureRect" parent="." unique_id=185193553]
 layout_mode = 1
@@ -61,6 +64,7 @@ theme_override_font_sizes/font_size = 16
 text = "Play"
 
 [node name="OptionsButton" type="Button" parent="VBoxContainer" unique_id=1549103103]
+visible = false
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -75,7 +79,3 @@ size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_vigx8")
 theme_override_font_sizes/font_size = 16
 text = "Quit"
-
-[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

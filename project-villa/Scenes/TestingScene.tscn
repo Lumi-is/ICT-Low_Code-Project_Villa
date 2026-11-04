@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://jmbksa8gw7qo" path="res://Scripts/Interactor.cs" id="2_utech"]
 [ext_resource type="PackedScene" uid="uid://b2petoaoug7vr" path="res://Scenes/MainCamera.tscn" id="2_v1tjy"]
 [ext_resource type="PackedScene" uid="uid://biov2c0mrqini" path="res://Scenes/DebugClickable.tscn" id="3_utech"]
+[ext_resource type="PackedScene" uid="uid://kt10cktyfc0o" path="res://Scenes/hud.tscn" id="4_hud"]
 
 [node name="Root" type="Node2D" unique_id=1171577489]
 
@@ -13,3 +14,5 @@ script = ExtResource("2_utech")
 position_smoothing_enabled = true
 
 [node name="Tile" parent="." unique_id=510889725 instance=ExtResource("3_utech")]
+
+[node name="HUD" parent="." unique_id=1748293055 instance=ExtResource("4_hud")]
