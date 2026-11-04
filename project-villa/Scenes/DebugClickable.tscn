@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://biov2c0mrqini"]
 
+[ext_resource type="Texture2D" uid="uid://bgrwryqpddd3y" path="res://tile.png" id="1_apoq2"]
 [ext_resource type="Script" uid="uid://cgprejno0doeh" path="res://Scripts/Tile.cs" id="3_8k7wh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ab2ii"]
@@ -8,7 +9,7 @@ size = Vector2(126, 128)
 [node name="Tile" type="Node2D" unique_id=510889725]
 
 [node name="Graphics" type="Sprite2D" parent="." unique_id=1265410453]
-position = Vector2(500, 250)
+texture = ExtResource("1_apoq2")
 
 [node name="Area2D" type="Area2D" parent="Graphics" unique_id=850750638 node_paths=PackedStringArray("graphics")]
 script = ExtResource("3_8k7wh")

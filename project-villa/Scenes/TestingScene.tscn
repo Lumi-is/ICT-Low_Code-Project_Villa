@@ -4,8 +4,13 @@
 [ext_resource type="PackedScene" uid="uid://b2petoaoug7vr" path="res://Scenes/MainCamera.tscn" id="2_v1tjy"]
 [ext_resource type="PackedScene" uid="uid://biov2c0mrqini" path="res://Scenes/DebugClickable.tscn" id="3_utech"]
 [ext_resource type="PackedScene" uid="uid://kt10cktyfc0o" path="res://Scenes/hud.tscn" id="4_hud"]
+[ext_resource type="Texture2D" uid="uid://bgrwryqpddd3y" path="res://tile.png" id="4_utech"]
 
 [node name="Root" type="Node2D" unique_id=1171577489]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=474627150]
+position = Vector2(150, 150)
+texture = ExtResource("4_utech")
 
 [node name="Manager" type="Node2D" parent="." unique_id=714303793]
 script = ExtResource("2_utech")

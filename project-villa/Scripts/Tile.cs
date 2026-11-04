@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Tile : Node2D, IClickable, ISnappable
+public partial class Tile : Node2D, IClickable, ISnappable, IDraggable
 {
 	[Export]
 	public Node2D graphics;
@@ -20,11 +20,20 @@ public partial class Tile : Node2D, IClickable, ISnappable
 	{
 		// Open GUI Options for the selected tile
 		graphics.Scale = new Vector2(1.5f,1.5f);
-		Snap();
 	}
 	
 	public void Snap()
 	{
 		Grid.WorldGridManager.SnapToGrid(this, GlobalPosition);
+	}
+
+	public void Drag(Vector2 mousePos)
+	{
+		Interactor.SnapToMouse(this, mousePos);
+	}
+
+	public void Release()
+	{
+		Snap();
 	}
 }
