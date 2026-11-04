@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://84hbqife8kju"]
+
+[ext_resource type="Script" uid="uid://c4jupdeiwphwi" path="res://Scripts/PauseMenu.cs" id="1_lj4oq"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1475302117]
+process_mode = 3
+script = ExtResource("1_lj4oq")
+MainMenuScenePath = "res://Scenes/MainMenu.tscn"
+ResumeButton = NodePath("UI/MenuButtons/ResumeButton")
+QuitButton = NodePath("UI/MenuButtons/QuitButton")
+
+[node name="UI" type="Control" parent="." unique_id=366856618]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Overlay" type="ColorRect" parent="UI" unique_id=460109062]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5019608)
+
+[node name="MenuButtons" type="VBoxContainer" parent="UI" unique_id=1099827290]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -45.0
+offset_right = 100.0
+offset_bottom = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="ResumeButton" type="Button" parent="UI/MenuButtons" unique_id=269985373]
+custom_minimum_size = Vector2(200, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Resume"
+
+[node name="QuitButton" type="Button" parent="UI/MenuButtons" unique_id=972337551]
+custom_minimum_size = Vector2(200, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Main Menu"

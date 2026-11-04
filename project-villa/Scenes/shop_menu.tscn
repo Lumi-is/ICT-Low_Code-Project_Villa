@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://c4nq1ykcoav21"]
+
+[ext_resource type="Script" uid="uid://ceyjoe7qrghv" path="res://Scripts/ShopMenu.cs" id="1_xysl7"]
+
+[node name="ShopMenu" type="CanvasLayer" unique_id=820137950]
+process_mode = 3
+script = ExtResource("1_xysl7")
+CardContainer = NodePath("UI/Background/VBoxContainer/CardContainer")
+RefreshButton = NodePath("UI/Background/VBoxContainer/ButtonContainer/RefreshButton")
+CloseButton = NodePath("UI/Background/VBoxContainer/ButtonContainer/CloseButton")
+
+[node name="UI" type="Control" parent="." unique_id=639949560]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Overlay" type="ColorRect" parent="UI" unique_id=1847293011]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5019608)
+
+[node name="Background" type="PanelContainer" parent="UI" unique_id=499130643]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = -260.0
+offset_right = 360.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Background" unique_id=1337248528]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="UI/Background/VBoxContainer" unique_id=529308473]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Shop"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CardContainer" type="HBoxContainer" parent="UI/Background/VBoxContainer" unique_id=333552654]
+custom_minimum_size = Vector2(0, 280)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="CardSlot1" type="PanelContainer" parent="UI/Background/VBoxContainer/CardContainer" unique_id=505692139]
+custom_minimum_size = Vector2(200, 280)
+layout_mode = 2
+
+[node name="CardSlot2" type="PanelContainer" parent="UI/Background/VBoxContainer/CardContainer" unique_id=447597707]
+custom_minimum_size = Vector2(200, 280)
+layout_mode = 2
+
+[node name="CardSlot3" type="PanelContainer" parent="UI/Background/VBoxContainer/CardContainer" unique_id=192701780]
+custom_minimum_size = Vector2(200, 280)
+layout_mode = 2
+
+[node name="ButtonContainer" type="HBoxContainer" parent="UI/Background/VBoxContainer" unique_id=1391265388]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="RefreshButton" type="Button" parent="UI/Background/VBoxContainer/ButtonContainer" unique_id=1367751864]
+custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
+text = "Refresh"
+
+[node name="CloseButton" type="Button" parent="UI/Background/VBoxContainer/ButtonContainer" unique_id=2076207424]
+custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
+text = "Close"

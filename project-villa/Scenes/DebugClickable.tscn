@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://biov2c0mrqini"]
 
-[ext_resource type="Texture2D" uid="uid://blr10att2t2j3" path="res://icon.svg" id="2_iufkg"]
 [ext_resource type="Script" uid="uid://cgprejno0doeh" path="res://Scripts/Tile.cs" id="3_8k7wh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ab2ii"]
@@ -10,7 +9,6 @@ size = Vector2(126, 128)
 
 [node name="Graphics" type="Sprite2D" parent="." unique_id=1265410453]
 position = Vector2(500, 250)
-texture = ExtResource("2_iufkg")
 
 [node name="Area2D" type="Area2D" parent="Graphics" unique_id=850750638 node_paths=PackedStringArray("graphics")]
 script = ExtResource("3_8k7wh")
