@@ -2,8 +2,9 @@
 
 A small card prototype made with Godot 4.7.2 (Mono) and .NET 8.
 
-The project currently has the card framework and the HUD, but no card assets —
-the hand starts empty on purpose.
+The project contains the card framework, the HUD, and a sample card
+(`Resources/Cards/Testing.tres`) in a deck (`Resources/Cards/StartingDeck.tres`).
+The hand deals four copies of it when the game starts.
 
 ## Requirements
 
@@ -26,6 +27,7 @@ pause and shop buttons.
 | `CardSystem/` | Card data, hand, drag input, play controller |
 | `Scenes/` | Main menu, game scene, HUD, card widget |
 | `Scripts/` | HUD, menus, camera |
+| `Resources/` | Card and deck assets |
 | `Fonts/` | Font files |
 
 ## Card system
@@ -75,9 +77,10 @@ dotnet build
    it in the FileSystem panel, choose **Create New > Resource**, pick `HealCard`,
    and save it.
 4. Fill in the card fields in the inspector.
-5. Create a **CardDeck** resource, add the card to its `Cards` array, and save it.
-6. Open `Scenes/hud.tscn`, select the `CardHand` node, and assign the deck to
-   `StartingDeck`.
+5. Add the card to `Resources/Cards/StartingDeck.tres` by dragging it into the
+   deck's `Cards` array.
+6. If you make a separate deck instead, open `Scenes/hud.tscn`, select the
+   `CardHand` node, and assign your deck to `StartingDeck`.
 7. Run the game and drag a card out of the hand.
 
 Cards are paid for automatically before `Play` runs. If `Play` throws, the cost
