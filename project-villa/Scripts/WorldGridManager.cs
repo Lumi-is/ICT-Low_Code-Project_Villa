@@ -55,9 +55,8 @@ namespace Grid
 				finalSnapPos.Y = positiveSnapPos.Y;
 			}
 
-			snappable.Position = finalSnapPos;
-
-			//GD.Print(snappable.Position);
+			// NOTE: Should be finalSnapPos in the future, for now reserved to experimental branches
+			snappable.Position = negativeSnapPos;
 		}
 	}
 }
