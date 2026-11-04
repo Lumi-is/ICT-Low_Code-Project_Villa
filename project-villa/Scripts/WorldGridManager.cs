@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.Calculations;
 
 namespace Grid
 {
@@ -13,25 +11,21 @@ namespace Grid
             var jumpInterval = 100f;
             var xPosition = position.X;
 			var yPosition = position.Y;
-			float xOffset = 0;
-			float yOffset = 0;
-			float xJumpCount = 0;
-			float yJumpCount = 0;
-
-			Vector2 negativeSnapPos = new();
+            Vector2 negativeSnapPos = new();
 			Vector2 positiveSnapPos = new();
 			Vector2 finalSnapPos = new();
 
-            xOffset = xPosition % jumpInterval; 
-            xJumpCount = (xPosition - xOffset) / jumpInterval;
+            float xOffset = xPosition % jumpInterval;
+            float xJumpCount = (xPosition - xOffset) / jumpInterval;
+
 
             negativeSnapPos.X = xJumpCount * jumpInterval + jumpInterval/2;
 			positiveSnapPos.X = (xJumpCount + 1) * jumpInterval + jumpInterval/2;
 
-			yOffset = yPosition % jumpInterval;
-			yJumpCount = (yPosition - yOffset) / jumpInterval;
+            float yOffset = yPosition % jumpInterval;
+            float yJumpCount = (yPosition - yOffset) / jumpInterval;
 
-			negativeSnapPos.Y = yJumpCount * jumpInterval + jumpInterval/2;
+            negativeSnapPos.Y = yJumpCount * jumpInterval + jumpInterval/2;
 			positiveSnapPos.Y = (yJumpCount + 1) * jumpInterval + jumpInterval/2;
 
 			if(xPosition % jumpInterval / (jumpInterval/2) == 1) return;
