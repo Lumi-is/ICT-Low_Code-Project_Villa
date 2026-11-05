@@ -1,0 +1,5 @@
+interface ISnappable
+{
+	void Snap();
+
+}
