@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dx26brdgyprqv"]
+
+[ext_resource type="Script" uid="uid://jmbksa8gw7qo" path="res://Scripts/Interactor.cs" id="1_1i23p"]
+
+[node name="InteractionManager" type="Node2D" unique_id=557384809]
+script = ExtResource("1_1i23p")
