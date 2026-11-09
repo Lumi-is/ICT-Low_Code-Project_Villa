@@ -1,23 +1,23 @@
-[gd_scene format=3 uid="uid://cqya0mlgejjau"]
+[gd_scene load_steps=3 format=3 uid="uid://cqya0mlgejjau"]
 
-[ext_resource type="Script" uid="uid://jmbksa8gw7qo" path="res://Scripts/Interactor.cs" id="2_utech"]
-[ext_resource type="PackedScene" uid="uid://b2petoaoug7vr" path="res://Scenes/MainCamera.tscn" id="2_v1tjy"]
-[ext_resource type="PackedScene" uid="uid://biov2c0mrqini" path="res://Scenes/DebugClickable.tscn" id="3_utech"]
-[ext_resource type="PackedScene" uid="uid://kt10cktyfc0o" path="res://Scenes/hud.tscn" id="4_hud"]
-[ext_resource type="Texture2D" uid="uid://bgrwryqpddd3y" path="res://tile.png" id="4_utech"]
+[ext_resource type="PackedScene" uid="uid://b2petoaoug7vr" path="res://Scenes/MainCamera.tscn" id="1_camera"]
+[ext_resource type="PackedScene" uid="uid://kt10cktyfc0o" path="res://Scenes/hud.tscn" id="2_hud"]
 
 [node name="Root" type="Node2D" unique_id=1171577489]
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=474627150]
-position = Vector2(150, 150)
-texture = ExtResource("4_utech")
-
-[node name="Manager" type="Node2D" parent="." unique_id=714303793]
-script = ExtResource("2_utech")
-
-[node name="CameraMain" parent="." unique_id=300161349 instance=ExtResource("2_v1tjy")]
+[node name="CameraMain" parent="." unique_id=300161349 instance=ExtResource("1_camera")]
 position_smoothing_enabled = true
 
-[node name="Tile" parent="." unique_id=510889725 instance=ExtResource("3_utech")]
+[node name="Background" type="CanvasLayer" parent="." unique_id=1138720446]
+layer = -10
 
-[node name="HUD" parent="." unique_id=1748293055 instance=ExtResource("4_hud")]
+[node name="Color" type="ColorRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.113725, 0.137255, 0.176471, 1)
+
+[node name="HUD" parent="." unique_id=1748293055 instance=ExtResource("2_hud")]

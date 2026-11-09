@@ -11,7 +11,6 @@ public partial class MainCamera : Node2D
 	Vector2 lastMousePos = Vector2.Zero;
 	
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 		lastMousePos = mousePos;

@@ -1,116 +1,152 @@
 using Godot;
-using System.Collections.Generic;
 
+[GlobalClass]
 public partial class Hud : CanvasLayer
 {
-    // Node references matching the HUD scene tree.
-    [ExportGroup("UI References")]
-    [Export] public Button PauseButton;
-    [Export] public Button ShopButton;
-    [Export] public Label DeckLabel;
-    [Export] public Label ResourcesLabel;
-    [Export] public Container CardContainer;
+	[ExportGroup("UI References")]
+	[Export] public Button PauseButton;
+	[Export] public Button ShopButton;
+	[Export] public Label DeckLabel;
+	[Export] public Label ResourcesLabel;
+	[Export] public Label CardMessageLabel;
 
-    [ExportGroup("Menus")]
-    [Export] public PauseMenu PauseMenu;
-    [Export] public ShopMenu ShopMenu;
+	[ExportGroup("Menus")]
+	[Export] public PauseMenu PauseMenu;
+	[Export] public ShopMenu ShopMenu;
 
-    // Prefab for instantiating cards into slots (assign in Inspector if spawning dynamically).
-    [ExportGroup("Card Settings")]
-    [Export] public PackedScene CardPrefab;
+	private int _resourceCount = 100;
+	private int _deckCount;
+	private int _handCount;
+	private Tween _messageTween;
 
-    // Example Game State Data
-    private int _resourceCount = 100;
-    private readonly List<string> _deck = new() { "Card 1", "Card 2", "Card 3", "Card 4" };
-    private readonly List<string> _hand = new();
+	public int Resources => _resourceCount;
 
-    public override void _Ready()
-    {
-        // Keep the HUD responsive even when the game tree is paused.
-        ProcessMode = ProcessModeEnum.Always;
+	public int DeckCount => _deckCount;
 
-        // 1. Automatic node fetching if not explicitly assigned in Inspector.
-        PauseButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Pause");
-        ShopButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Shop");
-        DeckLabel ??= GetNode<Label>("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck");
-        ResourcesLabel ??= GetNode<Label>("BottomPanel/HBoxContainer/Stats/HBoxContainer/resources");
-        CardContainer ??= GetNode<Container>("BottomPanel/HBoxContainer/CardHandSection/CardContainer");
+	public int HandCount => _handCount;
 
-        // PauseMenu and ShopMenu are instanced as children of the HUD scene.
-        PauseMenu ??= GetNodeOrNull<PauseMenu>("PauseMenu");
-        ShopMenu ??= GetNodeOrNull<ShopMenu>("ShopMenu");
+	public override void _Ready()
+	{
+		ProcessMode = ProcessModeEnum.Always;
 
-        // 2. Connect Button Signals.
-        PauseButton.Pressed += OnPauseButtonPressed;
-        ShopButton.Pressed += OnShopButtonPressed;
+		PauseButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Pause");
+		ShopButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Shop");
+		DeckLabel ??= GetNode<Label>("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck");
+		ResourcesLabel ??= GetNode<Label>("BottomPanel/HBoxContainer/Stats/HBoxContainer/resources");
+		CardMessageLabel ??= GetNodeOrNull<Label>("CardMessage");
 
-        // 3. Initial UI update.
-        UpdateResourcesUI();
-        UpdateDeckUI();
-    }
+		PauseMenu ??= GetNodeOrNull<PauseMenu>("PauseMenu");
+		ShopMenu ??= GetNodeOrNull<ShopMenu>("ShopMenu");
 
-    // --- Button Callbacks ---
+		if (PauseButton != null)
+		{
+			PauseButton.Pressed += OnPauseButtonPressed;
+		}
 
-    private void OnPauseButtonPressed()
-    {
-        GD.Print("Pause button clicked");
-        PauseMenu?.TogglePause();
-    }
+		if (ShopButton != null)
+		{
+			ShopButton.Pressed += OnShopButtonPressed;
+		}
 
-    private void OnShopButtonPressed()
-    {
-        ShopMenu?.OpenShop();
-    }
+		UpdateResourcesUI();
+		UpdateDeckUI();
 
-    // --- Data & Resource Display ---
+		if (CardMessageLabel != null)
+		{
+			CardMessageLabel.Text = string.Empty;
+			CardMessageLabel.Modulate = new Color(1f, 1f, 1f, 0f);
+		}
+	}
 
-    public void UpdateResourcesUI()
-    {
-        if (ResourcesLabel != null)
-        {
-            ResourcesLabel.Text = $"Resources: {_resourceCount}";
-        }
-    }
+	private void OnPauseButtonPressed()
+	{
+		GD.Print("Pause button clicked");
+		PauseMenu?.TogglePause();
+	}
 
-    public void UpdateDeckUI()
-    {
-        if (DeckLabel != null)
-        {
-            DeckLabel.Text = $"Deck: {_deck.Count}";
-        }
-    }
+	private void OnShopButtonPressed()
+	{
+		ShopMenu?.OpenShop();
+	}
 
-    public void AddResources(int amount)
-    {
-        _resourceCount += amount;
-        UpdateResourcesUI();
-    }
+	public void UpdateResourcesUI()
+	{
+		if (ResourcesLabel != null)
+		{
+			ResourcesLabel.Text = $"Resources: {_resourceCount}";
+		}
+	}
 
-    // --- Card & Hand Management ---
+	public void UpdateDeckUI()
+	{
+		if (DeckLabel == null)
+		{
+			return;
+		}
 
-    /// <summary>
-    /// Draws a card from the deck and adds it visually to CardContainer.
-    /// </summary>
-    public void DrawCard()
-    {
-        if (_deck.Count == 0)
-        {
-            GD.Print("Deck is empty!");
-            return;
-        }
+		DeckLabel.Text = _handCount >= 0
+			? $"Deck: {_deckCount} | Hand: {_handCount}"
+			: $"Deck: {_deckCount}";
+	}
 
-        // Draw top card from deck.
-        string drawnCardData = _deck[0];
-        _deck.RemoveAt(0);
-        _hand.Add(drawnCardData);
+	public void AddResources(int amount)
+	{
+		_resourceCount = Mathf.Max(0, _resourceCount + amount);
+		UpdateResourcesUI();
+	}
 
-        // Instantiate card UI into CardContainer.
-        if (CardPrefab != null && CardContainer != null)
-        {
-            Control cardInstance = CardPrefab.Instantiate<Control>();
-            CardContainer.AddChild(cardInstance);
-        }
+	public bool TrySpendResources(int amount)
+	{
+		if (amount <= 0)
+		{
+			return true;
+		}
 
-        UpdateDeckUI();
-    }
+		if (_resourceCount < amount)
+		{
+			return false;
+		}
+
+		_resourceCount -= amount;
+		UpdateResourcesUI();
+		return true;
+	}
+
+	public void SetResources(int amount)
+	{
+		_resourceCount = Mathf.Max(0, amount);
+		UpdateResourcesUI();
+	}
+
+	public void SetDeckCount(int deckCount, int handCount = -1)
+	{
+		_deckCount = Mathf.Max(0, deckCount);
+		_handCount = handCount;
+		UpdateDeckUI();
+	}
+
+	public void ShowCardMessage(string message, float holdSeconds = 2.2f)
+	{
+		if (CardMessageLabel == null)
+		{
+			GD.Print($"[HUD] {message}");
+			return;
+		}
+
+		_messageTween?.Kill();
+
+		CardMessageLabel.Text = message;
+		CardMessageLabel.Modulate = new Color(1f, 1f, 1f, 1f);
+
+		_messageTween = CreateTween();
+		_messageTween.TweenInterval(Mathf.Max(0.1f, holdSeconds));
+		_messageTween.TweenProperty(CardMessageLabel, "modulate:a", 0f, 0.35f);
+		_messageTween.TweenCallback(Callable.From(() =>
+		{
+			if (CardMessageLabel != null)
+			{
+				CardMessageLabel.Text = string.Empty;
+			}
+		}));
+	}
 }
