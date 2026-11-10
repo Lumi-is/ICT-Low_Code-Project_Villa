@@ -4,18 +4,16 @@
 [ext_resource type="PackedScene" uid="uid://dx26brdgyprqv" path="res://Scenes/InteractionManager.tscn" id="1_x8jca"]
 [ext_resource type="PackedScene" uid="uid://kt10cktyfc0o" path="res://Scenes/hud.tscn" id="2_hud"]
 [ext_resource type="PackedScene" uid="uid://biov2c0mrqini" path="res://Scenes/DebugClickable.tscn" id="3_utech"]
-[ext_resource type="Texture2D" uid="uid://bgrwryqpddd3y" path="res://tile.png" id="4_x8jca"]
 
 [node name="Root" type="Node2D" unique_id=1171577489]
 
 [node name="InteractionManager" parent="." unique_id=557384809 instance=ExtResource("1_x8jca")]
 
-[node name="Tile" parent="." unique_id=510889725 instance=ExtResource("3_utech")]
-position = Vector2(348, 232)
+[node name="Tile3" parent="." unique_id=510889725 instance=ExtResource("3_utech")]
+position = Vector2(101, 234)
 
-[node name="Tile2" type="Sprite2D" parent="." unique_id=1136009152]
-position = Vector2(50, 50)
-texture = ExtResource("4_x8jca")
+[node name="Tile" parent="." unique_id=1350540326 instance=ExtResource("3_utech")]
+position = Vector2(348, 232)
 
 [node name="CameraMain" parent="." unique_id=300161349 instance=ExtResource("1_camera")]
 position_smoothing_enabled = true
