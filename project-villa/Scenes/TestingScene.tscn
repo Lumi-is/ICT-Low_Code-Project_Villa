@@ -1,23 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://cqya0mlgejjau"]
+[gd_scene format=3 uid="uid://cqya0mlgejjau"]
 
 [ext_resource type="PackedScene" uid="uid://b2petoaoug7vr" path="res://Scenes/MainCamera.tscn" id="1_camera"]
+[ext_resource type="PackedScene" uid="uid://dx26brdgyprqv" path="res://Scenes/InteractionManager.tscn" id="1_x8jca"]
 [ext_resource type="PackedScene" uid="uid://kt10cktyfc0o" path="res://Scenes/hud.tscn" id="2_hud"]
+[ext_resource type="PackedScene" uid="uid://biov2c0mrqini" path="res://Scenes/DebugClickable.tscn" id="3_utech"]
+[ext_resource type="Texture2D" uid="uid://bgrwryqpddd3y" path="res://tile.png" id="4_x8jca"]
 
 [node name="Root" type="Node2D" unique_id=1171577489]
 
+[node name="InteractionManager" parent="." unique_id=557384809 instance=ExtResource("1_x8jca")]
+
+[node name="Tile" parent="." unique_id=510889725 instance=ExtResource("3_utech")]
+position = Vector2(348, 232)
+
+[node name="Tile2" type="Sprite2D" parent="." unique_id=1136009152]
+position = Vector2(50, 50)
+texture = ExtResource("4_x8jca")
+
 [node name="CameraMain" parent="." unique_id=300161349 instance=ExtResource("1_camera")]
 position_smoothing_enabled = true
-
-[node name="Background" type="CanvasLayer" parent="." unique_id=1138720446]
-layer = -10
-
-[node name="Color" type="ColorRect" parent="Background"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0.113725, 0.137255, 0.176471, 1)
 
 [node name="HUD" parent="." unique_id=1748293055 instance=ExtResource("2_hud")]

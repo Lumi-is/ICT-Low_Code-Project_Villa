@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 namespace Grid
@@ -11,52 +12,40 @@ namespace Grid
             var jumpInterval = 100f;
             var xPosition = position.X;
 			var yPosition = position.Y;
-            Vector2 negativeSnapPos = new();
-			Vector2 positiveSnapPos = new();
-			Vector2 finalSnapPos = new();
+	
+            Vector2 snapPos = new();
 
+			var xSign = Math.Sign(xPosition);
+			var ySign = Math.Sign(yPosition);
+
+			// X
+			// Calculating how far the object is from the nearest cell
             float xOffset = xPosition % jumpInterval;
+
+			// Calculating how many jumps from origo the nearest cell is
             float xJumpCount = (xPosition - xOffset) / jumpInterval;
 
+			// Calculating what the desired position of the object should be when adjusted to the grid
+            snapPos.X = xJumpCount * jumpInterval + (xSign * (jumpInterval/2));
 
-            negativeSnapPos.X = xJumpCount * jumpInterval + jumpInterval/2;
-			positiveSnapPos.X = (xJumpCount + 1) * jumpInterval + jumpInterval/2;
 
+			// Y
+			// Calculating how far the object is from the nearest cell
             float yOffset = yPosition % jumpInterval;
+
+			// Calculating how many jumps from origo the nearest cell is
             float yJumpCount = (yPosition - yOffset) / jumpInterval;
 
-            negativeSnapPos.Y = yJumpCount * jumpInterval + jumpInterval/2;
-			positiveSnapPos.Y = (yJumpCount + 1) * jumpInterval + jumpInterval/2;
+			// Calculating what the desired position of the object should be when adjusted to the grid
+            snapPos.Y = yJumpCount * jumpInterval + (ySign * (jumpInterval/2));
 
-			if(xPosition % jumpInterval / (jumpInterval/2) == 1) return;
-
-			GD.Print(xJumpCount * jumpInterval + jumpInterval / 2);
-			GD.Print("X Position: "+xPosition);
+			GD.Print("Current X Pos: "+xPosition);
+			GD.Print("Desired X Pos: "+snapPos.X);
+			GD.Print("Current Y Pos: "+yPosition);
+			GD.Print("Desired Y Pos: "+snapPos.Y);
 			
-			if (xPosition > xJumpCount * jumpInterval + jumpInterval / 2)
-			{
-				finalSnapPos.X = negativeSnapPos.X;
-			}
-			else
-			{
-				finalSnapPos.X = positiveSnapPos.X;
-			}
-
-			if(yPosition % jumpInterval / (jumpInterval/2) == 1) return;
-
-			GD.Print(yJumpCount * jumpInterval + jumpInterval / 2);
-			GD.Print("Y Position: "+yPosition);
-			if (yPosition > yJumpCount * jumpInterval + jumpInterval / 2)
-			{
-				finalSnapPos.Y = negativeSnapPos.Y;
-			}
-			else
-			{
-				finalSnapPos.Y = positiveSnapPos.Y;
-			}
-
-			// NOTE: Should be finalSnapPos in the future, for now reserved to experimental branches
-			snappable.Position = negativeSnapPos;
+		
+			snappable.Position = snapPos;
 		}
 	}
 }
