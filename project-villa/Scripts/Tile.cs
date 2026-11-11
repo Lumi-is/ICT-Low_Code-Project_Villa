@@ -5,6 +5,11 @@ public partial class Tile : Node2D, IClickable, ISnappable, IDraggable
 	[Export]
 	public Node2D graphics;
 	private bool isHighlighted;
+
+	public Sprite2D GetGraphics()
+	{
+		return (Sprite2D)graphics;
+	}
 	
 	public void Highlight()
 	{
