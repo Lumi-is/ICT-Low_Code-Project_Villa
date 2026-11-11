@@ -18,7 +18,8 @@ The hand deals four copies of it when the game starts.
 3. Click **Play** on the main menu.
 
 The HUD sits at the bottom of the screen with the resource counter, deck counter,
-pause and shop buttons.
+pause and shop buttons. **Shop** opens a menu with three cards; **Buy** adds the
+card to your deck, and **Refresh** replaces the selection for resources.
 
 ## Project layout
 
@@ -39,6 +40,7 @@ pause and shop buttons.
 | `CardSystem/GainResourceCard.cs` | Adds resources to the HUD |
 | `CardSystem/DrawCardsCard.cs` | Draws cards from the deck |
 | `CardSystem/CardView.cs` | One card widget and its mouse drag |
+| `CardSystem/ShopCardView.cs` | One card in the shop, with its buy button |
 | `CardSystem/CardHand.cs` | Hand layout, draw pile, discard pile |
 | `CardSystem/CardPlayController.cs` | Checks the cost and runs the card |
 
@@ -76,9 +78,11 @@ dotnet build
 3. In Godot, create a folder for cards (for example `Resources/Cards`), right-click
    it in the FileSystem panel, choose **Create New > Resource**, pick `HealCard`,
    and save it.
-4. Fill in the card fields in the inspector.
+4. Fill in the card fields in the inspector. `ShopPrice` is the resource cost to
+   buy the card in the shop.
 5. Add the card to `Resources/Cards/StartingDeck.tres` by dragging it into the
-   deck's `Cards` array.
+   deck's `Cards` array, and to `Scenes/shop_menu.tscn` (`AvailableCardPool`) if
+   the shop should sell it.
 6. If you make a separate deck instead, open `Scenes/hud.tscn`, select the
    `CardHand` node, and assign your deck to `StartingDeck`.
 7. Run the game and drag a card out of the hand.
@@ -91,3 +95,17 @@ is refunded.
 Drag a card out of the hand and release the mouse button. The cost is taken from
 the HUD's resource counter, the card moves to the discard pile, and the hand
 refills to `StartingHandSize`.
+
+## Shop
+
+`Scenes/shop_menu.tscn` holds the shop settings:
+
+| Field | Purpose |
+| --- | --- |
+| `CardDisplayPrefab` | Scene used for one shop card (`Scenes/Cards/ShopCardView.tscn`) |
+| `AvailableCardPool` | Cards the shop can offer |
+| `ShopSize` | How many cards are shown at once |
+| `RefreshCost` | Resources spent to reroll the shop |
+
+Buying a card spends its `ShopPrice`, removes it from the shop, and adds it to
+the draw pile. The deck counter updates immediately.

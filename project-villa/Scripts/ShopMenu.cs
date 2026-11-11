@@ -1,24 +1,25 @@
 using Godot;
-using System.Collections.Generic;
+using ProjectVilla.Cards;
 
 [GlobalClass]
 public partial class ShopMenu : CanvasLayer
 {
 	[ExportGroup("UI References")]
 	[Export] public Container CardContainer;
+	[Export] public Label ResourcesLabel;
 	[Export] public Button RefreshButton;
 	[Export] public Button CloseButton;
 
 	[ExportGroup("Shop Configuration")]
 	[Export] public PackedScene CardDisplayPrefab;
+	[Export] public int ShopSize = 3;
 	[Export] public int RefreshCost = 5;
-	[Export] public Godot.Collections.Array<CardData> AvailableCardPool = new();
+	[Export] public Godot.Collections.Array<Card> AvailableCardPool = new();
 
-	[Signal] public delegate void CardPurchasedEventHandler(CardData card);
-	[Signal] public delegate void RefreshRequestedEventHandler(int cost);
+	private readonly RandomNumberGenerator _rng = new();
+	private bool _generated;
 
-	private List<CardData> _currentShopCards = new();
-	private RandomNumberGenerator _rng = new();
+	private const string HandPath = "../BottomPanel/HBoxContainer/CardHandSection/CardHand";
 
 	public override void _Ready()
 	{
@@ -26,11 +27,14 @@ public partial class ShopMenu : CanvasLayer
 		_rng.Randomize();
 
 		CardContainer ??= GetNode<Container>("UI/Background/VBoxContainer/CardContainer");
+		ResourcesLabel ??= GetNode<Label>("UI/Background/VBoxContainer/ResourcesLabel");
 		RefreshButton ??= GetNode<Button>("UI/Background/VBoxContainer/ButtonContainer/RefreshButton");
 		CloseButton ??= GetNode<Button>("UI/Background/VBoxContainer/ButtonContainer/CloseButton");
 
 		RefreshButton.Pressed += OnRefreshButtonPressed;
 		CloseButton.Pressed += OnCloseButtonPressed;
+
+		RefreshButton.Text = RefreshCost > 0 ? $"Refresh ({RefreshCost})" : "Refresh";
 
 		Hide();
 	}
@@ -38,7 +42,12 @@ public partial class ShopMenu : CanvasLayer
 	public void OpenShop()
 	{
 		Show();
-		GenerateNewShopSelection();
+		UpdateResourcesLabel();
+
+		if (!_generated)
+		{
+			GenerateNewShopSelection();
+		}
 	}
 
 	public void CloseShop()
@@ -46,47 +55,114 @@ public partial class ShopMenu : CanvasLayer
 		Hide();
 	}
 
-	public void GenerateNewShopSelection()
+	private bool GenerateNewShopSelection()
 	{
 		if (CardContainer == null || CardDisplayPrefab == null || AvailableCardPool.Count == 0)
 		{
-			GD.Print("Shop is not configured yet (CardDisplayPrefab or AvailableCardPool is empty).");
-			return;
+			GD.PushWarning("Shop has no card display prefab or no available cards.");
+			return false;
 		}
-
-		_currentShopCards.Clear();
 
 		foreach (Node child in CardContainer.GetChildren())
 		{
 			child.QueueFree();
 		}
 
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < ShopSize; i++)
 		{
-			int randomIndex = _rng.RandiRange(0, AvailableCardPool.Count - 1);
-			CardData selectedCard = AvailableCardPool[randomIndex];
-			_currentShopCards.Add(selectedCard);
+			Card card = AvailableCardPool[_rng.RandiRange(0, AvailableCardPool.Count - 1)];
 
-			var cardUI = CardDisplayPrefab.Instantiate();
-			CardContainer.AddChild(cardUI);
-
-			if (cardUI.HasMethod("SetupCard"))
+			if (card == null)
 			{
-				cardUI.Call("SetupCard", selectedCard);
+				continue;
 			}
+
+			ShopCardView view = CardDisplayPrefab.Instantiate<ShopCardView>();
+			CardContainer.AddChild(view);
+			view.SetCard(card);
+			view.BuyRequested += OnBuyRequested;
 		}
 
-		GD.Print("Shop refreshed with 3 new cards!");
+		_generated = true;
+		UpdateResourcesLabel();
+		return true;
+	}
+
+	private void OnBuyRequested(ShopCardView view)
+	{
+		Hud hud = GetHud();
+
+		if (hud == null || view == null || view.Card == null)
+		{
+			return;
+		}
+
+		CardHand hand = GetNodeOrNull<CardHand>(HandPath);
+
+		if (hand == null)
+		{
+			hud.ShowCardMessage("There is no deck to add the card to.");
+			return;
+		}
+
+		Card card = view.Card;
+
+		if (!hud.TrySpendResources(card.ShopPrice))
+		{
+			hud.ShowCardMessage("Not enough resources.");
+			return;
+		}
+
+		hand.AddCard(card);
+		hud.ShowCardMessage("Bought " + card.DisplayName + ".");
+		UpdateResourcesLabel();
+
+		CardContainer.RemoveChild(view);
+		view.QueueFree();
 	}
 
 	private void OnRefreshButtonPressed()
 	{
-		EmitSignal(SignalName.RefreshRequested, RefreshCost);
-		GenerateNewShopSelection();
+		Hud hud = GetHud();
+
+		if (hud == null)
+		{
+			return;
+		}
+
+		if (!hud.TrySpendResources(RefreshCost))
+		{
+			hud.ShowCardMessage("Not enough resources to refresh.");
+			return;
+		}
+
+		if (!GenerateNewShopSelection())
+		{
+			hud.AddResources(RefreshCost);
+			return;
+		}
+
+		hud.ShowCardMessage("Shop refreshed.");
+		UpdateResourcesLabel();
 	}
 
 	private void OnCloseButtonPressed()
 	{
 		CloseShop();
+	}
+
+	private Hud GetHud()
+	{
+		return GetParent() as Hud;
+	}
+
+	private void UpdateResourcesLabel()
+	{
+		Hud hud = GetHud();
+
+		if (ResourcesLabel != null && hud != null)
+		{
+			ResourcesLabel.Text = "Resources: " + hud.Resources;
+		}
 	}
 }

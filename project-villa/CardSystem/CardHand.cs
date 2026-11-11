@@ -55,6 +55,18 @@ public partial class CardHand : Control
 		DrawCards(handSize);
 	}
 
+	public void AddCard(Card card)
+	{
+		if (card == null)
+		{
+			return;
+		}
+
+		_drawPile.Add(card);
+		Shuffle(_drawPile);
+		UpdateHud();
+	}
+
 	public int DrawCards(int count)
 	{
 		int drawn = 0;
