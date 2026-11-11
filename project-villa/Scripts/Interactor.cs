@@ -38,7 +38,7 @@ public partial class Interactor : Node2D
 			}
         }
 
-		// Sort the collider list
+		// Sort the collider list so the interactor script knows which item should be prioritized
         for(int i = 0; i < colliders.Count-1;)
         {
 			CanvasItem current = (CanvasItem)colliders[i];
@@ -61,26 +61,32 @@ public partial class Interactor : Node2D
 	{
 		mousePos = GetGlobalMousePosition();
 
+		// If a clickable is still highlighted since last frame, reset it
 		cClickable?.Reset();
 
+		// Reset priorities if not dragging an object currently
 		if(cClickable != null && cDraggable == null)
 		{
 			ResetCanvasPriority(cClickable, cClickable.GetGraphics());
 		}
 
+		// Stop execution if no objects are being interacted with
 		if(colliders.Count == 0) return;
 
+		// Draggable setting
 		if(Input.IsActionJustPressed("Mouse1") && colliders[0] is IDraggable)
 		{
 			cDraggable = (IDraggable)colliders[0];
-			SetPriority(cDraggable, cDraggable.GetGraphics(), 2);
+			SetCanvasPriority(cDraggable, cDraggable.GetGraphics(), 2);
 		}
 
+		// Draggable handling
 		if(Input.IsActionPressed("Mouse1") && cDraggable != null)
 		{
 			cDraggable.Drag(mousePos);
 		}
 
+		// Draggable resetting
 		if(Input.IsActionJustReleased("Mouse1") && cDraggable != null)
 		{
 			cDraggable.Release();
@@ -88,13 +94,17 @@ public partial class Interactor : Node2D
 			cDraggable = null;
 		}
 
+		// If not currently dragging anything, check if something should be highlighted
 		if(colliders.Count == 1 && colliders[0] is IClickable && cDraggable == null)
 		{
+			// Clickable setting
 			cClickable = (IClickable)colliders[0];
-			SetPriority(cClickable, cClickable.GetGraphics(),1);
+			SetCanvasPriority(cClickable, cClickable.GetGraphics(),1);
 
+			// Clickable handling
 			cClickable.Highlight();
 
+			// Clickable resetting
 			if(Input.IsActionJustPressed("Mouse2") )
 			{
 				cClickable.OnClickEvent();
@@ -112,7 +122,7 @@ public partial class Interactor : Node2D
 		}
 	}
 
-	private static void SetPriority(object item, Sprite2D graphics, int priority)
+	private static void SetCanvasPriority(object item, Sprite2D graphics, int priority)
 	{
 		if(item is CanvasItem canvas) 
 		{
