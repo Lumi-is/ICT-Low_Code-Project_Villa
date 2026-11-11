@@ -53,52 +53,54 @@ public partial class Interactor : Node2D
         }
 	}
 
+	IDraggable cDraggable = null;
+	IClickable cClickable = null;
+
+
 	public override void _Process(double delta)
 	{
 		mousePos = GetGlobalMousePosition();
 
-		if(clickable != null)
+		cClickable?.Reset();
+
+		if(cClickable != null && cDraggable == null)
 		{
-			ResetCanvasPriority(clickable, clickable.GetGraphics());
-			clickable.Reset();
+			ResetCanvasPriority(cClickable, cClickable.GetGraphics());
 		}
 
-		if (results.Count == 0)
+		if(colliders.Count == 0) return;
+
+		if(Input.IsActionJustPressed("Mouse1") && colliders[0] is IDraggable)
 		{
-			clickable = null;
-		} else 
+			cDraggable = (IDraggable)colliders[0];
+			SetPriority(cDraggable, cDraggable.GetGraphics(), 2);
+		}
+
+		if(Input.IsActionPressed("Mouse1") && cDraggable != null)
 		{
-            if (colliders[0] is IClickable clickableCastForm)
-            {
-                clickable = clickableCastForm;
-                clickable.Highlight();
+			cDraggable.Drag(mousePos);
+		}
 
-                if (Input.IsActionJustPressed("Mouse2"))
-                {
-                    // Testing purposes
-                    clickable.OnClickEvent();
-                }
-            }
+		if(Input.IsActionJustReleased("Mouse1") && cDraggable != null)
+		{
+			cDraggable.Release();
+			ResetCanvasPriority(cDraggable, cDraggable.GetGraphics());
+			cDraggable = null;
+		}
 
-            if (colliders[0] is IDraggable draggableCastForm)
-            {
-                draggable = draggableCastForm;
+		if(colliders.Count == 1 && colliders[0] is IClickable && cDraggable == null)
+		{
+			cClickable = (IClickable)colliders[0];
+			SetPriority(cClickable, cClickable.GetGraphics(),1);
 
-                if (Input.IsActionPressed("Mouse1"))
-                {
-                    draggable.Drag(mousePos);
-                }
+			cClickable.Highlight();
 
-                if (Input.IsActionJustReleased("Mouse1"))
-                {
-                    ResetCanvasPriority(draggable, draggable.GetGraphics());
-                    draggable.Release();
-                }
-            }
+			if(Input.IsActionJustPressed("Mouse2") )
+			{
+				cClickable.OnClickEvent();
+			}
+		}
 
-			SetPriority(clickable, clickable.GetGraphics(),1);
-			SetPriority(draggable, draggable.GetGraphics(),2);
-        }
 	}
 
 	private static void ResetCanvasPriority(object item, Sprite2D graphics)

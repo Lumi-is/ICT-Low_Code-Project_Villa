@@ -9,11 +9,17 @@
 
 [node name="InteractionManager" parent="." unique_id=557384809 instance=ExtResource("1_x8jca")]
 
-[node name="Tile3" parent="." unique_id=510889725 instance=ExtResource("3_utech")]
-position = Vector2(101, 234)
+[node name="Tile4" parent="." unique_id=510889725 instance=ExtResource("3_utech")]
+position = Vector2(329, -250)
+
+[node name="Tile3" parent="." unique_id=1088076150 instance=ExtResource("3_utech")]
+position = Vector2(131, -180)
+
+[node name="Tile2" parent="." unique_id=1801584203 instance=ExtResource("3_utech")]
+position = Vector2(319, -101)
 
 [node name="Tile" parent="." unique_id=1350540326 instance=ExtResource("3_utech")]
-position = Vector2(348, 232)
+position = Vector2(501, -180)
 
 [node name="CameraMain" parent="." unique_id=300161349 instance=ExtResource("1_camera")]
 position_smoothing_enabled = true
