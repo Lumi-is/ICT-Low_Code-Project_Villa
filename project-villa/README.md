@@ -41,7 +41,7 @@ card to your deck, and **Refresh** replaces the selection for resources.
 | `CardSystem/DrawCardsCard.cs` | Draws cards from the deck |
 | `CardSystem/CardView.cs` | One card widget and its mouse drag |
 | `CardSystem/ShopCardView.cs` | One card in the shop, with its buy button |
-| `CardSystem/CardHand.cs` | Hand layout, draw pile, discard pile |
+| `CardSystem/CardHand.cs` | Hand layout, draw pile, permanent card use |
 | `CardSystem/CardPlayController.cs` | Checks the cost and runs the card |
 
 The HUD scene (`Scenes/hud.tscn`) contains the controller at
@@ -93,8 +93,9 @@ is refunded.
 ## Playing a card
 
 Drag a card out of the hand and release the mouse button. The cost is taken from
-the HUD's resource counter, the card moves to the discard pile, and the hand
-refills to `StartingHandSize`.
+the HUD's resource counter, the card is permanently consumed, and the hand draws
+a replacement from the deck if one is available. The deck counter shows how many
+cards are left to draw.
 
 ## Shop
 
@@ -108,4 +109,5 @@ refills to `StartingHandSize`.
 | `RefreshCost` | Resources spent to reroll the shop |
 
 Buying a card spends its `ShopPrice`, removes it from the shop, and adds it to
-the draw pile. The deck counter updates immediately.
+your hand if there is room. If your hand is full, the card goes to the draw pile
+instead. The deck counter updates immediately.

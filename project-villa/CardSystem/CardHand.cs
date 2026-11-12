@@ -16,12 +16,11 @@ public partial class CardHand : Control
 
 	private readonly List<CardView> _hand = new();
 	private readonly List<Card> _drawPile = new();
-	private readonly List<Card> _discardPile = new();
 	private readonly Random _random = new();
 
 	public int HandCount => _hand.Count;
-	public int DeckCount => _drawPile.Count + _discardPile.Count;
-	public int CardsAvailable => _drawPile.Count + _discardPile.Count;
+	public int DeckCount => _drawPile.Count;
+	public int CardsAvailable => _drawPile.Count;
 
 	public override void _Ready()
 	{
@@ -64,7 +63,7 @@ public partial class CardHand : Control
 
 		_drawPile.Add(card);
 		Shuffle(_drawPile);
-		UpdateHud();
+		DrawCards(StartingHandSize - _hand.Count);
 	}
 
 	public int DrawCards(int count)
@@ -73,11 +72,6 @@ public partial class CardHand : Control
 
 		for (int i = 0; i < count; i++)
 		{
-			if (_drawPile.Count == 0)
-			{
-				Reshuffle();
-			}
-
 			if (_drawPile.Count == 0)
 			{
 				break;
@@ -106,16 +100,10 @@ public partial class CardHand : Control
 			return;
 		}
 
-		Card played = view.Card;
 		_hand.Remove(view);
 		view.QueueFree();
-		_discardPile.Add(played);
-		UpdateHud();
 
-		if (_hand.Count < StartingHandSize)
-		{
-			DrawCards(1);
-		}
+		DrawCards(StartingHandSize - _hand.Count);
 	}
 
 	private void AddCardView(Card card)
@@ -164,18 +152,6 @@ public partial class CardHand : Control
 		}
 	}
 
-	private void Reshuffle()
-	{
-		if (_discardPile.Count == 0)
-		{
-			return;
-		}
-
-		_drawPile.AddRange(_discardPile);
-		_discardPile.Clear();
-		Shuffle(_drawPile);
-	}
-
 	private void Shuffle(List<Card> cards)
 	{
 		for (int i = cards.Count - 1; i > 0; i--)
@@ -194,7 +170,6 @@ public partial class CardHand : Control
 
 		_hand.Clear();
 		_drawPile.Clear();
-		_discardPile.Clear();
 	}
 
 	private void UpdateHud()
