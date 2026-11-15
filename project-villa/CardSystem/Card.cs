@@ -11,6 +11,7 @@ public partial class Card : Resource
 	[Export] public string Category = "Action";
 	[Export] public Color AccentColor = new Color("#e0b85a");
 	[Export] public int Cost = 0;
+	[Export] public int ShopPrice = 10;
 
 	public virtual bool CanPlay(CardPlayController game)
 	{
