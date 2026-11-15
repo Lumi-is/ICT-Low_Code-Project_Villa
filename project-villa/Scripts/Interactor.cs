@@ -5,8 +5,6 @@ using Godot.Collections;
 public partial class Interactor : Node2D
 {
 	// Which *clickable* object is mouse currently hovering over, and is it clicked?
-	IClickable clickable;
-	IDraggable draggable;
 	Vector2 mousePos;
 
 

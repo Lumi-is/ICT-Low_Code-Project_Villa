@@ -107,7 +107,7 @@ public partial class ShopMenu : CanvasLayer
 
 		Card card = view.Card;
 
-		if (!hud.TrySpendResources(card.ShopPrice))
+		if (!hud.TrySpendResources(card.shopPrice))
 		{
 			hud.ShowCardMessage("Not enough resources.");
 			return;

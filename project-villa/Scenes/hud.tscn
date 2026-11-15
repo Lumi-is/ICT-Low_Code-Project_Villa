@@ -11,17 +11,10 @@
 [node name="HUD" type="CanvasLayer" unique_id=324807081]
 process_mode = 3
 script = ExtResource("1_hud")
-PauseButton = NodePath("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Pause")
-ShopButton = NodePath("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Shop")
-DeckLabel = NodePath("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck")
-ResourcesLabel = NodePath("BottomPanel/HBoxContainer/Stats/HBoxContainer/resources")
-CardMessageLabel = NodePath("CardMessage")
-PauseMenu = NodePath("PauseMenu")
-ShopMenu = NodePath("ShopMenu")
 
 [node name="CardSystem" type="Node" parent="." unique_id=1991182741]
 
-[node name="CardPlayController" type="Node" parent="CardSystem" unique_id=1335016859]
+[node name="CardPlayController" type="Node2D" parent="CardSystem" unique_id=367988372]
 script = ExtResource("4_controller")
 
 [node name="BottomPanel" type="PanelContainer" parent="." unique_id=77875456]
@@ -61,14 +54,16 @@ text = "Shop"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CardHand" type="Control" parent="BottomPanel/HBoxContainer/CardHandSection" unique_id=1019185542]
+[node name="CardHand" type="Control" parent="BottomPanel/HBoxContainer/CardHandSection" unique_id=1019185542 node_paths=PackedStringArray("Controller")]
 unique_name_in_owner = true
+z_index = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("5_hand")
 CardViewScene = ExtResource("6_cardview")
 StartingDeck = ExtResource("7_deck")
+Controller = NodePath("../../../../CardSystem/CardPlayController")
 
 [node name="Stats" type="MarginContainer" parent="BottomPanel/HBoxContainer" unique_id=1633693370]
 layout_mode = 2

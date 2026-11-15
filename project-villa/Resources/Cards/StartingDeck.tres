@@ -2,9 +2,18 @@
 
 [ext_resource type="Script" uid="uid://c4csssh6ee8g" path="res://CardSystem/Card.cs" id="1_ooj4x"]
 [ext_resource type="Script" uid="uid://chk2wc3omndwl" path="res://CardSystem/CardDeck.cs" id="2_3wp54"]
+[ext_resource type="Script" uid="uid://d0ae25o8vdvxw" path="res://Scripts/BuildCard.cs" id="2_iepn6"]
 [ext_resource type="Resource" uid="uid://c2jqf5588hq74" path="res://Resources/Cards/Testing.tres" id="2_ksxou"]
+
+[sub_resource type="Resource" id="Resource_utech"]
+script = ExtResource("2_iepn6")
+metadata/_custom_type_script = "uid://d0ae25o8vdvxw"
+
+[sub_resource type="Resource" id="Resource_x8jca"]
+script = ExtResource("2_iepn6")
+metadata/_custom_type_script = "uid://d0ae25o8vdvxw"
 
 [resource]
 script = ExtResource("2_3wp54")
-Cards = Array[ExtResource("1_ooj4x")]([ExtResource("2_ksxou"), ExtResource("2_ksxou"), ExtResource("2_ksxou"), ExtResource("2_ksxou")])
+Cards = Array[ExtResource("1_ooj4x")]([SubResource("Resource_utech"), SubResource("Resource_x8jca"), ExtResource("2_ksxou"), ExtResource("2_ksxou")])
 metadata/_custom_type_script = "uid://chk2wc3omndwl"

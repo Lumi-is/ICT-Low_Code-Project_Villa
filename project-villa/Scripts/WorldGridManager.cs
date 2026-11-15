@@ -5,11 +5,14 @@ namespace Grid
 {
 	static class WorldGridManager
 	{
-		public static void SnapToGrid(Node2D someSnappable, Vector2 position)
-		{
-			Node2D snappable = someSnappable.GetOwner<Node2D>();
 
-            var jumpInterval = 100f;
+		public static Tile[][] groundLevelGrid;
+		public static Tile[][] treeLevelGrid;
+		public static IBuilding[][] buildingGrid;
+
+		public static Vector2 CalculateSnapPos(Vector2 position)
+		{
+		    var jumpInterval = 100f;
             var xPosition = position.X;
 			var yPosition = position.Y;
 	
@@ -39,13 +42,14 @@ namespace Grid
 			// Calculating what the desired position of the object should be when adjusted to the grid
             snapPos.Y = yJumpCount * jumpInterval + (ySign * (jumpInterval/2));
 
-			GD.Print("Current X Pos: "+xPosition);
-			GD.Print("Desired X Pos: "+snapPos.X);
-			GD.Print("Current Y Pos: "+yPosition);
-			GD.Print("Desired Y Pos: "+snapPos.Y);
-			
-		
-			snappable.Position = snapPos;
+			return snapPos;
+		}
+
+		public static void SnapToGrid(Node2D someSnappable, Vector2 snapPos)
+		{
+			Node2D snappable = someSnappable.GetOwner<Node2D>();
+
+			snappable.Position	= snapPos;
 		}
 	}
 }

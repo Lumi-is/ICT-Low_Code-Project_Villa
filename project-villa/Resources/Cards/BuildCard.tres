@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="BuildCard" format=3 uid="uid://d3mc5fjhl78v8"]
+
+[ext_resource type="Script" uid="uid://d0ae25o8vdvxw" path="res://Scripts/BuildCard.cs" id="1_2n6hx"]
+
+[resource]
+script = ExtResource("1_2n6hx")
+metadata/_custom_type_script = "uid://d0ae25o8vdvxw"
