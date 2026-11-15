@@ -14,9 +14,10 @@ public partial class BuildCard : Card
         PackedScene scene;
         scene = ResourceLoader.Load<PackedScene>(path);
 
-
-        Node2D building = scene.Instantiate() as Node2D;
+        Node2D building = (Node2D)scene.Instantiate();
         node.AddChild(building);
+
+        GD.Print(building.Name);
         
         WorldGridManager.SnapToGrid(building, WorldGridManager.CalculateSnapPos(playPos));
     }

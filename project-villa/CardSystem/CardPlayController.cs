@@ -33,7 +33,7 @@ public partial class CardPlayController : Node2D
 
 		if(ResourceManager.ResourceCalculate(card))
 		{
-			card.Play(this, GetGlobalMousePosition(), this); 
+			card.Play(this, GetGlobalMousePosition(), GetNode("/root")); 
 			Hud?.ShowCardMessage(card.DisplayName + " was played succesfully.");
 			return true;
 		} else

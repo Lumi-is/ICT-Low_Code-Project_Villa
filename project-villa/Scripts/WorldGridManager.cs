@@ -47,7 +47,16 @@ namespace Grid
 
 		public static void SnapToGrid(Node2D someSnappable, Vector2 snapPos)
 		{
-			Node2D snappable = someSnappable.GetOwner<Node2D>();
+			Node2D snappable;
+			// Iterate upon this later
+			if(someSnappable.GetOwner<Node2D>() != null)
+			{
+				snappable = someSnappable.GetOwner<Node2D>();
+			} else
+			{
+				snappable = someSnappable;
+			}
+			
 
 			snappable.Position	= snapPos;
 		}
