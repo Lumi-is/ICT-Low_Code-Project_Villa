@@ -4,6 +4,7 @@
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=1475302117]
 process_mode = 3
+layer = 3
 script = ExtResource("1_lj4oq")
 ResumeButton = NodePath("UI/MenuButtons/ResumeButton")
 QuitButton = NodePath("UI/MenuButtons/QuitButton")

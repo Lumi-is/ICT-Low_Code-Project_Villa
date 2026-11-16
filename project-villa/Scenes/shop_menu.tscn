@@ -4,12 +4,14 @@
 [ext_resource type="PackedScene" path="res://Scenes/Cards/ShopCardView.tscn" id="2_shopcard"]
 [ext_resource type="Script" uid="uid://c4csssh6ee8g" path="res://CardSystem/Card.cs" id="3_card"]
 [ext_resource type="Resource" uid="uid://c2jqf5588hq74" path="res://Resources/Cards/Testing.tres" id="4_testing"]
+[ext_resource type="Resource" uid="uid://d3mc5fjhl78v8" path="res://Resources/Cards/BuildHousing.tres" id="5_h1qh4"]
 
 [node name="ShopMenu" type="CanvasLayer" unique_id=820137950]
 process_mode = 3
+layer = 2
 script = ExtResource("1_xysl7")
 CardDisplayPrefab = ExtResource("2_shopcard")
-AvailableCardPool = Array[ExtResource("3_card")]([ExtResource("4_testing")])
+AvailableCardPool = Array[ExtResource("3_card")]([ExtResource("4_testing"), ExtResource("5_h1qh4")])
 
 [node name="UI" type="Control" parent="." unique_id=639949560]
 z_index = 2

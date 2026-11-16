@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using ProjectVilla.Cards;
 
 namespace Grid
 {
@@ -59,6 +60,28 @@ namespace Grid
 			
 
 			snappable.Position	= snapPos;
+		}
+
+
+		public static void BuildCard(CardPlayController game, Vector2 playPos, Node node, string path)
+		{
+			PackedScene scene;
+			scene = ResourceLoader.Load<PackedScene>(path);
+
+			Node2D building = (Node2D)scene.Instantiate();
+			Node parentNode = new();
+
+			if(node.GetChild(0) == null)
+			{
+				node.AddChild(parentNode);
+			} else
+			{
+				parentNode = node.GetChild(0);
+			}
+			
+			parentNode.AddChild(building);
+
+			WorldGridManager.SnapToGrid(building, WorldGridManager.CalculateSnapPos(playPos - DisplayServer.WindowGetSize()/2));
 		}
 	}
 }
