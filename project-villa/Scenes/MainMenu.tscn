@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cpo8oeja6mga6" path="res://Scripts/MainMenu.cs" id="1_853f1"]
 [ext_resource type="FontFile" uid="uid://di8bfppt6mo4w" path="res://Fonts/ambrosia1.ttf" id="2_vigx8"]
+[ext_resource type="AudioStream" uid="uid://bhqq46dbi6hou" path="res://Sound_effects/menu_hover_over.wav" id="3_8saeu"]
+[ext_resource type="AudioStream" uid="uid://cdc2m4h6mxbnq" path="res://Sound_effects/menu_selection.ogg" id="4_ghw46"]
+[ext_resource type="Script" uid="uid://xbixrw6saxkf" path="res://Scripts/UiSound.cs" id="5_df05h"]
 
 [node name="MainMenu" type="Control" unique_id=1972660414]
 layout_mode = 3
@@ -11,9 +14,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_853f1")
-GameScenePath = "res://Scenes/TestingScene.tscn"
-PlayButton = NodePath("VBoxContainer/StartButton")
-QuitButton = NodePath("VBoxContainer/QuitButton")
 
 [node name="Background" type="TextureRect" parent="." unique_id=185193553]
 layout_mode = 1
@@ -79,3 +79,16 @@ size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_vigx8")
 theme_override_font_sizes/font_size = 16
 text = "Quit"
+
+[node name="HoverSound" type="AudioStreamPlayer" parent="." unique_id=794114289]
+stream = ExtResource("3_8saeu")
+script = ExtResource("5_df05h")
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=1955250648]
+stream = ExtResource("4_ghw46")
+script = ExtResource("5_df05h")
+
+[connection signal="mouse_entered" from="VBoxContainer/StartButton" to="HoverSound" method="PlaySound"]
+[connection signal="pressed" from="VBoxContainer/StartButton" to="ClickSound" method="PlaySound"]
+[connection signal="mouse_entered" from="VBoxContainer/QuitButton" to="HoverSound" method="PlaySound"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="ClickSound" method="PlaySound"]

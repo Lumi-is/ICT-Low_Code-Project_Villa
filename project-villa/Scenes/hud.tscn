@@ -1,23 +1,25 @@
 [gd_scene format=3 uid="uid://kt10cktyfc0o"]
 
-[ext_resource type="Script" uid="uid://bnun5h0gws5b5" path="res://Scripts/Hud.cs" id="1_e0onf"]
+[ext_resource type="Script" uid="uid://bnun5h0gws5b5" path="res://Scripts/Hud.cs" id="1_hud"]
 [ext_resource type="PackedScene" uid="uid://84hbqife8kju" path="res://Scenes/PauseMenu.tscn" id="2_pause"]
 [ext_resource type="PackedScene" uid="uid://c4nq1ykcoav21" path="res://Scenes/shop_menu.tscn" id="3_shop"]
+[ext_resource type="Script" uid="uid://cd3wj3unba004" path="res://CardSystem/CardPlayController.cs" id="4_controller"]
+[ext_resource type="Script" uid="uid://b30yxp5ttwlyp" path="res://CardSystem/CardHand.cs" id="5_hand"]
+[ext_resource type="PackedScene" path="res://Scenes/Cards/HudCardView.tscn" id="6_cardview"]
+[ext_resource type="Resource" uid="uid://c8ge8lyhkxqd" path="res://Resources/Cards/StartingDeck.tres" id="7_deck"]
 
 [node name="HUD" type="CanvasLayer" unique_id=324807081]
 process_mode = 3
-script = ExtResource("1_e0onf")
-PauseButton = NodePath("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Pause")
-ShopButton = NodePath("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Shop")
-DeckLabel = NodePath("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck")
-ResourcesLabel = NodePath("BottomPanel/HBoxContainer/Stats/HBoxContainer/resources")
-CardContainer = NodePath("BottomPanel/HBoxContainer/CardHandSection/CardContainer")
-PauseMenu = NodePath("PauseMenu")
-ShopMenu = NodePath("ShopMenu")
+script = ExtResource("1_hud")
+
+[node name="CardSystem" type="Node" parent="." unique_id=1991182741]
+
+[node name="CardPlayController" type="Node2D" parent="CardSystem" unique_id=367988372]
+script = ExtResource("4_controller")
 
 [node name="BottomPanel" type="PanelContainer" parent="." unique_id=77875456]
 modulate = Color(0.7834272, 0.59918135, 0.2313332, 1)
-custom_minimum_size = Vector2(80, 120)
+custom_minimum_size = Vector2(80, 200)
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -50,28 +52,18 @@ text = "Shop"
 
 [node name="CardHandSection" type="MarginContainer" parent="BottomPanel/HBoxContainer" unique_id=1365392736]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 3
 
-[node name="CardContainer" type="HBoxContainer" parent="BottomPanel/HBoxContainer/CardHandSection" unique_id=1928089745]
+[node name="CardHand" type="Control" parent="BottomPanel/HBoxContainer/CardHandSection" unique_id=1019185542 node_paths=PackedStringArray("Controller")]
+unique_name_in_owner = true
+z_index = 1
 layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/separation = 8
-
-[node name="CardSlot" type="Control" parent="BottomPanel/HBoxContainer/CardHandSection/CardContainer" unique_id=1117410293]
-custom_minimum_size = Vector2(90, 90)
-layout_mode = 2
-
-[node name="CardSlot2" type="Control" parent="BottomPanel/HBoxContainer/CardHandSection/CardContainer" unique_id=903805879]
-custom_minimum_size = Vector2(90, 90)
-layout_mode = 2
-
-[node name="CardSlot3" type="Control" parent="BottomPanel/HBoxContainer/CardHandSection/CardContainer" unique_id=508851215]
-custom_minimum_size = Vector2(90, 90)
-layout_mode = 2
-
-[node name="CardSlot4" type="Control" parent="BottomPanel/HBoxContainer/CardHandSection/CardContainer" unique_id=845045146]
-custom_minimum_size = Vector2(90, 90)
-layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("5_hand")
+CardViewScene = ExtResource("6_cardview")
+StartingDeck = ExtResource("7_deck")
+Controller = NodePath("../../../../CardSystem/CardPlayController")
 
 [node name="Stats" type="MarginContainer" parent="BottomPanel/HBoxContainer" unique_id=1633693370]
 layout_mode = 2
@@ -80,14 +72,36 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="deck" type="Label" parent="BottomPanel/HBoxContainer/Stats/HBoxContainer" unique_id=1136795079]
+[node name="deck" type="RichTextLabel" parent="BottomPanel/HBoxContainer/Stats/HBoxContainer" unique_id=567663778]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-text = "Deck: 4"
+bbcode_enabled = true
+text = "Deck: 0 | Hand: 0"
 
-[node name="resources" type="Label" parent="BottomPanel/HBoxContainer/Stats/HBoxContainer" unique_id=1297558884]
+[node name="resources" type="RichTextLabel" parent="BottomPanel/HBoxContainer/Stats/HBoxContainer" unique_id=1479460138]
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
-text = "Resources: 100"
+bbcode_enabled = true
+
+[node name="CardMessage" type="Label" parent="." unique_id=884221607]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -250.0
+offset_right = 320.0
+offset_bottom = -212.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0.941, 0.749, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="PauseMenu" parent="." unique_id=1837462910 instance=ExtResource("2_pause")]
+visible = false
 
 [node name="ShopMenu" parent="." unique_id=1298374651 instance=ExtResource("3_shop")]
+visible = false

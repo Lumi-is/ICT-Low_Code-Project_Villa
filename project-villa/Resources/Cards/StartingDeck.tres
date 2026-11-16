@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CardDeck" format=3 uid="uid://c8ge8lyhkxqd"]
+
+[ext_resource type="Script" uid="uid://c4csssh6ee8g" path="res://CardSystem/Card.cs" id="1_ooj4x"]
+[ext_resource type="Script" uid="uid://chk2wc3omndwl" path="res://CardSystem/CardDeck.cs" id="2_3wp54"]
+
+[resource]
+script = ExtResource("2_3wp54")
+metadata/_custom_type_script = "uid://chk2wc3omndwl"

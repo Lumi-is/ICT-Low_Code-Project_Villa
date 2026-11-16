@@ -1,106 +1,168 @@
 using Godot;
-using System.Collections.Generic;
+using ProjectVilla.Cards;
 
 [GlobalClass]
 public partial class ShopMenu : CanvasLayer
 {
-    [ExportGroup("UI References")]
-    [Export] public Container CardContainer;
-    [Export] public Button RefreshButton;
-    [Export] public Button CloseButton;
+	[ExportGroup("UI References")]
+	[Export] public Container CardContainer;
+	[Export] public Label ResourcesLabel;
+	[Export] public Button RefreshButton;
+	[Export] public Button CloseButton;
 
-    [ExportGroup("Shop Configuration")]
-    [Export] public PackedScene CardDisplayPrefab; // Scene for individual card display
-    [Export] public int RefreshCost = 5;
-    [Export] public Godot.Collections.Array<CardData> AvailableCardPool = new();
+	[ExportGroup("Shop Configuration")]
+	[Export] public PackedScene CardDisplayPrefab;
+	[Export] public int ShopSize = 3;
+	[Export] public int RefreshCost = 5;
+	[Export] public Godot.Collections.Array<Card> AvailableCardPool = new();
 
-    // Event signals to notify HUD/Game Controller
-    [Signal] public delegate void CardPurchasedEventHandler(CardData card);
-    [Signal] public delegate void RefreshRequestedEventHandler(int cost);
+	private readonly RandomNumberGenerator _rng = new();
+	private bool _generated;
 
-    private List<CardData> _currentShopCards = new();
-    private RandomNumberGenerator _rng = new();
+	private const string HandPath = "../BottomPanel/HBoxContainer/CardHandSection/CardHand";
 
-    public override void _Ready()
-    {
-        ProcessMode = ProcessModeEnum.Always;
-        _rng.Randomize();
+	public override void _Ready()
+	{
+		ProcessMode = ProcessModeEnum.Always;
+		_rng.Randomize();
 
-        // Node auto-fetching.
-        CardContainer ??= GetNode<Container>("UI/Background/VBoxContainer/CardContainer");
-        RefreshButton ??= GetNode<Button>("UI/Background/VBoxContainer/ButtonContainer/RefreshButton");
-        CloseButton ??= GetNode<Button>("UI/Background/VBoxContainer/ButtonContainer/CloseButton");
+		CardContainer ??= GetNode<Container>("UI/Background/VBoxContainer/CardContainer");
+		ResourcesLabel ??= GetNode<Label>("UI/Background/VBoxContainer/ResourcesLabel");
+		RefreshButton ??= GetNode<Button>("UI/Background/VBoxContainer/ButtonContainer/RefreshButton");
+		CloseButton ??= GetNode<Button>("UI/Background/VBoxContainer/ButtonContainer/CloseButton");
 
-        // Connect button signals.
-        RefreshButton.Pressed += OnRefreshButtonPressed;
-        CloseButton.Pressed += OnCloseButtonPressed;
+		RefreshButton.Pressed += OnRefreshButtonPressed;
+		CloseButton.Pressed += OnCloseButtonPressed;
 
-        Hide();
-    }
+		RefreshButton.Text = RefreshCost > 0 ? $"Refresh ({RefreshCost})" : "Refresh";
 
-    public void OpenShop()
-    {
-        Show();
-        GenerateNewShopSelection();
-    }
+		Hide();
+	}
 
-    public void CloseShop()
-    {
-        Hide();
-    }
+	public void OpenShop()
+	{
+		Show();
+		UpdateResourcesLabel();
 
-    /// <summary>
-    /// Randomly picks 3 cards from the pool to display in the shop.
-    /// </summary>
-    public void GenerateNewShopSelection()
-    {
-        // Keep the placeholder slots visible until a card prefab and pool are set up.
-        if (CardContainer == null || CardDisplayPrefab == null || AvailableCardPool.Count == 0)
-        {
-            GD.Print("Shop is not configured yet (CardDisplayPrefab or AvailableCardPool is empty).");
-            return;
-        }
+		if (!_generated)
+		{
+			GenerateNewShopSelection();
+		}
+	}
 
-        _currentShopCards.Clear();
+	public void CloseShop()
+	{
+		Hide();
+	}
 
-        // Clear existing visual card nodes.
-        foreach (Node child in CardContainer.GetChildren())
-        {
-            child.QueueFree();
-        }
+	private bool GenerateNewShopSelection()
+	{
+		if (CardContainer == null || CardDisplayPrefab == null || AvailableCardPool.Count == 0)
+		{
+			GD.PushWarning("Shop has no card display prefab or no available cards.");
+			return false;
+		}
 
-        // Select 3 cards randomly.
-        for (int i = 0; i < 3; i++)
-        {
-            int randomIndex = _rng.RandiRange(0, AvailableCardPool.Count - 1);
-            CardData selectedCard = AvailableCardPool[randomIndex];
-            _currentShopCards.Add(selectedCard);
+		foreach (Node child in CardContainer.GetChildren())
+		{
+			child.QueueFree();
+		}
 
-            // Instantiate visual display slot.
-            var cardUI = CardDisplayPrefab.Instantiate();
-            CardContainer.AddChild(cardUI);
+		for (int i = 0; i < ShopSize; i++)
+		{
+			Card card = AvailableCardPool[_rng.RandiRange(0, AvailableCardPool.Count - 1)];
 
-            // If card UI has a script, pass data into it.
-            if (cardUI.HasMethod("SetupCard"))
-            {
-                cardUI.Call("SetupCard", selectedCard);
-            }
-        }
+			if (card == null)
+			{
+				continue;
+			}
 
-        GD.Print("Shop refreshed with 3 new cards!");
-    }
+			ShopCardView view = CardDisplayPrefab.Instantiate<ShopCardView>();
+			CardContainer.AddChild(view);
+			view.SetCard(card);
+			view.BuyRequested += OnBuyRequested;
+		}
 
-    // --- Button Callbacks ---
+		_generated = true;
+		UpdateResourcesLabel();
+		return true;
+	}
 
-    private void OnRefreshButtonPressed()
-    {
-        // Emit signal so HUD can check if player has enough resources/gold.
-        EmitSignal(SignalName.RefreshRequested, RefreshCost);
-        GenerateNewShopSelection();
-    }
+	private void OnBuyRequested(ShopCardView view)
+	{
+		Hud hud = GetHud();
 
-    private void OnCloseButtonPressed()
-    {
-        CloseShop();
-    }
+		if (hud == null || view == null || view.Card == null)
+		{
+			return;
+		}
+
+		CardHand hand = GetNodeOrNull<CardHand>(HandPath);
+
+		if (hand == null)
+		{
+			hud.ShowCardMessage("There is no deck to add the card to.");
+			return;
+		}
+
+		Card card = view.Card;
+
+		if (!hud.TrySpendResources(card.shopPrice))
+		{
+			hud.ShowCardMessage("Not enough resources.");
+			return;
+		}
+
+		hand.AddCard(card);
+		hud.ShowCardMessage("Bought " + card.DisplayName + ".");
+		UpdateResourcesLabel();
+
+		CardContainer.RemoveChild(view);
+		view.QueueFree();
+	}
+
+	private void OnRefreshButtonPressed()
+	{
+		Hud hud = GetHud();
+
+		if (hud == null)
+		{
+			return;
+		}
+
+		if (!hud.TrySpendResources(RefreshCost))
+		{
+			hud.ShowCardMessage("Not enough resources to refresh.");
+			return;
+		}
+
+		if (!GenerateNewShopSelection())
+		{
+			hud.AddResources(RefreshCost);
+			return;
+		}
+
+		hud.ShowCardMessage("Shop refreshed.");
+		UpdateResourcesLabel();
+	}
+
+	private void OnCloseButtonPressed()
+	{
+		CloseShop();
+	}
+
+	private Hud GetHud()
+	{
+		return GetParent() as Hud;
+	}
+
+	private void UpdateResourcesLabel()
+	{
+		Hud hud = GetHud();
+
+		if (ResourcesLabel != null && hud != null)
+		{
+			ResourcesLabel.Text = "Resources: " + hud.Resources;
+		}
+	}
 }

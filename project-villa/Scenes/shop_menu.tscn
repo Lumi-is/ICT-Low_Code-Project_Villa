@@ -1,15 +1,20 @@
 [gd_scene format=3 uid="uid://c4nq1ykcoav21"]
 
 [ext_resource type="Script" uid="uid://ceyjoe7qrghv" path="res://Scripts/ShopMenu.cs" id="1_xysl7"]
+[ext_resource type="PackedScene" path="res://Scenes/Cards/ShopCardView.tscn" id="2_shopcard"]
+[ext_resource type="Script" uid="uid://c4csssh6ee8g" path="res://CardSystem/Card.cs" id="3_card"]
+[ext_resource type="Resource" uid="uid://c2jqf5588hq74" path="res://Resources/Cards/Testing.tres" id="4_testing"]
+[ext_resource type="Resource" uid="uid://d3mc5fjhl78v8" path="res://Resources/Cards/BuildHousing.tres" id="5_h1qh4"]
 
 [node name="ShopMenu" type="CanvasLayer" unique_id=820137950]
 process_mode = 3
+layer = 2
 script = ExtResource("1_xysl7")
-CardContainer = NodePath("UI/Background/VBoxContainer/CardContainer")
-RefreshButton = NodePath("UI/Background/VBoxContainer/ButtonContainer/RefreshButton")
-CloseButton = NodePath("UI/Background/VBoxContainer/ButtonContainer/CloseButton")
+CardDisplayPrefab = ExtResource("2_shopcard")
+AvailableCardPool = Array[ExtResource("3_card")]([ExtResource("4_testing"), ExtResource("5_h1qh4")])
 
 [node name="UI" type="Control" parent="." unique_id=639949560]
+z_index = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,6 +23,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Overlay" type="ColorRect" parent="UI" unique_id=1847293011]
+z_index = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,6 +33,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.5019608)
 
 [node name="Background" type="PanelContainer" parent="UI" unique_id=499130643]
+z_index = 2
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -41,10 +48,12 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/Background" unique_id=1337248528]
+z_index = 2
 layout_mode = 2
 theme_override_constants/separation = 16
 
 [node name="TitleLabel" type="Label" parent="UI/Background/VBoxContainer" unique_id=529308473]
+z_index = 2
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
@@ -52,36 +61,36 @@ text = "Shop"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="ResourcesLabel" type="Label" parent="UI/Background/VBoxContainer" unique_id=616748204]
+z_index = 2
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.933, 0.847, 1)
+theme_override_font_sizes/font_size = 16
+text = "Resources:"
+horizontal_alignment = 1
+
 [node name="CardContainer" type="HBoxContainer" parent="UI/Background/VBoxContainer" unique_id=333552654]
+z_index = 2
 custom_minimum_size = Vector2(0, 280)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="CardSlot1" type="PanelContainer" parent="UI/Background/VBoxContainer/CardContainer" unique_id=505692139]
-custom_minimum_size = Vector2(200, 280)
-layout_mode = 2
-
-[node name="CardSlot2" type="PanelContainer" parent="UI/Background/VBoxContainer/CardContainer" unique_id=447597707]
-custom_minimum_size = Vector2(200, 280)
-layout_mode = 2
-
-[node name="CardSlot3" type="PanelContainer" parent="UI/Background/VBoxContainer/CardContainer" unique_id=192701780]
-custom_minimum_size = Vector2(200, 280)
-layout_mode = 2
-
 [node name="ButtonContainer" type="HBoxContainer" parent="UI/Background/VBoxContainer" unique_id=1391265388]
+z_index = 2
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
 
 [node name="RefreshButton" type="Button" parent="UI/Background/VBoxContainer/ButtonContainer" unique_id=1367751864]
+z_index = 2
 custom_minimum_size = Vector2(160, 48)
 layout_mode = 2
-text = "Refresh"
+text = "Refresh (5)"
 
 [node name="CloseButton" type="Button" parent="UI/Background/VBoxContainer/ButtonContainer" unique_id=2076207424]
+z_index = 2
 custom_minimum_size = Vector2(160, 48)
 layout_mode = 2
 text = "Close"

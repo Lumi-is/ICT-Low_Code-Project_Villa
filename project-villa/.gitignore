@@ -19,7 +19,17 @@ export_credentials.cfg
 data_*/
 mono_crash.*.json
 
+# .NET
+bin/
+obj/
+.vs/
+.idea/
+*.user
+*.suo
+
 # Export outputs
 *.exe
-# Uncomment if your project does not version PCK files as runtime dependencies.
-# *.pck
+
+# OS
+.DS_Store
+Thumbs.db
