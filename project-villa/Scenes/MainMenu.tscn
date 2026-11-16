@@ -11,9 +11,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_853f1")
-GameScenePath = "res://Scenes/TestingScene.tscn"
-PlayButton = NodePath("VBoxContainer/StartButton")
-QuitButton = NodePath("VBoxContainer/QuitButton")
 
 [node name="Background" type="TextureRect" parent="." unique_id=185193553]
 layout_mode = 1

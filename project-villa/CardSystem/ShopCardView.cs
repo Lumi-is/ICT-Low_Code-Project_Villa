@@ -75,10 +75,10 @@ public partial class ShopCardView : Control
 		}
 
 		_title.Text = Card.DisplayName;
-		_cost.Text = Card.Cost <= 0 ? "FREE" : Card.Cost.ToString();
+		//_cost.Text = Card.ShopPrice <= 0 ? "FREE" : Card.ShopPrice.ToString();
 		_description.Text = Card.Description;
 		_category.Text = Card.Category.ToUpper();
-		_price.Text = Card.ShopPrice <= 0 ? "Price: Free" : "Price: " + Card.ShopPrice;
+		_price.Text = Card.shopPrice <= 0 ? "Price: Free" : "Price: " + Card.shopPrice;
 		_style.BorderColor = Card.AccentColor;
 		_icon.Color = Card.AccentColor.Darkened(0.65f);
 		_cost.AddThemeColorOverride("font_color", Card.AccentColor.Lightened(0.3f));

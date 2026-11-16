@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bbenn1ta8xasl"]
+
+[ext_resource type="Texture2D" uid="uid://dmya1puvfvgnc" path="res://Graphics/round_house.png" id="1_tkc4i"]
+
+[node name="Building" type="Sprite2D" unique_id=1941866764]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_tkc4i")

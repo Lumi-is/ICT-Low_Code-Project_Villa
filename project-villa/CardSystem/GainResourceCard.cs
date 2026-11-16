@@ -1,3 +1,4 @@
+
 using Godot;
 
 namespace ProjectVilla.Cards;
@@ -12,7 +13,7 @@ public partial class GainResourceCard : Card
 		return Amount > 0 && game.Hud != null;
 	}
 
-	public override void Play(CardPlayController game)
+	public override void Play(CardPlayController game, Vector2 vector2, Node node)
 	{
 		game.Hud.AddResources(Amount);
 	}

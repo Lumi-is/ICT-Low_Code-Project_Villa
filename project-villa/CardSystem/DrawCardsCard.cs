@@ -12,7 +12,7 @@ public partial class DrawCardsCard : Card
 		return Count > 0 && game.Hand != null && game.Hand.CardsAvailable > 0;
 	}
 
-	public override void Play(CardPlayController game)
+	public override void Play(CardPlayController game, Vector2 vector2, Node node)
 	{
 		game.Hand.DrawCards(Count);
 	}

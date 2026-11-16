@@ -2,8 +2,8 @@ using Godot;
 
 public partial class Tile : Node2D, IClickable, ISnappable, IDraggable
 {
-	[Export]
-	public Node2D graphics;
+	[Export] public Node2D graphics;
+	[Export] public string tileType = "field";
 	private bool isHighlighted;
 
 	public Sprite2D GetGraphics()
@@ -29,7 +29,7 @@ public partial class Tile : Node2D, IClickable, ISnappable, IDraggable
 	
 	public void Snap()
 	{
-		Grid.WorldGridManager.SnapToGrid(this, GlobalPosition);
+		Grid.WorldGridManager.SnapToGrid(this, Grid.WorldGridManager.CalculateSnapPos(GlobalPosition));
 	}
 
 	public void Drag(Vector2 mousePos)

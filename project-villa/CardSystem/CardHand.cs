@@ -12,7 +12,7 @@ public partial class CardHand : Control
 	[Export] public int StartingHandSize = 4;
 	[Export] public NodePath ControllerPath = "../../../../CardSystem/CardPlayController";
 
-	public CardPlayController Controller { get; private set; }
+	[Export] public CardPlayController Controller { get; private set; }
 
 	private readonly List<CardView> _hand = new();
 	private readonly List<Card> _drawPile = new();
@@ -24,7 +24,11 @@ public partial class CardHand : Control
 
 	public override void _Ready()
 	{
-		Controller = GetNodeOrNull<CardPlayController>(ControllerPath);
+		if(Controller == null)
+		{
+			Controller = GetNode<CardPlayController>(ControllerPath);
+		}
+		
 
 		if (StartingDeck != null)
 		{
@@ -98,7 +102,7 @@ public partial class CardHand : Control
 		{
 			view.ZIndex = 0;
 			return;
-		}
+		} 
 
 		_hand.Remove(view);
 		view.QueueFree();
