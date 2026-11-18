@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 [GlobalClass]
@@ -6,13 +7,30 @@ public partial class Hud : CanvasLayer
 	[ExportGroup("UI References")]
 	[Export] public Button PauseButton;
 	[Export] public Button ShopButton;
-	[Export] public Label DeckLabel;
-	[Export] public Label ResourcesLabel;
+	[Export] public RichTextLabel DeckLabel;
+	[Export] public RichTextLabel ResourcesLabel;
 	[Export] public Label CardMessageLabel;
 
 	[ExportGroup("Menus")]
 	[Export] public PauseMenu PauseMenu;
 	[Export] public ShopMenu ShopMenu;
+
+private readonly List<(string Name, int Amount)> _resourceList = new()
+{
+	("Wood", 100),
+	("Stone", 100),
+	("Magic", 100),
+	("Food", 100),
+
+};
+
+		private static readonly Dictionary<string, string> _resourceIcons = new()
+	{
+		{ "Wood",  "res://Graphics/building_material_icon.png" },
+		{ "Stone", "res://Graphics/building_material_icon.png" },
+		{ "Magic", "res://Graphics/magic_icon.png" },
+		{ "Food",  "res://Graphics/food_icon.png" },
+	};
 
 	private int _resourceCount = 100;
 	private int _deckCount;
@@ -31,8 +49,9 @@ public partial class Hud : CanvasLayer
 
 		PauseButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Pause");
 		ShopButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Shop");
-		DeckLabel ??= GetNode<Label>("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck");
-		ResourcesLabel ??= GetNode<Label>("BottomPanel/HBoxContainer/Stats/HBoxContainer/resources");
+		DeckLabel ??=  GetNode<RichTextLabel> ("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck");
+		ResourcesLabel ??= GetNode<RichTextLabel>("BottomPanel/HBoxContainer/Stats/HBoxContainer/resources");
+		ResourcesLabel.BbcodeEnabled = true;
 		CardMessageLabel ??= GetNodeOrNull<Label>("CardMessage");
 
 		PauseMenu ??= GetNodeOrNull<PauseMenu>("PauseMenu");
@@ -71,10 +90,26 @@ public partial class Hud : CanvasLayer
 
 	public void UpdateResourcesUI()
 	{
-		if (ResourcesLabel != null)
+		if (ResourcesLabel == null)
 		{
-			ResourcesLabel.Text = $"Resources: {_resourceCount}";
+			return;
 		}
+
+		var parts = new List<string>();
+
+		foreach (var resource in _resourceList)
+		{
+			string iconTag = "";
+
+			if (_resourceIcons.TryGetValue(resource.Name, out string iconPath))
+			{
+				iconTag = $"[img=24x24]{iconPath}[/img] ";
+			}
+
+			parts.Add($"{iconTag}{resource.Name}: {resource.Amount}");
+		}
+
+		ResourcesLabel.Text = string.Join("\n", parts);
 	}
 
 	public void UpdateDeckUI()

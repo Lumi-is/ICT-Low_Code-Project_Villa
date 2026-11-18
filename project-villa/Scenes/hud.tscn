@@ -72,13 +72,33 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="deck" type="Label" parent="BottomPanel/HBoxContainer/Stats/HBoxContainer" unique_id=1136795079]
+[node name="deck" type="RichTextLabel" parent="BottomPanel/HBoxContainer/Stats/HBoxContainer" unique_id=567663778]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+bbcode_enabled = true
 text = "Deck: 0 | Hand: 0"
 
-[node name="resources" type="Label" parent="BottomPanel/HBoxContainer/Stats/HBoxContainer" unique_id=1297558884]
+[node name="resources" type="RichTextLabel" parent="BottomPanel/HBoxContainer/Stats/HBoxContainer" unique_id=1479460138]
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
-text = "Resources: 100"
+bbcode_enabled = true
+
+[node name="CardMessage" type="Label" parent="." unique_id=884221607]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -250.0
+offset_right = 320.0
+offset_bottom = -212.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0.941, 0.749, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="CardMessage" type="Label" parent="." unique_id=884221607]
 anchors_preset = 7
@@ -98,5 +118,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PauseMenu" parent="." unique_id=1837462910 instance=ExtResource("2_pause")]
+visible = false
 
 [node name="ShopMenu" parent="." unique_id=1298374651 instance=ExtResource("3_shop")]
+visible = false

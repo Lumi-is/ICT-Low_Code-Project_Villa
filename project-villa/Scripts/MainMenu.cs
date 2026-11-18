@@ -30,8 +30,9 @@ public partial class MainMenu : Control
 		GetTree().ChangeSceneToFile(GameScenePath);
 	}
 
-	private void OnQuitButtonPressed()
+	private async void OnQuitButtonPressed()
 	{
+		await ToSignal(GetTree().CreateTimer(0.2), SceneTreeTimer.SignalName.Timeout);
 		GetTree().Quit();
 	}
 }
