@@ -1,6 +1,5 @@
 using System;
 using Godot;
-using ProjectVilla.Cards;
 
 namespace Grid
 {
@@ -46,7 +45,7 @@ namespace Grid
 			return snapPos;
 		}
 
-		public static void SnapToGrid(Node2D someSnappable, Vector2 snapPos)
+		public static void MoveOwner(Node2D someSnappable, Vector2 snapPos)
 		{
 			Node2D snappable;
 			// Iterate upon this later
@@ -63,7 +62,7 @@ namespace Grid
 		}
 
 
-		public static void BuildCard(CardPlayController game, Vector2 playPos, Node node, string path)
+		public static void InstantiateObject(Vector2 pos, Node n, string path)
 		{
 			PackedScene scene;
 			scene = ResourceLoader.Load<PackedScene>(path);
@@ -71,17 +70,21 @@ namespace Grid
 			Node2D building = (Node2D)scene.Instantiate();
 			Node parentNode = new();
 
-			if(node.GetChild(0) == null)
+			if(n.GetChild(0) == null)
 			{
-				node.AddChild(parentNode);
+				n.AddChild(parentNode);
 			} else
 			{
-				parentNode = node.GetChild(0);
+				parentNode = n.GetChild(0);
 			}
 			
 			parentNode.AddChild(building);
 
-			WorldGridManager.SnapToGrid(building, WorldGridManager.CalculateSnapPos(playPos - DisplayServer.WindowGetSize()/2));
+			// Fix this properly later, for now only suitable for instantiating cards from GUI. 
+			// Reason for the WindowSize/2 offset is that card manager system is currently tied to GUI, 
+			// which godot seems to handle differently from other objects. If card system is moved from GUI 
+			// to a seperate scene, the offset can be deleted. 
+			MoveOwner(building, CalculateSnapPos(pos - DisplayServer.WindowGetSize()/2));
 		}
 	}
 }
