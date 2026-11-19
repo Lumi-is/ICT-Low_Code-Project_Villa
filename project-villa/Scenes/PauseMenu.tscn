@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://84hbqife8kju"]
 
 [ext_resource type="Script" uid="uid://c4jupdeiwphwi" path="res://Scripts/PauseMenu.cs" id="1_lj4oq"]
+[ext_resource type="FontFile" uid="uid://di8bfppt6mo4w" path="res://Fonts/ambrosia1.ttf" id="2_ey1tb"]
+[ext_resource type="AudioStream" uid="uid://cdc2m4h6mxbnq" path="res://Sound_effects/menu_selection.ogg" id="3_siy43"]
+[ext_resource type="Script" uid="uid://xbixrw6saxkf" path="res://Scripts/UiSound.cs" id="4_yxrls"]
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=1475302117]
 process_mode = 3
@@ -49,6 +52,7 @@ z_index = 3
 custom_minimum_size = Vector2(200, 48)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_ey1tb")
 text = "Resume"
 
 [node name="QuitButton" type="Button" parent="UI/MenuButtons" unique_id=972337551]
@@ -56,4 +60,12 @@ z_index = 3
 custom_minimum_size = Vector2(200, 48)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_ey1tb")
 text = "Main Menu"
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=1308836332]
+stream = ExtResource("3_siy43")
+script = ExtResource("4_yxrls")
+
+[connection signal="pressed" from="UI/MenuButtons/ResumeButton" to="ClickSound" method="PlaySound"]
+[connection signal="pressed" from="UI/MenuButtons/QuitButton" to="ClickSound" method="PlaySound"]
