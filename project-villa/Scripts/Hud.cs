@@ -106,7 +106,7 @@ private readonly List<(string Name, int Amount)> _resourceList = new()
 				iconTag = $"[img=24x24]{iconPath}[/img] ";
 			}
 
-			parts.Add($"{iconTag}{resource.Name}: {resource.Amount}");
+			parts.Add($"{resource.Amount} : {iconTag}");
 		}
 
 		ResourcesLabel.Text = string.Join("\n", parts);
