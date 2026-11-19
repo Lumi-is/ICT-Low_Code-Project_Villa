@@ -19,7 +19,7 @@ public partial class ShopMenu : CanvasLayer
 	private readonly RandomNumberGenerator _rng = new();
 	private bool _generated;
 
-	private const string HandPath = "../BottomPanel/HBoxContainer/CardHandSection/CardHand";
+ [Export] public string HandPath = "../HBoxContainer/CardHandSection/CardHand";
 
 	public override void _Ready()
 	{
