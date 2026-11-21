@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://c4csssh6ee8g" path="res://CardSystem/Card.cs" id="1_ooj4x"]
 [ext_resource type="Script" uid="uid://chk2wc3omndwl" path="res://CardSystem/CardDeck.cs" id="2_3wp54"]
 [ext_resource type="Resource" uid="uid://c2jqf5588hq74" path="res://Resources/Cards/Testing.tres" id="3_testing"]
-[ext_resource type="Resource" uid="uid://d3mc5fjhl78v8" path="res://Resources/Cards/BuildHousing.tres" id="4_housing"]
+[ext_resource type="Resource" uid="uid://d3mc5fjhl78v8" path="res://Resources/Cards/BuildCard.tres" id="4_housing"]
 
 [resource]
 script = ExtResource("2_3wp54")

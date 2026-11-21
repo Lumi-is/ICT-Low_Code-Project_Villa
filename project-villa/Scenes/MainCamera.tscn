@@ -2,5 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dffxgre0nwq8i" path="res://Scripts/MainCamera.cs" id="1_8m26j"]
 
-[node name="CameraMain" type="Camera2D" unique_id=300161349]
+[node name="CameraMain" type="Camera2D" unique_id=300161349 node_paths=PackedStringArray("camera")]
 script = ExtResource("1_8m26j")
+camera = NodePath(".")

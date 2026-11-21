@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://nmmnf5tgk84q"]
+
+[ext_resource type="Texture2D" uid="uid://dvgefhdn2x4l0" path="res://Graphics/farm stage 1.png" id="1_wwkbu"]
+[ext_resource type="Script" uid="uid://j842ay24dhgv" path="res://Scripts/FarmBuilding.cs" id="2_iolrg"]
+
+[node name="Farm" type="Sprite2D" unique_id=1350090460]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_wwkbu")
+script = ExtResource("2_iolrg")

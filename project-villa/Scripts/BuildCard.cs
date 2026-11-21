@@ -3,7 +3,7 @@ using Grid;
 using ProjectVilla.Cards;
 
 [GlobalClass]
-public partial class BuildHousingCard : Card
+public partial class BuildCard : Card
 {
 	[Export] public string path = "res://Scenes/DefaultBuilding.tscn";
 
