@@ -3,25 +3,40 @@
 [ext_resource type="PackedScene" uid="uid://b2petoaoug7vr" path="res://Scenes/MainCamera.tscn" id="1_camera"]
 [ext_resource type="PackedScene" uid="uid://dx26brdgyprqv" path="res://Scenes/InteractionManager.tscn" id="1_x8jca"]
 [ext_resource type="PackedScene" uid="uid://kt10cktyfc0o" path="res://Scenes/hud.tscn" id="2_hud"]
-[ext_resource type="PackedScene" uid="uid://biov2c0mrqini" path="res://Scenes/DebugClickable.tscn" id="3_utech"]
+[ext_resource type="PackedScene" uid="uid://cbe8lwofjvukb" path="res://Scenes/Tile.tscn" id="4_utech"]
 
 [node name="Root" type="Node2D" unique_id=1171577489]
 
 [node name="InteractionManager" parent="." unique_id=557384809 instance=ExtResource("1_x8jca")]
 
-[node name="Tile4" parent="." unique_id=510889725 instance=ExtResource("3_utech")]
-position = Vector2(262, -186)
-
-[node name="Tile3" parent="." unique_id=1088076150 instance=ExtResource("3_utech")]
-position = Vector2(131, -180)
-
-[node name="Tile2" parent="." unique_id=1801584203 instance=ExtResource("3_utech")]
-position = Vector2(129, -67)
-
-[node name="Tile" parent="." unique_id=1350540326 instance=ExtResource("3_utech")]
-position = Vector2(253, -68)
-
 [node name="CameraMain" parent="." unique_id=300161349 instance=ExtResource("1_camera")]
 position_smoothing_enabled = true
 
 [node name="HUD" parent="." unique_id=1748293055 instance=ExtResource("2_hud")]
+
+[node name="Tile" parent="." unique_id=510889725 instance=ExtResource("4_utech")]
+position = Vector2(-64, -64)
+
+[node name="Tile2" parent="." unique_id=887554048 instance=ExtResource("4_utech")]
+position = Vector2(64, 64)
+
+[node name="Tile3" parent="." unique_id=52220369 instance=ExtResource("4_utech")]
+position = Vector2(64, -64)
+
+[node name="Tile4" parent="." unique_id=981611893 instance=ExtResource("4_utech")]
+position = Vector2(-64, 64)
+
+[node name="Tile5" parent="." unique_id=671253786 instance=ExtResource("4_utech")]
+position = Vector2(192, 64)
+
+[node name="Tile6" parent="." unique_id=359257398 instance=ExtResource("4_utech")]
+position = Vector2(192, -64)
+
+[node name="Tile7" parent="." unique_id=71817508 instance=ExtResource("4_utech")]
+position = Vector2(-64, -192)
+
+[node name="Tile8" parent="." unique_id=2070036224 instance=ExtResource("4_utech")]
+position = Vector2(64, -192)
+
+[node name="Tile9" parent="." unique_id=708746336 instance=ExtResource("4_utech")]
+position = Vector2(192, -192)

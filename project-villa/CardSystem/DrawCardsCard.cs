@@ -7,13 +7,17 @@ public partial class DrawCardsCard : Card
 {
 	[Export] public int Count = 1;
 
-	public override bool CanPlay(CardPlayController game)
-	{
-		return Count > 0 && game.Hand != null && game.Hand.CardsAvailable > 0;
-	}
 
-	public override void Play(CardPlayController game, Vector2 vector2)
+	public override bool TryPlay(CardPlayController game, Vector2 vector2)
 	{
-		game.Hand.DrawCards(Count);
+		if(Count > 0 && game.Hand != null && game.Hand.CardsAvailable > 0)
+		{
+			game.Hand.DrawCards(Count);
+			return true;
+		} else
+		{
+			return false;
+		}
+		
 	}
 }

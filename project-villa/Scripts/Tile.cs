@@ -21,13 +21,13 @@ public partial class Tile : Node2D, IClickable
 	public void Highlight()
 	{
 		// Replace this later with an animation + add sound
-		graphics.Scale = new Vector2(1.2f,1.2f);
+		graphics.Scale = new Vector2(1.05f,1.05f);
 		WorldGridManager.highlightedTile = this;
 	}
 	public void OnClickEvent()
 	{
 		// Open GUI Options for the selected tile
-		graphics.Scale = new Vector2(1.5f,1.5f);
+		graphics.Scale = new Vector2(1.15f,1.15f);
 	}
 	public void Reset()
 	{

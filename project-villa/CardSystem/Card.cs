@@ -16,12 +16,13 @@ public partial class Card : Resource
 	[Export] public int foodCost = 0;
 	[Export] public int shopPrice = 0;
 
-	public virtual bool CanPlay(CardPlayController game)
+	/*public virtual bool CanPlay(CardPlayController game)
 	{
 		return true;
-	}
+	}*/
 
-	public virtual void Play(CardPlayController game, Vector2 playPos)
+	public virtual bool TryPlay(CardPlayController game, Vector2 playPos)
 	{
+		return true;
 	}
 }

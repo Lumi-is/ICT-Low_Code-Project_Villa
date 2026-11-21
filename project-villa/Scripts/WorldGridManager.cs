@@ -6,7 +6,7 @@ namespace Grid
 {
 	static class WorldGridManager
 	{
-		public static float jumpInterval = 100f;
+		public static float tileSize = 128;
 
 		public static Tile highlightedTile; 
 		public static List<List<Tile>> groundLevelGrid;
@@ -16,15 +16,9 @@ namespace Grid
 
 		public static Vector2 GetNearestCell(Vector2 position)
 		{
-			var xPosition = position.X;
-			var yPosition = position.Y;
-			var xSign = Math.Sign(xPosition);
-			var ySign = Math.Sign(yPosition);
-
-
             var cellPos = CalculateSnapPos(position);
 
-			Vector2 nearestCell = new Vector2((cellPos.X - jumpInterval/2) / jumpInterval, (cellPos.Y - jumpInterval/2) / jumpInterval);
+			Vector2 nearestCell = new Vector2((cellPos.X - tileSize/2) / tileSize, (cellPos.Y - tileSize/2) / tileSize);
 
 			return nearestCell;
 		}
@@ -41,24 +35,24 @@ namespace Grid
 
 			// X
 			// Calculating how far the object is from the nearest cell
-            float xOffset = xPosition % jumpInterval;
+            float xOffset = xPosition % tileSize;
 
 			// Calculating how many jumps from origo the nearest cell is
-            float xJumpCount = (xPosition - xOffset) / jumpInterval;
+            float xJumpCount = (xPosition - xOffset) / tileSize;
 
 			// Calculating what the desired position of the object should be when adjusted to the grid
-            cellPos.X = xJumpCount * jumpInterval + (xSign * (jumpInterval/2));
+            cellPos.X = xJumpCount * tileSize + (xSign * (tileSize/2));
 
 
 			// Y
 			// Calculating how far the object is from the nearest cell
-            float yOffset = yPosition % jumpInterval;
+            float yOffset = yPosition % tileSize;
 
 			// Calculating how many jumps from origo the nearest cell is
-            float yJumpCount = (yPosition - yOffset) / jumpInterval;
+            float yJumpCount = (yPosition - yOffset) / tileSize;
 
 			// Calculating what the desired position of the object should be when adjusted to the grid
-            cellPos.Y = yJumpCount * jumpInterval + (ySign * (jumpInterval/2));
+            cellPos.Y = yJumpCount * tileSize + (ySign * (tileSize/2));
 
 			GD.Print("CellPos"+cellPos);
 
@@ -81,41 +75,45 @@ namespace Grid
 		}
 
 
-		public static void InstantiateObject(Vector2 pos, string path)
+		public static bool InstantiateObject(Vector2 pos, string path)
 		{
 			PackedScene scene;
 			scene = ResourceLoader.Load<PackedScene>(path);
 
 			Node2D instantiable = (Node2D)scene.Instantiate();
-            Node parentNode = new()
-            {
-                Name = "parentNode"
-            };
 
-            /*var mainLoop = Engine.GetMainLoop();
-			var sceneTree = mainLoop as SceneTree;
-			var root = sceneTree.Root;
-
-			if(root.GetChild(0) == null)
-			{
-				root.AddChild(parentNode);
-			}
-
-			parentNode = root.GetChild(0);
-			GD.Print(parentNode.Name);*/
-
-			// Fix this part later
-			// Reason for the WindowSize/2 offset is that card manager system is currently tied to GUI, 
-			// which godot seems to handle differently from other objects. If card system is moved from GUI 
-			// to a seperate scene, the offset can be deleted. 
-
-			if(instantiable is IBuilding building)
+			if(instantiable is IBuilding)
 			{
 				highlightedTile.AddChild(instantiable);
 				instantiable.GlobalPosition = highlightedTile.GlobalPosition;
+
+				if(TryPlaceBuilding(instantiable.GlobalPosition, (IBuilding)instantiable) != null)
+				{
+					return true;
+				} else
+				{
+					return false;
+				}
+				
 			} else 
 			{
+				// For possible non building instantiables
 				MoveOwner(instantiable, CalculateSnapPos(pos));
+				return true;
+			}
+		}
+
+		public static IBuilding TryPlaceBuilding(Vector2 pos, IBuilding placeable)
+		{
+			Vector2 buildGridIndex = new(GetNearestCell(pos).X+256, GetNearestCell(pos).Y+256);
+			IBuilding building = buildingGrid[(int)buildGridIndex.X, (int)buildGridIndex.Y];
+			if(building == null)
+			{
+				building = buildingGrid[(int)buildGridIndex.X, (int)buildGridIndex.Y] = placeable;
+				return building;
+			} else
+			{
+				return null;
 			}
 		}
 	}

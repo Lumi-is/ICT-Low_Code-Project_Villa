@@ -8,13 +8,17 @@ public partial class GainResourceCard : Card
 {
 	[Export] public int Amount = 1;
 
-	public override bool CanPlay(CardPlayController game)
+	public override bool TryPlay(CardPlayController game, Vector2 vector2)
 	{
-		return Amount > 0 && game.Hud != null;
-	}
-
-	public override void Play(CardPlayController game, Vector2 vector2)
-	{
-		game.Hud.AddResources(Amount);
+		if(Amount > 0 && game.Hud != null)
+		{
+			game.Hud.AddResources(Amount);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
 	}
 }
