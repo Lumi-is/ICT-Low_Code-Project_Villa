@@ -7,9 +7,12 @@ namespace Grid
 	static class WorldGridManager
 	{
 		public static float jumpInterval = 100f;
+
+		public static Tile highlightedTile; 
 		public static List<List<Tile>> groundLevelGrid;
 		public static List<List<Tile>> treeLevelGrid;
 		public static IBuilding[,] buildingGrid = new IBuilding[512,512];
+		public static List<IBuilding> buildingList;
 
 		public static Vector2 GetNearestCell(Vector2 position)
 		{
@@ -78,24 +81,28 @@ namespace Grid
 		}
 
 
-		public static void InstantiateObject(Vector2 pos, Node n, string path)
+		public static void InstantiateObject(Vector2 pos, string path)
 		{
 			PackedScene scene;
 			scene = ResourceLoader.Load<PackedScene>(path);
 
 			Node2D instantiable = (Node2D)scene.Instantiate();
-			Node parentNode = new();
+            Node parentNode = new()
+            {
+                Name = "parentNode"
+            };
 
-			if(n.GetChild(0) == null)
+            /*var mainLoop = Engine.GetMainLoop();
+			var sceneTree = mainLoop as SceneTree;
+			var root = sceneTree.Root;
+
+			if(root.GetChild(0) == null)
 			{
-				n.AddChild(parentNode);
-			} else
-			{
-				parentNode = n.GetChild(0);
+				root.AddChild(parentNode);
 			}
-			
-			parentNode.AddChild(instantiable);
 
+			parentNode = root.GetChild(0);
+			GD.Print(parentNode.Name);*/
 
 			// Fix this part later
 			// Reason for the WindowSize/2 offset is that card manager system is currently tied to GUI, 
@@ -104,12 +111,8 @@ namespace Grid
 
 			if(instantiable is IBuilding building)
 			{
-				var xPos = GetNearestCell(pos - DisplayServer.WindowGetSize()/2).X;
-				var yPos = GetNearestCell(pos - DisplayServer.WindowGetSize()/2).Y;
-
-				GD.Print(xPos + " , "+yPos);
-				buildingGrid[(int)xPos+256,(int)yPos+256] = building;
-				MoveOwner(instantiable, CalculateSnapPos(pos - DisplayServer.WindowGetSize()/2));
+				highlightedTile.AddChild(instantiable);
+				instantiable.GlobalPosition = highlightedTile.GlobalPosition;
 			} else 
 			{
 				MoveOwner(instantiable, CalculateSnapPos(pos));

@@ -13,7 +13,7 @@ public partial class GainResourceCard : Card
 		return Amount > 0 && game.Hud != null;
 	}
 
-	public override void Play(CardPlayController game, Vector2 vector2, Node node)
+	public override void Play(CardPlayController game, Vector2 vector2)
 	{
 		game.Hud.AddResources(Amount);
 	}

@@ -1,4 +1,5 @@
 using Godot;
+using Grid;
 
 [GlobalClass]
 public partial class Tile : Node2D, IClickable
@@ -6,6 +7,12 @@ public partial class Tile : Node2D, IClickable
 	[Export] public Sprite2D graphics;
 	[Export] public string tileType = "field";
 	private bool isHighlighted;
+
+    public override void _Ready()
+    {
+        WorldGridManager.MoveOwner(this, WorldGridManager.CalculateSnapPos(GlobalPosition));
+    }
+
 
 	public Sprite2D GetGraphics()
 	{
@@ -15,6 +22,7 @@ public partial class Tile : Node2D, IClickable
 	{
 		// Replace this later with an animation + add sound
 		graphics.Scale = new Vector2(1.2f,1.2f);
+		WorldGridManager.highlightedTile = this;
 	}
 	public void OnClickEvent()
 	{

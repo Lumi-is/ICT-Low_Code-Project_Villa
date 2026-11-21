@@ -21,7 +21,7 @@ public partial class Card : Resource
 		return true;
 	}
 
-	public virtual void Play(CardPlayController game, Vector2 playPos, Node parentNode)
+	public virtual void Play(CardPlayController game, Vector2 playPos)
 	{
 	}
 }
