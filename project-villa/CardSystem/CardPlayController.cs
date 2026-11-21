@@ -31,15 +31,13 @@ public partial class CardPlayController : Node2D
 			return false;
 		}*/
 
-		if(ResourceManager.ResourceCalculate(card))
+		if(ResourceManager.ResourceCalculate(card) && card.TryPlay(this, GetGlobalMousePosition()))
 		{
-			SceneTree t = Engine.GetMainLoop() as SceneTree;
-			card.Play(this, GetGlobalMousePosition(), t.Root); 
 			Hud?.ShowCardMessage(card.DisplayName + " was played succesfully.");
 			return true;
 		} else
 		{
-			GD.PushError("Failed to play card.");
+			GD.PushWarning("Failed to play card.");
 			Hud?.ShowCardMessage("The card could not be played.");
 			return false;
 		}
