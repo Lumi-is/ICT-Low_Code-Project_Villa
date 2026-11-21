@@ -8,5 +8,6 @@ Amount = 3
 DisplayName = "Test1"
 Description = "It's a testing card!"
 AccentColor = Color(0.90242034, 0.47910303, 1, 1)
-Cost = 2
+MagicCost = 2
+ShopPrice = 5
 metadata/_custom_type_script = "uid://8y4k33rajlhw"

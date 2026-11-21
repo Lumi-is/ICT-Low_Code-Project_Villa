@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="BuildCard" format=3 uid="uid://d3mc5fjhl78v8"]
+[gd_resource type="Resource" script_class="BuildHousingCard" format=3 uid="uid://d3mc5fjhl78v8"]
 
 [ext_resource type="Script" uid="uid://d0ae25o8vdvxw" path="res://Scripts/BuildHousingCard.cs" id="1_2n6hx"]
 
@@ -8,4 +8,6 @@ DisplayName = "Build Housing I"
 Description = "Builds a basic housing unit when this card is played. "
 Category = "Building"
 AccentColor = Color(0.34886125, 0.17960566, 0.12361201, 1)
+MagicCost = 10
+ShopPrice = 15
 metadata/_custom_type_script = "uid://d0ae25o8vdvxw"
