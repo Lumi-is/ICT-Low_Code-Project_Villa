@@ -115,13 +115,6 @@ size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("6_43w4t")
 text = "Shop"
 
-[node name="PassTurn" type="Button" parent="InteractiveButtons/VBoxContainer" unique_id=1919607150]
-custom_minimum_size = Vector2(72, 32)
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_fonts/font = ExtResource("6_43w4t")
-text = "Pass Turn"
-
 [node name="resources" type="RichTextLabel" parent="." unique_id=1479460138]
 custom_minimum_size = Vector2(260, 0)
 anchors_preset = 1

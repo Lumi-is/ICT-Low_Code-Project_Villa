@@ -50,7 +50,7 @@ private readonly List<(string Name, int Amount)> _resourceList = new()
 
 		PauseButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Pause");
 		ShopButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Shop");
-		PassTurnButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/PassTurn");
+		//PassTurnButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/PassTurn");
 		DeckLabel ??=  GetNode<RichTextLabel> ("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck");
 		ResourcesLabel ??= GetNode<RichTextLabel>("BottomPanel/HBoxContainer/Stats/HBoxContainer/resources");
 		ResourcesLabel.BbcodeEnabled = true;
