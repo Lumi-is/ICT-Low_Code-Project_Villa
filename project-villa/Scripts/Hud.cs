@@ -7,6 +7,7 @@ public partial class Hud : CanvasLayer
 	[ExportGroup("UI References")]
 	[Export] public Button PauseButton;
 	[Export] public Button ShopButton;
+	[Export] public Button PassTurnButton;
 	[Export] public RichTextLabel DeckLabel;
 	[Export] public RichTextLabel ResourcesLabel;
 	[Export] public Label CardMessageLabel;
@@ -49,6 +50,7 @@ private readonly List<(string Name, int Amount)> _resourceList = new()
 
 		PauseButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Pause");
 		ShopButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Shop");
+		PassTurnButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/PassTurn");
 		DeckLabel ??=  GetNode<RichTextLabel> ("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck");
 		ResourcesLabel ??= GetNode<RichTextLabel>("BottomPanel/HBoxContainer/Stats/HBoxContainer/resources");
 		ResourcesLabel.BbcodeEnabled = true;
@@ -86,6 +88,11 @@ private readonly List<(string Name, int Amount)> _resourceList = new()
 	private void OnShopButtonPressed()
 	{
 		ShopMenu?.OpenShop();
+	}
+
+	private void OnPassTurnPressed()
+	{
+		;
 	}
 
 	public void UpdateResourcesUI()
