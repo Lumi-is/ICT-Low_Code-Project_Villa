@@ -3,7 +3,7 @@ using Grid;
 using ProjectVilla.Cards;
 
 [GlobalClass]
-public partial class BuildHousingCard : Card
+public partial class BuildCard : Card
 {
     [Export] string path = "res://Scenes/DefaultBuilding.tscn";
     public override bool TryPlay(CardPlayController game, Vector2 playPos)
