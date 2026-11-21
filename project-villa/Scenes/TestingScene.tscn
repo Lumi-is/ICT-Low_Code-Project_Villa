@@ -3,11 +3,22 @@
 [ext_resource type="PackedScene" uid="uid://b2petoaoug7vr" path="res://Scenes/MainCamera.tscn" id="1_camera"]
 [ext_resource type="PackedScene" uid="uid://dx26brdgyprqv" path="res://Scenes/InteractionManager.tscn" id="1_x8jca"]
 [ext_resource type="PackedScene" uid="uid://kt10cktyfc0o" path="res://Scenes/hud.tscn" id="2_hud"]
+[ext_resource type="Script" uid="uid://p2g1wquqbqwl" path="res://Scripts/TurnManager.cs" id="2_x8jca"]
 [ext_resource type="PackedScene" uid="uid://cbe8lwofjvukb" path="res://Scenes/Tile.tscn" id="4_utech"]
 
 [node name="Root" type="Node2D" unique_id=1171577489]
 
 [node name="InteractionManager" parent="." unique_id=557384809 instance=ExtResource("1_x8jca")]
+
+[node name="TurnManager" type="Node" parent="." unique_id=408953221 node_paths=PackedStringArray("canvasModulate")]
+script = ExtResource("2_x8jca")
+canvasModulate = NodePath("CanvasModulate")
+duskColor = Color(0.28446978, 0.44396332, 0.55254793, 1)
+midNightColor = Color(0.399723, 0.42872024, 0.6419647, 1)
+morningColor = Color(0.8037247, 0.6265545, 0.38329536, 1)
+noonColor = Color(0.8829534, 0.85620284, 0.67716914, 1)
+
+[node name="CanvasModulate" type="CanvasModulate" parent="TurnManager" unique_id=470864027]
 
 [node name="CameraMain" parent="." unique_id=300161349 instance=ExtResource("1_camera")]
 position_smoothing_enabled = true
