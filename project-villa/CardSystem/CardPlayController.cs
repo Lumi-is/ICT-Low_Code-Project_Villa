@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 namespace ProjectVilla.Cards;
 
@@ -18,28 +17,28 @@ public partial class CardPlayController : Node2D
 		Hand = GetNodeOrNull<CardHand>(HandPath);
 	}
 
-	public bool TryPlay(Card card)
+	public bool TryPlay(Card card, Vector2 playPos)
 	{
 		if (card == null)
 		{
 			return false;
 		}
 
-		/*if (!card.CanPlay(this))
+		if (!ResourceManager.CanPlayCard(card))
 		{
-			Hud?.ShowCardMessage("You can't play that card right now.");
+			Hud?.ShowCardMessage("Not enough magic to play " + card.DisplayName + ".");
 			return false;
-		}*/
+		}
 
-		if(ResourceManager.ResourceCalculate(card) && card.TryPlay(this, GetGlobalMousePosition()))
+		if (!card.TryPlay(this, playPos))
 		{
-			Hud?.ShowCardMessage(card.DisplayName + " was played succesfully.");
-			return true;
-		} else
-		{
-			GD.PushWarning("Failed to play card.");
 			Hud?.ShowCardMessage("The card could not be played.");
 			return false;
 		}
+
+		ResourceManager.SpendCardCost(card);
+		Hud?.UpdateResourcesUI();
+		Hud?.ShowCardMessage("Played " + card.DisplayName + ".");
+		return true;
 	}
 }

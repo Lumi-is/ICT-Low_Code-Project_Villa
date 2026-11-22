@@ -24,11 +24,10 @@ public partial class CardHand : Control
 
 	public override void _Ready()
 	{
-		if(Controller == null)
+		if (Controller == null)
 		{
 			Controller = GetNode<CardPlayController>(ControllerPath);
 		}
-		
 
 		if (StartingDeck != null)
 		{
@@ -91,18 +90,18 @@ public partial class CardHand : Control
 		return drawn;
 	}
 
-	public void PlayCard(CardView view)
+	public void PlayCard(CardView view, Vector2 playPos)
 	{
 		if (view == null || view.Card == null)
 		{
 			return;
 		}
 
-		if (Controller == null || !Controller.TryPlay(view.Card))
+		if (Controller == null || !Controller.TryPlay(view.Card, playPos))
 		{
 			view.ZIndex = 0;
 			return;
-		} 
+		}
 
 		_hand.Remove(view);
 		view.QueueFree();

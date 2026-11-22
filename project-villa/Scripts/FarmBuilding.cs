@@ -14,6 +14,6 @@ public partial class FarmBuilding : Node2D, IBuilding
 
 	public void OnTurnStart()
 	{
-		ResourceManager.food += foodAmount;
+		ResourceManager.Add(ResourceManager.ResourceType.Food, foodAmount);
 	}
 }

@@ -8,8 +8,6 @@ public partial class CardView : Control
 	public CardHand Hand;
 	public bool Dragging { get; private set; }
 
-	private const float DragDistance = 6f;
-
 	private Label _title;
 
 	private Label _description;
@@ -21,10 +19,6 @@ public partial class CardView : Control
 	private Label _stoneCost;
 	private Label _magicCost;
 	private Label _foodCost;
-
-	private bool _pressed;
-	private Vector2 _pressPosition;
-	private Vector2 _grabOffset;
 
 	public override void _Ready()
 	{
@@ -60,7 +54,6 @@ public partial class CardView : Control
 		MouseEntered += OnMouseEntered;
 		MouseExited += OnMouseExited;
 
-		SetProcessInput(false);
 		UpdateVisuals();
 	}
 
@@ -74,42 +67,47 @@ public partial class CardView : Control
 		}
 	}
 
+	public void BeginDrag()
+	{
+		Dragging = true;
+		ZIndex = 100;
+		Scale = new Vector2(1.05f, 1.05f);
+	}
+
+	public void MoveDrag(Vector2 screenPosition, Vector2 grabOffset)
+	{
+		GlobalPosition = screenPosition - grabOffset;
+	}
+
+	public void EndDrag()
+	{
+		Dragging = false;
+		ZIndex = 0;
+		Scale = Vector2.One;
+	}
+
 	public override void _GuiInput(InputEvent @event)
 	{
 		if (@event is InputEventMouseButton mouse
 			&& mouse.ButtonIndex == MouseButton.Left
 			&& mouse.Pressed)
 		{
-			_pressed = true;
-			_pressPosition = mouse.GlobalPosition;
-			_grabOffset = mouse.GlobalPosition - GlobalPosition;
-			SetProcessInput(true);
+			Interactor.Instance?.BeginCardDrag(this, mouse.GlobalPosition);
 			AcceptEvent();
 		}
 	}
 
 	public override void _Input(InputEvent @event)
 	{
-		if (!_pressed)
+		if (!Dragging)
 		{
 			return;
 		}
 
 		if (@event is InputEventMouseMotion motion)
 		{
-			if (!Dragging && motion.GlobalPosition.DistanceTo(_pressPosition) >= DragDistance)
-			{
-				Dragging = true;
-				ZIndex = 100;
-				Scale = new Vector2(1.05f, 1.05f);
-			}
-
-			if (Dragging)
-			{
-				GlobalPosition = motion.GlobalPosition - _grabOffset;
-				GetViewport().SetInputAsHandled();
-			}
-
+			Interactor.Instance?.MoveCardDrag(motion.GlobalPosition);
+			GetViewport().SetInputAsHandled();
 			return;
 		}
 
@@ -117,28 +115,16 @@ public partial class CardView : Control
 			&& mouse.ButtonIndex == MouseButton.Left
 			&& !mouse.Pressed)
 		{
-			_pressed = false;
-			SetProcessInput(false);
 			GetViewport().SetInputAsHandled();
-
-			if (Dragging)
-			{
-				Dragging = false;
-				Scale = Vector2.One;
-				Hand?.PlayCard(this);
-			}
+			Interactor.Instance?.EndCardDrag();
 		}
 	}
 
 	public override void _Process(double delta)
 	{
-		if (_pressed && !Input.IsMouseButtonPressed(MouseButton.Left))
+		if (Dragging && !Input.IsMouseButtonPressed(MouseButton.Left))
 		{
-			_pressed = false;
-			Dragging = false;
-			Scale = Vector2.One;
-			ZIndex = 0;
-			SetProcessInput(false);
+			Interactor.Instance?.CancelCardDrag();
 		}
 	}
 
