@@ -26,19 +26,19 @@ public partial class CardPlayController : Node2D
 
 		if (!ResourceManager.CanPlayCard(card))
 		{
-			Hud?.ShowCardMessage("Not enough magic to play " + card.DisplayName + ".");
+			Hud?.ShowMessage("Not enough magic to play " + card.DisplayName + ".");
 			return false;
 		}
 
 		if (!card.TryPlay(this, playPos))
 		{
-			Hud?.ShowCardMessage("The card could not be played.");
+			Hud?.ShowMessage("The card could not be played.");
 			return false;
 		}
 
 		ResourceManager.SpendCardCost(card);
 		Hud?.UpdateResourcesUI();
-		Hud?.ShowCardMessage("Played " + card.DisplayName + ".");
+		Hud?.ShowMessage("Played " + card.DisplayName + ".");
 		return true;
 	}
 }
