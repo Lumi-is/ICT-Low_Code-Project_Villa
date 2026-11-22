@@ -4,12 +4,9 @@ using Godot;
 [GlobalClass]
 public partial class Hud : CanvasLayer
 {
-	public static Hud instance;
 	[ExportGroup("UI References")]
 	[Export] public Button PauseButton;
 	[Export] public Button ShopButton;
-	[Export] public Button PassTurnButton;
-	[Export] public Label TimeOfDay;
 	[Export] public RichTextLabel DeckLabel;
 	[Export] public RichTextLabel ResourcesLabel;
 	[Export] public Label CardMessageLabel;
@@ -18,21 +15,29 @@ public partial class Hud : CanvasLayer
 	[Export] public PauseMenu PauseMenu;
 	[Export] public ShopMenu ShopMenu;
 
-	private static readonly string[] _resourceNames = { "Wood", "Stone", "Magic", "Food" };
+private readonly List<(string Name, int Amount)> _resourceList = new()
+{
+	("Wood", 100),
+	("Stone", 100),
+	("Magic", 100),
+	("Food", 100),
 
-	private static readonly string[] _resourceIcons =
+};
+
+		private static readonly Dictionary<string, string> _resourceIcons = new()
 	{
-		"res://Graphics/building_material_icon.png",
-		"res://Graphics/building_material_icon.png",
-		"res://Graphics/magic_icon.png",
-		"res://Graphics/food_icon.png"
+		{ "Wood",  "res://Graphics/wood_icon.png" },
+		{ "Stone", "res://Graphics/stone_icon.png" },
+		{ "Magic", "res://Graphics/magic_icon.png" },
+		{ "Food",  "res://Graphics/food_icon.png" },
 	};
 
+	private int _resourceCount = 100;
 	private int _deckCount;
 	private int _handCount;
 	private Tween _messageTween;
 
-	public int Resources => ResourceManager.Magic;
+	public int Resources => _resourceCount;
 
 	public int DeckCount => _deckCount;
 
@@ -40,17 +45,12 @@ public partial class Hud : CanvasLayer
 
 	public override void _Ready()
 	{
-		instance = this;
 		ProcessMode = ProcessModeEnum.Always;
-		ResourceManager.Reset();
 
-		/*
 		PauseButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Pause");
 		ShopButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Shop");
-		PassTurnButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/PassTurn");
-		DeckLabel ??= GetNode<RichTextLabel>("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck");
+		DeckLabel ??=  GetNode<RichTextLabel> ("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck");
 		ResourcesLabel ??= GetNode<RichTextLabel>("BottomPanel/HBoxContainer/Stats/HBoxContainer/resources");
-		*/
 		ResourcesLabel.BbcodeEnabled = true;
 		CardMessageLabel ??= GetNodeOrNull<Label>("CardMessage");
 
@@ -67,11 +67,6 @@ public partial class Hud : CanvasLayer
 			ShopButton.Pressed += OnShopButtonPressed;
 		}
 
-		if(PassTurnButton != null)
-		{
-			PassTurnButton.Pressed += OnPassTurnButtonPressed;
-		}
-
 		UpdateResourcesUI();
 		UpdateDeckUI();
 
@@ -84,23 +79,13 @@ public partial class Hud : CanvasLayer
 
 	private void OnPauseButtonPressed()
 	{
+		GD.Print("Pause button clicked");
 		PauseMenu?.TogglePause();
 	}
 
 	private void OnShopButtonPressed()
 	{
 		ShopMenu?.OpenShop();
-	}
-
-	private void OnPassTurnButtonPressed()
-	{
-		// Send signal to do stuff
-		TurnManager.instance.OnPassTurnPressed();
-	}
-
-	public void SetTimeOfDayLabel(string s)
-	{
-		TimeOfDay.Text = "Time Of Day: "+ s;
 	}
 
 	public void UpdateResourcesUI()
@@ -110,12 +95,18 @@ public partial class Hud : CanvasLayer
 			return;
 		}
 
-		List<string> parts = new();
+		var parts = new List<string>();
 
-		for (int i = 0; i < _resourceNames.Length; i++)
+		foreach (var resource in _resourceList)
 		{
-			ResourceManager.ResourceType type = (ResourceManager.ResourceType)i;
-			parts.Add(ResourceManager.Get(type) + " : [img=24x24]" + _resourceIcons[i] + "[/img] " + _resourceNames[i]);
+			string iconTag = "";
+
+			if (_resourceIcons.TryGetValue(resource.Name, out string iconPath))
+			{
+				iconTag = $"[img=24x24]{iconPath}[/img] ";
+			}
+
+			parts.Add($"{resource.Amount} : {iconTag}");
 		}
 
 		ResourcesLabel.Text = string.Join("\n", parts);
@@ -135,24 +126,30 @@ public partial class Hud : CanvasLayer
 
 	public void AddResources(int amount)
 	{
-		ResourceManager.Add(ResourceManager.ResourceType.Magic, amount);
+		_resourceCount = Mathf.Max(0, _resourceCount + amount);
 		UpdateResourcesUI();
 	}
 
 	public bool TrySpendResources(int amount)
 	{
-		if (!ResourceManager.TrySpend(ResourceManager.ResourceType.Magic, amount))
+		if (amount <= 0)
+		{
+			return true;
+		}
+
+		if (_resourceCount < amount)
 		{
 			return false;
 		}
 
+		_resourceCount -= amount;
 		UpdateResourcesUI();
 		return true;
 	}
 
 	public void SetResources(int amount)
 	{
-		ResourceManager.Set(ResourceManager.ResourceType.Magic, amount);
+		_resourceCount = Mathf.Max(0, amount);
 		UpdateResourcesUI();
 	}
 
@@ -163,11 +160,11 @@ public partial class Hud : CanvasLayer
 		UpdateDeckUI();
 	}
 
-	public void ShowMessage(string message, float holdSeconds = 2.2f)
+	public void ShowCardMessage(string message, float holdSeconds = 2.2f)
 	{
 		if (CardMessageLabel == null)
 		{
-			GD.Print("[HUD] " + message);
+			GD.Print($"[HUD] {message}");
 			return;
 		}
 

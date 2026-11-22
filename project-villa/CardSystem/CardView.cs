@@ -8,18 +8,33 @@ public partial class CardView : Control
 	public CardHand Hand;
 	public bool Dragging { get; private set; }
 
+	private const float DragDistance = 6f;
+
 	private Label _title;
-	private Label _cost;
+
 	private Label _description;
 	private Label _category;
 	private ColorRect _icon;
 	private PanelContainer _panel;
 	private StyleBoxFlat _style;
+	private Label _woodCost;
+	private Label _stoneCost;
+	private Label _magicCost;
+	private Label _foodCost;
+
+	private bool _pressed;
+	private Vector2 _pressPosition;
+	private Vector2 _grabOffset;
 
 	public override void _Ready()
 	{
 		_title = GetNode<Label>("%Title");
-		_cost = GetNode<Label>("%Cost");
+		_woodCost  = GetNode<Label>("%Cost");
+		_stoneCost = GetNode<Label>("%StoneNumber");
+		_magicCost = GetNode<Label>("%MagicNumber");
+		_foodCost  = GetNode<Label>("%FoodNumber");
+
+		
 		_description = GetNode<Label>("%Description");
 		_category = GetNode<Label>("%Category");
 		_icon = GetNode<ColorRect>("%IconPanel");
@@ -45,6 +60,7 @@ public partial class CardView : Control
 		MouseEntered += OnMouseEntered;
 		MouseExited += OnMouseExited;
 
+		SetProcessInput(false);
 		UpdateVisuals();
 	}
 
@@ -58,47 +74,42 @@ public partial class CardView : Control
 		}
 	}
 
-	public void BeginDrag()
-	{
-		Dragging = true;
-		ZIndex = 100;
-		Scale = new Vector2(1.05f, 1.05f);
-	}
-
-	public void MoveDrag(Vector2 screenPosition, Vector2 grabOffset)
-	{
-		GlobalPosition = screenPosition - grabOffset;
-	}
-
-	public void EndDrag()
-	{
-		Dragging = false;
-		ZIndex = 0;
-		Scale = Vector2.One;
-	}
-
 	public override void _GuiInput(InputEvent @event)
 	{
 		if (@event is InputEventMouseButton mouse
 			&& mouse.ButtonIndex == MouseButton.Left
 			&& mouse.Pressed)
 		{
-			Interactor.Instance?.BeginCardDrag(this, mouse.GlobalPosition);
+			_pressed = true;
+			_pressPosition = mouse.GlobalPosition;
+			_grabOffset = mouse.GlobalPosition - GlobalPosition;
+			SetProcessInput(true);
 			AcceptEvent();
 		}
 	}
 
 	public override void _Input(InputEvent @event)
 	{
-		if (!Dragging)
+		if (!_pressed)
 		{
 			return;
 		}
 
 		if (@event is InputEventMouseMotion motion)
 		{
-			Interactor.Instance?.MoveCardDrag(motion.GlobalPosition);
-			GetViewport().SetInputAsHandled();
+			if (!Dragging && motion.GlobalPosition.DistanceTo(_pressPosition) >= DragDistance)
+			{
+				Dragging = true;
+				ZIndex = 100;
+				Scale = new Vector2(1.05f, 1.05f);
+			}
+
+			if (Dragging)
+			{
+				GlobalPosition = motion.GlobalPosition - _grabOffset;
+				GetViewport().SetInputAsHandled();
+			}
+
 			return;
 		}
 
@@ -106,16 +117,28 @@ public partial class CardView : Control
 			&& mouse.ButtonIndex == MouseButton.Left
 			&& !mouse.Pressed)
 		{
+			_pressed = false;
+			SetProcessInput(false);
 			GetViewport().SetInputAsHandled();
-			Interactor.Instance?.EndCardDrag();
+
+			if (Dragging)
+			{
+				Dragging = false;
+				Scale = Vector2.One;
+				Hand?.PlayCard(this);
+			}
 		}
 	}
 
 	public override void _Process(double delta)
 	{
-		if (Dragging && !Input.IsMouseButtonPressed(MouseButton.Left))
+		if (_pressed && !Input.IsMouseButtonPressed(MouseButton.Left))
 		{
-			Interactor.Instance?.CancelCardDrag();
+			_pressed = false;
+			Dragging = false;
+			Scale = Vector2.One;
+			ZIndex = 0;
+			SetProcessInput(false);
 		}
 	}
 
@@ -150,11 +173,17 @@ public partial class CardView : Control
 		}
 
 		_title.Text = Card.DisplayName;
-		_cost.Text = Card.MagicCost <= 0 ? "FREE" : Card.MagicCost.ToString();
+		_woodCost.Text  = Card.woodCost  > 0 ? Card.woodCost.ToString()  : "-";
+		_stoneCost.Text = Card.stoneCost > 0 ? Card.stoneCost.ToString() : "-";
+		_magicCost.Text = Card.magicCost > 0 ? Card.magicCost.ToString() : "-";
+		_foodCost.Text  = Card.foodCost  > 0 ? Card.foodCost.ToString()  : "-";
 		_description.Text = Card.Description;
 		_category.Text = Card.Category.ToUpper();
 		_style.BorderColor = Card.AccentColor;
 		_icon.Color = Card.AccentColor.Darkened(0.65f);
-		_cost.AddThemeColorOverride("font_color", Card.AccentColor.Lightened(0.3f));
+		foreach (Label label in new[] { _woodCost, _stoneCost, _magicCost, _foodCost })
+{
+    label.AddThemeColorOverride("font_color", Card.AccentColor.Lightened(0.3f));
+}
 	}
 }
