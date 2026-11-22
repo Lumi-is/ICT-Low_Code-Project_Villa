@@ -6,5 +6,8 @@
 script = ExtResource("1_2n6hx")
 DisplayName = "Build Housing"
 Description = "Builds a basic housing unit."
+Category = "Building"
 AccentColor = Color(0.38205117, 0.20563805, 0.11729828, 1)
+MagicCost = 10
+ShopPrice = 15
 metadata/_custom_type_script = "uid://d0ae25o8vdvxw"

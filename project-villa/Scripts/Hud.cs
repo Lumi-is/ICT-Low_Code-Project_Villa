@@ -15,29 +15,21 @@ public partial class Hud : CanvasLayer
 	[Export] public PauseMenu PauseMenu;
 	[Export] public ShopMenu ShopMenu;
 
-private readonly List<(string Name, int Amount)> _resourceList = new()
-{
-	("Wood", 100),
-	("Stone", 100),
-	("Magic", 100),
-	("Food", 100),
+	private static readonly string[] _resourceNames = { "Wood", "Stone", "Magic", "Food" };
 
-};
-
-		private static readonly Dictionary<string, string> _resourceIcons = new()
+	private static readonly string[] _resourceIcons =
 	{
-		{ "Wood",  "res://Graphics/building_material_icon.png" },
-		{ "Stone", "res://Graphics/building_material_icon.png" },
-		{ "Magic", "res://Graphics/magic_icon.png" },
-		{ "Food",  "res://Graphics/food_icon.png" },
+		"res://Graphics/building_material_icon.png",
+		"res://Graphics/building_material_icon.png",
+		"res://Graphics/magic_icon.png",
+		"res://Graphics/food_icon.png"
 	};
 
-	private int _resourceCount = 100;
 	private int _deckCount;
 	private int _handCount;
 	private Tween _messageTween;
 
-	public int Resources => _resourceCount;
+	public int Resources => ResourceManager.Magic;
 
 	public int DeckCount => _deckCount;
 
@@ -46,10 +38,11 @@ private readonly List<(string Name, int Amount)> _resourceList = new()
 	public override void _Ready()
 	{
 		ProcessMode = ProcessModeEnum.Always;
+		ResourceManager.Reset();
 
 		PauseButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Pause");
 		ShopButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Shop");
-		DeckLabel ??=  GetNode<RichTextLabel> ("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck");
+		DeckLabel ??= GetNode<RichTextLabel>("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck");
 		ResourcesLabel ??= GetNode<RichTextLabel>("BottomPanel/HBoxContainer/Stats/HBoxContainer/resources");
 		ResourcesLabel.BbcodeEnabled = true;
 		CardMessageLabel ??= GetNodeOrNull<Label>("CardMessage");
@@ -79,7 +72,6 @@ private readonly List<(string Name, int Amount)> _resourceList = new()
 
 	private void OnPauseButtonPressed()
 	{
-		GD.Print("Pause button clicked");
 		PauseMenu?.TogglePause();
 	}
 
@@ -95,18 +87,12 @@ private readonly List<(string Name, int Amount)> _resourceList = new()
 			return;
 		}
 
-		var parts = new List<string>();
+		List<string> parts = new();
 
-		foreach (var resource in _resourceList)
+		for (int i = 0; i < _resourceNames.Length; i++)
 		{
-			string iconTag = "";
-
-			if (_resourceIcons.TryGetValue(resource.Name, out string iconPath))
-			{
-				iconTag = $"[img=24x24]{iconPath}[/img] ";
-			}
-
-			parts.Add($"{resource.Amount} : {iconTag}");
+			ResourceManager.ResourceType type = (ResourceManager.ResourceType)i;
+			parts.Add(ResourceManager.Get(type) + " : [img=24x24]" + _resourceIcons[i] + "[/img] " + _resourceNames[i]);
 		}
 
 		ResourcesLabel.Text = string.Join("\n", parts);
@@ -126,30 +112,24 @@ private readonly List<(string Name, int Amount)> _resourceList = new()
 
 	public void AddResources(int amount)
 	{
-		_resourceCount = Mathf.Max(0, _resourceCount + amount);
+		ResourceManager.Add(ResourceManager.ResourceType.Magic, amount);
 		UpdateResourcesUI();
 	}
 
 	public bool TrySpendResources(int amount)
 	{
-		if (amount <= 0)
-		{
-			return true;
-		}
-
-		if (_resourceCount < amount)
+		if (!ResourceManager.TrySpend(ResourceManager.ResourceType.Magic, amount))
 		{
 			return false;
 		}
 
-		_resourceCount -= amount;
 		UpdateResourcesUI();
 		return true;
 	}
 
 	public void SetResources(int amount)
 	{
-		_resourceCount = Mathf.Max(0, amount);
+		ResourceManager.Set(ResourceManager.ResourceType.Magic, amount);
 		UpdateResourcesUI();
 	}
 
@@ -164,7 +144,7 @@ private readonly List<(string Name, int Amount)> _resourceList = new()
 	{
 		if (CardMessageLabel == null)
 		{
-			GD.Print($"[HUD] {message}");
+			GD.Print("[HUD] " + message);
 			return;
 		}
 
