@@ -22,10 +22,10 @@ public partial class Hud : CanvasLayer
 
 	private static readonly string[] _resourceIcons =
 	{
-		"res://Graphics/building_material_icon.png",
-		"res://Graphics/building_material_icon.png",
-		"res://Graphics/magic_icon.png",
-		"res://Graphics/food_icon.png"
+		{ "Wood",  "res://Graphics/wood_icon.png" },
+		{ "Stone", "res://Graphics/stone_icon.png" },
+		{ "Magic", "res://Graphics/magic_icon.png" },
+		{ "Food",  "res://Graphics/food_icon.png" },
 	};
 
 	private int _deckCount;

@@ -1,15 +1,64 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dn22ulgutge6o"]
 
 [ext_resource type="Script" uid="uid://d4bqy6734uldc" path="res://CardSystem/CardView.cs" id="1_cardview"]
+[ext_resource type="Texture2D" uid="uid://d3rwg5e6uwbhf" path="res://Graphics/wood_icon.png" id="2_1li2r"]
+[ext_resource type="Texture2D" uid="uid://0it2ddagi1rp" path="res://Graphics/magic_icon.png" id="2_ttwb0"]
+[ext_resource type="Texture2D" uid="uid://cn82bueanefiv" path="res://Graphics/stone_icon.png" id="3_2h2dc"]
+[ext_resource type="Texture2D" uid="uid://ddyyocdpkv2ir" path="res://Graphics/food_icon.png" id="4_2h2dc"]
 
-[node name="CardView" type="Control"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+bg_color = Color(0.0784314, 0.1058824, 0.1490196, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8784314, 0.7215686, 0.3529412, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+corner_detail = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_circle"]
+bg_color = Color(0.8784314, 0.7215686, 0.3529412, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0784314, 0.1058824, 0.1490196, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+corner_detail = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cost"]
+bg_color = Color(0.0784314, 0.1058824, 0.1490196, 0)
+border_color = Color(0.2705882, 0.2941176, 0.3333333, 0)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_arch"]
+bg_color = Color(0.0784314, 0.1058824, 0.1490196, 1)
+border_width_top = 2
+border_color = Color(0.8784314, 0.7215686, 0.3529412, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+corner_detail = 12
+
+[node name="CardView" type="Control" unique_id=2072732565]
 custom_minimum_size = Vector2(132, 184)
+layout_mode = 3
+anchors_preset = 0
 offset_right = 132.0
 offset_bottom = 184.0
-mouse_filter = 0
 script = ExtResource("1_cardview")
 
-[node name="Panel" type="PanelContainer" parent="."]
+[node name="Panel" type="PanelContainer" parent="." unique_id=1193356666]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -18,53 +67,28 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
-[node name="Margin" type="MarginContainer" parent="Panel"]
+[node name="Canvas" type="Control" parent="Panel" unique_id=2127865188]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 7
 
-[node name="VBox" type="VBoxContainer" parent="Panel/Margin"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 4
-
-[node name="Header" type="HBoxContainer" parent="Panel/Margin/VBox"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 3
-
-[node name="Title" type="Label" parent="Panel/Margin/VBox/Header"]
+[node name="IconPanel" type="ColorRect" parent="Panel/Canvas" unique_id=923322862]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.949, 0.933, 0.847, 1)
-theme_override_font_sizes/font_size = 13
-text = "Card"
-clip_text = true
+color = Color(0.0784314, 0.1058824, 0.1490196, 1)
 
-[node name="Cost" type="Label" parent="Panel/Margin/VBox/Header"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-mouse_filter = 2
-theme_override_font_sizes/font_size = 9
-horizontal_alignment = 2
-vertical_alignment = 1
-text = "0"
-
-[node name="IconPanel" type="ColorRect" parent="Panel/Margin/VBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 66)
-layout_mode = 2
-mouse_filter = 2
-color = Color(0.18, 0.2, 0.24, 1)
-
-[node name="Artwork" type="TextureRect" parent="Panel/Margin/VBox/IconPanel"]
+[node name="Artwork" type="TextureRect" parent="Panel/Canvas/IconPanel" unique_id=58485606]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -76,20 +100,208 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Description" type="Label" parent="Panel/Margin/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
+[node name="TypeIcon" type="Panel" parent="Panel/Canvas" unique_id=2007675619]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 32.0
+offset_bottom = 32.0
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_circle")
+
+[node name="Title" type="Label" parent="Panel/Canvas" unique_id=92492420]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 38.0
+offset_top = 8.0
+offset_right = 124.0
+offset_bottom = 30.0
+theme_override_colors/font_color = Color(0.949, 0.933, 0.847, 1)
+theme_override_font_sizes/font_size = 13
+text = "Card"
+vertical_alignment = 1
+clip_text = true
+
+[node name="CostColumn" type="VBoxContainer" parent="Panel/Canvas" unique_id=1514233451]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 36.0
+offset_right = 120.0
+offset_bottom = 130.0
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="CostWood" type="HBoxContainer" parent="Panel/Canvas/CostColumn" unique_id=1515655512]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="WoodIconBox" type="Panel" parent="Panel/Canvas/CostColumn/CostWood" unique_id=130602584]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cost")
+
+[node name="WoodIcon" type="TextureRect" parent="Panel/Canvas/CostColumn/CostWood/WoodIconBox" unique_id=1623115296]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_1li2r")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Cost" type="Label" parent="Panel/Canvas/CostColumn/CostWood" unique_id=1700580767]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(18, 20)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "-"
+vertical_alignment = 1
+
+[node name="CostStone" type="HBoxContainer" parent="Panel/Canvas/CostColumn" unique_id=780491017]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="StoneIconBox" type="Panel" parent="Panel/Canvas/CostColumn/CostStone" unique_id=380269647]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cost")
+
+[node name="StoneIcon" type="TextureRect" parent="Panel/Canvas/CostColumn/CostStone/StoneIconBox" unique_id=473118500]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_2h2dc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StoneNumber" type="Label" parent="Panel/Canvas/CostColumn/CostStone" unique_id=353242000]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(18, 20)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "-"
+vertical_alignment = 1
+
+[node name="CostMagic" type="HBoxContainer" parent="Panel/Canvas/CostColumn" unique_id=1722204895]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="MagicIconBox" type="Panel" parent="Panel/Canvas/CostColumn/CostMagic" unique_id=1723705481]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cost")
+
+[node name="MagicIcon" type="TextureRect" parent="Panel/Canvas/CostColumn/CostMagic/MagicIconBox" unique_id=314859345]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_ttwb0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MagicNumber" type="Label" parent="Panel/Canvas/CostColumn/CostMagic" unique_id=1618518816]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(18, 20)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "-"
+vertical_alignment = 1
+
+[node name="CostFood" type="HBoxContainer" parent="Panel/Canvas/CostColumn" unique_id=709422203]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="FoodIconBox" type="Panel" parent="Panel/Canvas/CostColumn/CostFood" unique_id=1250148542]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cost")
+
+[node name="FoodIcon" type="TextureRect" parent="Panel/Canvas/CostColumn/CostFood/FoodIconBox" unique_id=1926807666]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_2h2dc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="FoodNumber" type="Label" parent="Panel/Canvas/CostColumn/CostFood" unique_id=461607018]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(18, 20)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "-"
+vertical_alignment = 1
+
+[node name="DescriptionPanel" type="Panel" parent="Panel/Canvas" unique_id=635359312]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.73
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_arch")
+
+[node name="Description" type="Label" parent="Panel/Canvas/DescriptionPanel" unique_id=1568415248]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 4.0
+offset_right = -8.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0.78, 0.82, 0.87, 1)
 theme_override_font_sizes/font_size = 10
-text = "Card description."
-autowrap_mode = 3
+text = "Card description here"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
-[node name="Category" type="Label" parent="Panel/Margin/VBox"]
+[node name="Category" type="Label" parent="Panel/Canvas/DescriptionPanel" unique_id=1704708245]
 unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -44.0
+offset_top = -12.0
+grow_horizontal = 0
+grow_vertical = 0
 theme_override_colors/font_color = Color(0.55, 0.61, 0.68, 1)
 theme_override_font_sizes/font_size = 8
 text = "ACTION"
+horizontal_alignment = 2
