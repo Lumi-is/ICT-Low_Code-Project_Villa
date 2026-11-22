@@ -11,7 +11,7 @@ public partial class BuildCard : Card
 	{
 		if (WorldGridManager.highlightedTile == null)
 		{
-			game.Hud?.ShowCardMessage("Hover over a tile first.");
+			game.Hud?.ShowMessage("Hover over a tile first.");
 			return false;
 		}
 

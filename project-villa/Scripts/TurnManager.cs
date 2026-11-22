@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 public partial class TurnManager : Node
 {
+	public static TurnManager instance;
 	// Player's turn happens during the "night" in the world, apply simple filter for showcase purposes and adjust it's opacity to match the state of the game
 	// Enemies' turns happen during the "daytime" in the world. Remove filter during it
 
@@ -26,11 +27,16 @@ public partial class TurnManager : Node
 	[Export] public Color noonColor;
 
 
-	public static List<Enemy> enemyList;
+	public static List<Enemy> enemyList = new();
 
 
 	[Export] public Interactor Interactor;
 	[Export] public Node HUD;
+
+	public override void _Ready()
+	{
+		instance = this;
+	}
 
 
 	public string[] turnPhases =
@@ -42,6 +48,9 @@ public partial class TurnManager : Node
 
 	private bool isTimer;
 
+	// Summary:
+	// Boolean method which attempts to start a timer. Returns true if timer could be started, and false is it couldn't. 
+	// Only one timer can exist at a time.
 	private bool StartTimer(Action doAction, int secondAmount)
 	{
 		if(isTimer) return false;
@@ -79,7 +88,9 @@ public partial class TurnManager : Node
         {
             case "playerStartPhase":
 				// What to do
-				if(StartTimer(IncrementPhase, 1))
+				Hud.instance.SetTimeOfDayLabel("Dusk");
+
+				if(StartTimer(IncrementPhase, 3))
 				{
 					// Do stuff thats only done once = Aka. give cards to player etc.
 				}
@@ -88,14 +99,18 @@ public partial class TurnManager : Node
 
 			case "playerActionPhase":
 				// What to do
+				Hud.instance.SetTimeOfDayLabel("Midnight");
+
 				canvasModulate.Color = canvasModulate.Color.Lerp(midNightColor, 0.01f);
 
-				// Increment phase when player presses a button
+				// Increments phase when player presses "pass turn" 
 				break;
 
 			case "enemyStartPhase":
 				// What to do
-				if(StartTimer(IncrementPhase, 1))
+				Hud.instance.SetTimeOfDayLabel("Morning");
+
+				if(StartTimer(IncrementPhase, 3))
 				{
 					// Do stuff thats only done once = Aka. animations.
 				}
@@ -104,25 +119,44 @@ public partial class TurnManager : Node
 
 			case "enemyActionPhase":
 				// What to do
+				Hud.instance.SetTimeOfDayLabel("Noon");
+
+				if(enemyList.Count > 0)
+				{
+					for(int i = 0; i < enemyList.Count; i++)
+					{
+						Enemy enemy = enemyList[i];
+						enemy.isInPlay = true; 
+
+						while (enemy.isInPlay)
+						{
+							if(StartTimer(enemy.IncrementCurrentAction,1))
+							{
+								enemy.DoCurrentAction();
+							}
+						}
+
+						if(i == enemyList.Count - 1)
+						{
+							Hud.instance.ShowMessage("All enemy actions complete. Forwarding time...");
+							StartTimer(IncrementPhase,1);
+						}
+					}
+				} else
+				{
+					Hud.instance.ShowMessage("No enemies nearby. Forwarding time...");
+					StartTimer(IncrementPhase, 3);
+				}
+				// Do stuff thats only done once
+				
 
 				// WIP, add enemies to enemyList as they are originally spawned in
 
 				// Go through every enemy, do their actions one by one and move to the next. When all enemies have done their actions, this phase ends. 
-				foreach(Enemy enemy in enemyList)
-				{
-					enemy.isInPlay = true; 
-
-					while (enemy.isInPlay)
-					{
-						if(StartTimer(enemy.IncrementCurrentAction,1))
-						{
-							enemy.DoCurrentAction();
-						}
-					}
-				}
+				
 				canvasModulate.Color = canvasModulate.Color.Lerp(noonColor, 0.01f);
 
-				IncrementPhase();
+				
 				break;
 		}
 	}
