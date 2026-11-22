@@ -26,8 +26,8 @@ private readonly List<(string Name, int Amount)> _resourceList = new()
 
 		private static readonly Dictionary<string, string> _resourceIcons = new()
 	{
-		{ "Wood",  "res://Graphics/building_material_icon.png" },
-		{ "Stone", "res://Graphics/building_material_icon.png" },
+		{ "Wood",  "res://Graphics/wood_icon.png" },
+		{ "Stone", "res://Graphics/stone_icon.png" },
 		{ "Magic", "res://Graphics/magic_icon.png" },
 		{ "Food",  "res://Graphics/food_icon.png" },
 	};

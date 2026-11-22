@@ -3,15 +3,32 @@
 [ext_resource type="Script" uid="uid://ceyjoe7qrghv" path="res://Scripts/ShopMenu.cs" id="1_xysl7"]
 [ext_resource type="PackedScene" path="res://Scenes/Cards/ShopCardView.tscn" id="2_shopcard"]
 [ext_resource type="Script" uid="uid://c4csssh6ee8g" path="res://CardSystem/Card.cs" id="3_card"]
-[ext_resource type="Resource" uid="uid://c2jqf5588hq74" path="res://Resources/Cards/Testing.tres" id="4_testing"]
-[ext_resource type="Resource" uid="uid://d3mc5fjhl78v8" path="res://Resources/Cards/BuildHousing.tres" id="5_h1qh4"]
+[ext_resource type="Script" uid="uid://d0ae25o8vdvxw" path="res://Scripts/BuildCard.cs" id="4_hm266"]
+[ext_resource type="Resource" uid="uid://d3mc5fjhl78v8" path="res://Resources/Cards/BuildCard.tres" id="5_nrmsl"]
+[ext_resource type="Script" uid="uid://dus116ba6peu5" path="res://CardSystem/DrawCardsCard.cs" id="6_hik0y"]
+
+[sub_resource type="Resource" id="Resource_hvmkm"]
+script = ExtResource("4_hm266")
+path = "res://Scenes/FarmBuilding.tscn"
+DisplayName = "Build Farm"
+Description = "Builds a basic farm."
+AccentColor = Color(0.6358732, 0.4848755, 0.3047083, 1)
+metadata/_custom_type_script = "uid://d0ae25o8vdvxw"
+
+[sub_resource type="Resource" id="Resource_4m1id"]
+script = ExtResource("6_hik0y")
+Count = 2
+DisplayName = "Draw Cards"
+Description = "Draws two cards from the deck."
+AccentColor = Color(0.9328466, 0.6482666, 0.74777347, 1)
+metadata/_custom_type_script = "uid://dus116ba6peu5"
 
 [node name="ShopMenu" type="CanvasLayer" unique_id=820137950]
 process_mode = 3
 layer = 2
 script = ExtResource("1_xysl7")
 CardDisplayPrefab = ExtResource("2_shopcard")
-AvailableCardPool = Array[ExtResource("3_card")]([ExtResource("4_testing"), ExtResource("5_h1qh4")])
+AvailableCardPool = Array[ExtResource("3_card")]([SubResource("Resource_hvmkm"), ExtResource("5_nrmsl"), SubResource("Resource_4m1id")])
 
 [node name="UI" type="Control" parent="." unique_id=639949560]
 z_index = 2
