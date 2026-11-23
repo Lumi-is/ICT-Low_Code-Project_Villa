@@ -84,11 +84,11 @@ namespace Grid
 
 			if(instantiable is IBuilding)
 			{
-				highlightedTile.AddChild(instantiable);
-				instantiable.GlobalPosition = highlightedTile.GlobalPosition;
-
-				if(TryPlaceBuilding(instantiable.GlobalPosition, (IBuilding)instantiable) != null)
+				if(TryPlaceBuilding(highlightedTile.GlobalPosition, (IBuilding)instantiable) != null)
 				{
+					highlightedTile.AddChild(instantiable);
+					instantiable.GlobalPosition = highlightedTile.GlobalPosition;
+					
 					return true;
 				} else
 				{

@@ -8,7 +8,7 @@ public partial class Enemy : Node
 	// List of different enemy actions which the AI goes through during each turn
 	public string[] enemyActions = 
 	{
-		"start","",""
+		"startTurn","playCards","moveTroops"
 	};
 
 	// Which of the aforementioned actions is currently playing
@@ -23,7 +23,7 @@ public partial class Enemy : Node
 	{
 		switch (currentAction)
 		{
-			case "start":
+			case "startTurn":
 				isInPlay = true;
 				break;
 		}
