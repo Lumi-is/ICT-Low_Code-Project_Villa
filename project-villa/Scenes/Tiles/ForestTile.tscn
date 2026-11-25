@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://ybwho02bfq17"]
+
+[ext_resource type="Texture2D" uid="uid://dt71riden5liv" path="res://Graphics/128 tiles/128 tiles/ForestTile.png" id="1_er3s1"]
+[ext_resource type="Script" uid="uid://cgprejno0doeh" path="res://Scripts/Tile.cs" id="2_375lp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ab2ii"]
+size = Vector2(126, 128)
+
+[node name="Tile" type="Node2D" unique_id=510889725]
+
+[node name="Graphics" type="Sprite2D" parent="." unique_id=1265410453]
+texture = ExtResource("1_er3s1")
+
+[node name="Area2D" type="Area2D" parent="Graphics" unique_id=850750638 node_paths=PackedStringArray("graphics")]
+script = ExtResource("2_375lp")
+graphics = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Graphics/Area2D" unique_id=1487479412]
+shape = SubResource("RectangleShape2D_ab2ii")
+
+[connection signal="mouse_entered" from="Graphics/Area2D" to="Graphics/Area2D" method="OnMouseEntered"]
+[connection signal="mouse_exited" from="Graphics/Area2D" to="Graphics/Area2D" method="OnMouseExited"]
