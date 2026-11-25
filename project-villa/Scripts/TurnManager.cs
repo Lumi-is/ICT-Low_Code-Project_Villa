@@ -1,9 +1,6 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.ConstrainedExecution;
 using System.Threading.Tasks;
 
 public partial class TurnManager : Node
@@ -28,6 +25,7 @@ public partial class TurnManager : Node
 
 
 	public static List<Enemy> enemyList = new();
+	public static List<Troop> troopList = new();
 
 
 	[Export] public Interactor Interactor;
@@ -92,6 +90,10 @@ public partial class TurnManager : Node
 
 				if(StartTimer(IncrementPhase, 3))
 				{
+					foreach(Troop troop in troopList)
+					{
+						troop.hasMoved = false;
+					}
 					// Do stuff thats only done once = Aka. give cards to player etc.
 				}
 				canvasModulate.Color = canvasModulate.Color.Lerp(duskColor, 0.01f);

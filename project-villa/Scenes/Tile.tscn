@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cbe8lwofjvukb"]
+[gd_scene format=3 uid="uid://b1dlxd57vr2xj"]
 
 [ext_resource type="Texture2D" uid="uid://bbpiufljaogp1" path="res://Graphics/greenDebugTile128.png" id="1_iof5j"]
 [ext_resource type="Script" uid="uid://cgprejno0doeh" path="res://Scripts/Tile.cs" id="2_r4md0"]

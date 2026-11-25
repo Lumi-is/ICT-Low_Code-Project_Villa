@@ -54,7 +54,7 @@ namespace Grid
 			// Calculating what the desired position of the object should be when adjusted to the grid
             cellPos.Y = yJumpCount * tileSize + (ySign * (tileSize/2));
 
-			GD.Print("CellPos"+cellPos);
+			//GD.Print("CellPos"+cellPos);
 
 			return cellPos;
 		}
