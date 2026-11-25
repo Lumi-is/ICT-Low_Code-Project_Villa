@@ -2,10 +2,16 @@ using ProjectVilla.Cards;
 
 public static partial class ResourceManager
 {
-	public static int wood;
-	public static int stone;
-	public static int magic;
-	public static int food;
+	public enum ResourceType
+	{
+		Wood,
+		Stone,
+		Magic,
+		Food
+	}
+
+	private const int StartingAmount = 100;
+	private static readonly int[] _amounts = new int[4];
 
 	static ResourceManager()
 	{

@@ -2,11 +2,13 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.ConstrainedExecution;
 using System.Threading.Tasks;
 
 public partial class TurnManager : Node
 {
+	public static TurnManager instance;
 	// Player's turn happens during the "night" in the world, apply simple filter for showcase purposes and adjust it's opacity to match the state of the game
 	// Enemies' turns happen during the "daytime" in the world. Remove filter during it
 
@@ -24,6 +26,19 @@ public partial class TurnManager : Node
 	[Export] public Color morningColor;
 	[Export] public Color noonColor;
 
+
+	public static List<Enemy> enemyList = new();
+
+
+	[Export] public Interactor Interactor;
+	[Export] public Node HUD;
+
+	public override void _Ready()
+	{
+		instance = this;
+	}
+
+
 	public string[] turnPhases =
     [
         "playerStartPhase","playerActionPhase","enemyStartPhase","enemyActionPhase"
@@ -31,29 +46,18 @@ public partial class TurnManager : Node
 
 	public string currentPhase = "playerStartPhase";
 
-    public override void _Ready()
-    {
-        timer();
-    }
+	private bool isTimer;
 
-	private void timer()
+	// Summary:
+	// Boolean method which attempts to start a timer. Returns true if timer could be started, and false is it couldn't. 
+	// Only one timer can exist at a time.
+	private bool StartTimer(Action doAction, int secondAmount)
 	{
-		Task.Delay(TimeSpan.FromSeconds(5f)).ContinueWith(_ =>
-		{
-			// executed every 5 seconds
-			GD.Print("meoww");
-			var nextPhaseIndex = Array.FindIndex(turnPhases, IsCurrentPhase) + 1;
+		if(isTimer) return false;
 
-			if(nextPhaseIndex < turnPhases.Length)
-			{
-				currentPhase = turnPhases[nextPhaseIndex];
-			} else
-			{
-				currentPhase = turnPhases[0];
-			}
-			
-			timer();
-		});
+		isTimer = true;
+		Task.Delay(TimeSpan.FromSeconds(secondAmount)).ContinueWith(_ => {isTimer = false; doAction();});
+		return true;
 	}
 
 	private bool IsCurrentPhase(string s)
@@ -63,33 +67,105 @@ public partial class TurnManager : Node
 		return false;
 	}
 
+	public void IncrementPhase()
+	{
+		var nextPhaseIndex = Array.FindIndex(turnPhases, IsCurrentPhase) + 1;
+
+		if(nextPhaseIndex < turnPhases.Length)
+		{
+			currentPhase = turnPhases[nextPhaseIndex];
+		} else
+		{
+			currentPhase = turnPhases[0];
+		}
+	}
+
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		
 		switch(currentPhase)
         {
             case "playerStartPhase":
 				// What to do
+				Hud.instance.SetTimeOfDayLabel("Dusk");
+
+				if(StartTimer(IncrementPhase, 3))
+				{
+					// Do stuff thats only done once = Aka. give cards to player etc.
+				}
 				canvasModulate.Color = canvasModulate.Color.Lerp(duskColor, 0.01f);
-				
 				break;
 
 			case "playerActionPhase":
 				// What to do
+				Hud.instance.SetTimeOfDayLabel("Midnight");
+
 				canvasModulate.Color = canvasModulate.Color.Lerp(midNightColor, 0.01f);
+
+				// Increments phase when player presses "pass turn" 
 				break;
 
 			case "enemyStartPhase":
 				// What to do
+				Hud.instance.SetTimeOfDayLabel("Morning");
+
+				if(StartTimer(IncrementPhase, 3))
+				{
+					// Do stuff thats only done once = Aka. animations.
+				}
 				canvasModulate.Color = canvasModulate.Color.Lerp(morningColor, 0.01f);
 				break;
 
 			case "enemyActionPhase":
 				// What to do
+				Hud.instance.SetTimeOfDayLabel("Noon");
+
+				if(enemyList.Count > 0)
+				{
+					for(int i = 0; i < enemyList.Count; i++)
+					{
+						Enemy enemy = enemyList[i];
+						enemy.isInPlay = true; 
+
+						while (enemy.isInPlay)
+						{
+							if(StartTimer(enemy.IncrementCurrentAction,1))
+							{
+								enemy.DoCurrentAction();
+							}
+						}
+
+						if(i == enemyList.Count - 1)
+						{
+							Hud.instance.ShowMessage("All enemy actions complete. Forwarding time...");
+							StartTimer(IncrementPhase,1);
+						}
+					}
+				} else
+				{
+					Hud.instance.ShowMessage("No enemies nearby. Forwarding time...");
+					StartTimer(IncrementPhase, 3);
+				}
+				// Do stuff thats only done once
+				
+
+				// WIP, add enemies to enemyList as they are originally spawned in
+
+				// Go through every enemy, do their actions one by one and move to the next. When all enemies have done their actions, this phase ends. 
+				
 				canvasModulate.Color = canvasModulate.Color.Lerp(noonColor, 0.01f);
+
+				
 				break;
 		}
+	}
+
+	public void OnPassTurnPressed()
+	{
+		if(currentPhase == "playerActionPhase")
+		{
+			IncrementPhase();
+		}	
 	}
 }
