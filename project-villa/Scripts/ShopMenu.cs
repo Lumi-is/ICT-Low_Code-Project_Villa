@@ -162,7 +162,7 @@ public partial class ShopMenu : CanvasLayer
 
 		if (ResourcesLabel != null && hud != null)
 		{
-			ResourcesLabel.Text = "Resources: " + hud.Resources;
+			ResourcesLabel.Text = "Magic: " + hud.Resources;
 		}
 	}
 }

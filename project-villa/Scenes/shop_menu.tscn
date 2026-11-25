@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c4nq1ykcoav21"]
 
 [ext_resource type="Script" uid="uid://ceyjoe7qrghv" path="res://Scripts/ShopMenu.cs" id="1_xysl7"]
-[ext_resource type="PackedScene" path="res://Scenes/Cards/ShopCardView.tscn" id="2_shopcard"]
+[ext_resource type="PackedScene" uid="uid://dhkyqceritrn3" path="res://Scenes/Cards/ShopCardView.tscn" id="2_shopcard"]
 [ext_resource type="Script" uid="uid://c4csssh6ee8g" path="res://CardSystem/Card.cs" id="3_card"]
 [ext_resource type="Script" uid="uid://d0ae25o8vdvxw" path="res://Scripts/BuildCard.cs" id="4_hm266"]
 [ext_resource type="Resource" uid="uid://d3mc5fjhl78v8" path="res://Resources/Cards/BuildCard.tres" id="5_nrmsl"]
@@ -83,7 +83,7 @@ z_index = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.933, 0.847, 1)
 theme_override_font_sizes/font_size = 16
-text = "Resources:"
+text = "Magic:"
 horizontal_alignment = 1
 
 [node name="CardContainer" type="HBoxContainer" parent="UI/Background/VBoxContainer" unique_id=333552654]
