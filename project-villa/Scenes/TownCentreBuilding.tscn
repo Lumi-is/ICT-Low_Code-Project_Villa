@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cerd8pma72kjr"]
+
+[ext_resource type="Texture2D" uid="uid://dkjpsv8dl4sf2" path="res://Graphics/town center stage 1.png" id="1_uo4xv"]
+[ext_resource type="Script" uid="uid://ngs7goji17g4" path="res://Scripts/TownCentreBuilding.cs" id="2_pb1wv"]
+
+[node name="TownCentre" type="Sprite2D" unique_id=782246469]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_uo4xv")
+script = ExtResource("2_pb1wv")
