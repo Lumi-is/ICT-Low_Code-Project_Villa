@@ -4,9 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://dx26brdgyprqv" path="res://Scenes/InteractionManager.tscn" id="1_x8jca"]
 [ext_resource type="PackedScene" uid="uid://kt10cktyfc0o" path="res://Scenes/hud.tscn" id="2_hud"]
 [ext_resource type="Script" uid="uid://p2g1wquqbqwl" path="res://Scripts/TurnManager.cs" id="2_x8jca"]
-[ext_resource type="PackedScene" uid="uid://cbe8lwofjvukb" path="res://Scenes/Tiles/FieldTile.tscn" id="4_utech"]
 [ext_resource type="PackedScene" uid="uid://mqc7jiu727hb" path="res://Scenes/Troop/TroopRook.tscn" id="7_i20cl"]
 [ext_resource type="PackedScene" uid="uid://dnyqmqg47kjtm" path="res://Scenes/Troop/TroopBishop.tscn" id="7_ij6p1"]
+[ext_resource type="PackedScene" uid="uid://indd0jq1d8ma" path="res://Scenes/Tile.tscn" id="7_y1la5"]
 
 [node name="Root" type="Node2D" unique_id=1171577489]
 
@@ -29,11 +29,14 @@ position_smoothing_enabled = true
 
 [node name="HUD" parent="." unique_id=1748293055 instance=ExtResource("2_hud")]
 
-[node name="Tile" parent="." unique_id=510889725 instance=ExtResource("4_utech")]
-position = Vector2(-64, -64)
-
 [node name="TroopRook" parent="." unique_id=1531062354 instance=ExtResource("7_i20cl")]
 position = Vector2(-64, -64)
 
 [node name="TroopBishop" parent="." unique_id=2139210842 instance=ExtResource("7_ij6p1")]
 position = Vector2(192, -64)
+
+[node name="Tile" parent="." unique_id=510889725 instance=ExtResource("7_y1la5")]
+position = Vector2(-64, -64)
+
+[node name="Tile2" parent="." unique_id=1349895852 instance=ExtResource("7_y1la5")]
+position = Vector2(64, -64)
