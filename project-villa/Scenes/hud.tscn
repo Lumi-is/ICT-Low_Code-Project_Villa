@@ -86,6 +86,7 @@ size_flags_vertical = 3
 script = ExtResource("5_hand")
 CardViewScene = ExtResource("6_cardview")
 StartingDeck = ExtResource("7_deck")
+HandSize = 4
 ControllerPath = NodePath("../../../CardSystem/CardPlayController")
 Controller = NodePath("../../../CardSystem/CardPlayController")
 

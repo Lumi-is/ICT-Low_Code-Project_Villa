@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 
 public partial class TurnManager : Node
 {
@@ -29,7 +29,8 @@ public partial class TurnManager : Node
 
 
 	[Export] public Interactor Interactor;
-	[Export] public Node HUD;
+	[Export] public Hud HUD;
+	[Export] public int CardsPerTurn = 2;
 
 	public override void _Ready()
 	{
@@ -38,8 +39,8 @@ public partial class TurnManager : Node
 
 
 	public string[] turnPhases =
-    [
-        "playerStartPhase","playerActionPhase","enemyStartPhase","enemyActionPhase"
+	[
+		"playerStartPhase","playerActionPhase","enemyStartPhase","enemyActionPhase"
 	];
 
 	public string currentPhase = "playerStartPhase";
@@ -51,10 +52,20 @@ public partial class TurnManager : Node
 	// Only one timer can exist at a time.
 	private bool StartTimer(Action doAction, int secondAmount)
 	{
-		if(isTimer) return false;
+		if (isTimer)
+		{
+			return false;
+		}
 
 		isTimer = true;
-		Task.Delay(TimeSpan.FromSeconds(secondAmount)).ContinueWith(_ => {isTimer = false; doAction();});
+
+		SceneTreeTimer timer = GetTree().CreateTimer(secondAmount);
+		timer.Timeout += () =>
+		{
+			isTimer = false;
+			doAction();
+		};
+
 		return true;
 	}
 
@@ -83,8 +94,8 @@ public partial class TurnManager : Node
 	public override void _Process(double delta)
 	{
 		switch(currentPhase)
-        {
-            case "playerStartPhase":
+		{
+			case "playerStartPhase":
 				// What to do
 				Hud.instance.SetTimeOfDayLabel("Dusk");
 
@@ -94,7 +105,9 @@ public partial class TurnManager : Node
 					{
 						troop.hasMoved = false;
 					}
-					// Do stuff thats only done once = Aka. give cards to player etc.
+
+					Hud hud = HUD != null ? HUD : Hud.instance;
+					hud?.GiveCardsForTurn(CardsPerTurn);
 				}
 				canvasModulate.Color = canvasModulate.Color.Lerp(duskColor, 0.01f);
 				break;

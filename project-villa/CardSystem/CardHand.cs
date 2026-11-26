@@ -9,7 +9,7 @@ public partial class CardHand : Control
 {
 	[Export] public PackedScene CardViewScene;
 	[Export] public CardDeck StartingDeck;
-	[Export] public int StartingHandSize = 4;
+	[Export] public int HandSize = 4;
 	[Export] public NodePath ControllerPath = "../../../../CardSystem/CardPlayController";
 
 	[Export] public CardPlayController Controller { get; private set; }
@@ -21,6 +21,8 @@ public partial class CardHand : Control
 	public int HandCount => _hand.Count;
 	public int DeckCount => _drawPile.Count;
 	public int CardsAvailable => _drawPile.Count;
+	public int HandCapacity => Mathf.Max(0, HandSize);
+	public bool IsLoaded { get; private set; }
 
 	public override void _Ready()
 	{
@@ -29,9 +31,21 @@ public partial class CardHand : Control
 			Controller = GetNode<CardPlayController>(ControllerPath);
 		}
 
+		EnsureLoaded();
+	}
+
+	public void EnsureLoaded()
+	{
+		if (IsLoaded)
+		{
+			return;
+		}
+
+		IsLoaded = true;
+
 		if (StartingDeck != null)
 		{
-			LoadDeck(StartingDeck, StartingHandSize);
+			LoadDeck(StartingDeck);
 		}
 	}
 
@@ -40,10 +54,9 @@ public partial class CardHand : Control
 		LayoutCards();
 	}
 
-	public void LoadDeck(CardDeck deck, int handSize)
+	public void LoadDeck(CardDeck deck)
 	{
 		ClearHand();
-		StartingHandSize = handSize;
 
 		foreach (Card card in deck.Cards)
 		{
@@ -54,7 +67,7 @@ public partial class CardHand : Control
 		}
 
 		Shuffle(_drawPile);
-		DrawCards(handSize);
+		DrawCards(HandCapacity);
 	}
 
 	public void AddCard(Card card)
@@ -64,9 +77,55 @@ public partial class CardHand : Control
 			return;
 		}
 
-		_drawPile.Add(card);
+		EnsureLoaded();
+
+		if (!AddCardToHandOrDeck(card))
+		{
+			Shuffle(_drawPile);
+		}
+
+		UpdateHud();
+	}
+
+	public int GiveCards(int amount, Godot.Collections.Array<Card> cardPool)
+	{
+		EnsureLoaded();
+
+		if (amount <= 0 || cardPool == null)
+		{
+			return 0;
+		}
+
+		List<Card> choices = new();
+
+		foreach (Card card in cardPool)
+		{
+			if (card != null)
+			{
+				choices.Add(card);
+			}
+		}
+
+		if (choices.Count == 0)
+		{
+			return 0;
+		}
+
+		int addedToHand = 0;
+
+		for (int i = 0; i < amount; i++)
+		{
+			Card card = choices[_random.Next(choices.Count)];
+
+			if (AddCardToHandOrDeck(card))
+			{
+				addedToHand++;
+			}
+		}
+
 		Shuffle(_drawPile);
-		DrawCards(StartingHandSize - _hand.Count);
+		UpdateHud();
+		return addedToHand;
 	}
 
 	public int DrawCards(int count)
@@ -106,7 +165,19 @@ public partial class CardHand : Control
 		_hand.Remove(view);
 		view.QueueFree();
 
-		DrawCards(StartingHandSize - _hand.Count);
+		DrawCards(HandCapacity - _hand.Count);
+	}
+
+	private bool AddCardToHandOrDeck(Card card)
+	{
+		if (_hand.Count < HandCapacity && CardViewScene != null)
+		{
+			AddCardView(card);
+			return true;
+		}
+
+		_drawPile.Add(card);
+		return false;
 	}
 
 	private void AddCardView(Card card)

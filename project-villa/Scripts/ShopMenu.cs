@@ -109,7 +109,7 @@ public partial class ShopMenu : CanvasLayer
 
 		if (!hud.TrySpendResources(card.ShopPrice))
 		{
-			hud.ShowMessage("Not enough resources.");
+			hud.ShowMessage("Not enough magic to buy this card.");
 			return;
 		}
 
@@ -132,7 +132,7 @@ public partial class ShopMenu : CanvasLayer
 
 		if (!hud.TrySpendResources(RefreshCost))
 		{
-			hud.ShowMessage("Not enough resources to refresh.");
+			hud.ShowMessage("Not enough magic to refresh.");
 			return;
 		}
 

@@ -12,9 +12,11 @@
 
 [node name="SceneManager" type="Node" parent="." unique_id=1751859501]
 
-[node name="TurnManager" type="Node" parent="SceneManager" unique_id=408953221 node_paths=PackedStringArray("canvasModulate")]
+[node name="TurnManager" type="Node" parent="SceneManager" unique_id=408953221 node_paths=PackedStringArray("canvasModulate", "HUD")]
 script = ExtResource("2_x8jca")
 canvasModulate = NodePath("CanvasModulate")
+HUD = NodePath("../../HUD")
+CardsPerTurn = 2
 duskColor = Color(0.28446978, 0.44396332, 0.55254793, 1)
 midNightColor = Color(0.399723, 0.42872024, 0.6419647, 1)
 morningColor = Color(0.8037247, 0.6265545, 0.38329536, 1)
@@ -38,5 +40,26 @@ position = Vector2(192, -64)
 [node name="Tile" parent="." unique_id=510889725 instance=ExtResource("7_y1la5")]
 position = Vector2(-64, -64)
 
-[node name="Tile2" parent="." unique_id=1349895852 instance=ExtResource("7_y1la5")]
+[node name="Tile2" parent="." unique_id=887554048 instance=ExtResource("7_y1la5")]
+position = Vector2(64, 64)
+
+[node name="Tile3" parent="." unique_id=52220369 instance=ExtResource("7_y1la5")]
 position = Vector2(64, -64)
+
+[node name="Tile4" parent="." unique_id=981611893 instance=ExtResource("7_y1la5")]
+position = Vector2(-64, 64)
+
+[node name="Tile5" parent="." unique_id=671253786 instance=ExtResource("7_y1la5")]
+position = Vector2(192, 64)
+
+[node name="Tile6" parent="." unique_id=359257398 instance=ExtResource("7_y1la5")]
+position = Vector2(192, -64)
+
+[node name="Tile7" parent="." unique_id=71817508 instance=ExtResource("7_y1la5")]
+position = Vector2(-64, -192)
+
+[node name="Tile8" parent="." unique_id=2070036224 instance=ExtResource("7_y1la5")]
+position = Vector2(64, -192)
+
+[node name="Tile9" parent="." unique_id=708746336 instance=ExtResource("7_y1la5")]
+position = Vector2(192, -192)

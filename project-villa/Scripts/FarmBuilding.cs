@@ -15,5 +15,6 @@ public partial class FarmBuilding : Node2D, IBuilding
 	public void OnTurnStart()
 	{
 		ResourceManager.Add(ResourceManager.ResourceType.Food, foodAmount);
+		Hud.instance?.UpdateResourcesUI();
 	}
 }

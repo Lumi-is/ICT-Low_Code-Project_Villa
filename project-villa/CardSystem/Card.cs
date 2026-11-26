@@ -10,7 +10,10 @@ public partial class Card : Resource
 	[Export(PropertyHint.MultilineText)] public string Description = "";
 	[Export] public string Category = "Action";
 	[Export] public Color AccentColor = new Color("#e0b85a");
+	[Export] public int WoodCost = 0;
+	[Export] public int StoneCost = 0;
 	[Export] public int MagicCost = 0;
+	[Export] public int FoodCost = 0;
 	[Export] public int ShopPrice = 10;
 
 	public virtual bool TryPlay(CardPlayController game, Vector2 playPos)

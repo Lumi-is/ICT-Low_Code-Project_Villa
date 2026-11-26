@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using ProjectVilla.Cards;
 
 [GlobalClass]
 public partial class Hud : CanvasLayer
@@ -21,8 +22,8 @@ public partial class Hud : CanvasLayer
 	private static readonly string[] _resourceNames = { "Wood", "Stone", "Magic", "Food" };
 
 	private static readonly string[] _resourceIcons =
-    {
-        "res://Graphics/wood_icon.png",
+	{
+		"res://Graphics/wood_icon.png",
 		"res://Graphics/stone_icon.png",
 		"res://Graphics/magic_icon.png",
 		"res://Graphics/food_icon.png"
@@ -32,11 +33,15 @@ public partial class Hud : CanvasLayer
 	private int _handCount;
 	private Tween _messageTween;
 
+	public CardHand CardHand => GetNodeOrNull<CardHand>("HBoxContainer/CardHandSection/CardHand");
+
 	public int Resources => ResourceManager.Magic;
 
 	public int DeckCount => _deckCount;
 
 	public int HandCount => _handCount;
+
+	public int MessageVersion { get; private set; }
 
 	public override void _Ready()
 	{
@@ -163,8 +168,53 @@ public partial class Hud : CanvasLayer
 		UpdateDeckUI();
 	}
 
+	public int GiveCards(int amount)
+	{
+		CardHand hand = CardHand;
+
+		if (hand == null || ShopMenu == null || amount <= 0)
+		{
+			return 0;
+		}
+
+		int deckBefore = hand.DeckCount;
+		int addedToHand = hand.GiveCards(amount, ShopMenu.AvailableCardPool);
+		int addedToDeck = hand.DeckCount - deckBefore;
+		int total = addedToHand + addedToDeck;
+
+		if (total > 0)
+		{
+			if (addedToHand > 0 && addedToDeck > 0)
+			{
+				ShowMessage("Drew " + addedToHand + " " + CardWord(addedToHand) + ". " + addedToDeck + " went to deck.");
+			}
+			else if (addedToHand > 0)
+			{
+				ShowMessage("Drew " + addedToHand + " " + CardWord(addedToHand) + ".");
+			}
+			else
+			{
+				ShowMessage(addedToDeck + " " + CardWord(addedToDeck) + " went to deck.");
+			}
+		}
+
+		return total;
+	}
+
+	public int GiveCardsForTurn(int amount)
+	{
+		return GiveCards(amount);
+	}
+
+	private static string CardWord(int count)
+	{
+		return count == 1 ? "card" : "cards";
+	}
+
 	public void ShowMessage(string message, float holdSeconds = 2.2f)
 	{
+		MessageVersion++;
+
 		if (CardMessageLabel == null)
 		{
 			GD.Print("[HUD] " + message);
