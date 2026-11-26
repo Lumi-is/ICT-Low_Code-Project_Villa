@@ -13,14 +13,18 @@ path = "res://Scenes/FarmBuilding.tscn"
 DisplayName = "Build Farm"
 Description = "Builds a basic farm."
 AccentColor = Color(0.6358732, 0.4848755, 0.3047083, 1)
+WoodCost = 10
+ShopPrice = 10
 metadata/_custom_type_script = "uid://d0ae25o8vdvxw"
 
 [sub_resource type="Resource" id="Resource_4m1id"]
 script = ExtResource("6_hik0y")
 Count = 2
 DisplayName = "Draw Cards"
-Description = "Draws two cards from the deck."
+Description = "Draws two cards. If your hand is full, they go to the deck."
 AccentColor = Color(0.9328466, 0.6482666, 0.74777347, 1)
+MagicCost = 2
+ShopPrice = 5
 metadata/_custom_type_script = "uid://dus116ba6peu5"
 
 [node name="ShopMenu" type="CanvasLayer" unique_id=820137950]

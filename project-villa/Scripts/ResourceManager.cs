@@ -70,11 +70,24 @@ public static partial class ResourceManager
 
 	public static bool CanPlayCard(Card card)
 	{
-		return card != null && CanAfford(ResourceType.Magic, card.MagicCost);
+		return card != null
+			&& CanAfford(ResourceType.Wood, card.WoodCost)
+			&& CanAfford(ResourceType.Stone, card.StoneCost)
+			&& CanAfford(ResourceType.Magic, card.MagicCost)
+			&& CanAfford(ResourceType.Food, card.FoodCost);
 	}
 
 	public static bool SpendCardCost(Card card)
 	{
-		return card != null && TrySpend(ResourceType.Magic, card.MagicCost);
+		if (!CanPlayCard(card))
+		{
+			return false;
+		}
+
+		TrySpend(ResourceType.Wood, card.WoodCost);
+		TrySpend(ResourceType.Stone, card.StoneCost);
+		TrySpend(ResourceType.Magic, card.MagicCost);
+		TrySpend(ResourceType.Food, card.FoodCost);
+		return true;
 	}
 }

@@ -9,7 +9,10 @@ public partial class CardView : Control
 	public bool Dragging { get; private set; }
 
 	private Label _title;
-	private Label _cost;
+	private Label _woodCost;
+	private Label _stoneCost;
+	private Label _magicCost;
+	private Label _foodCost;
 	private Label _description;
 	private Label _category;
 	private ColorRect _icon;
@@ -19,7 +22,10 @@ public partial class CardView : Control
 	public override void _Ready()
 	{
 		_title = GetNode<Label>("%Title");
-		_cost = GetNode<Label>("%Cost");
+		_woodCost = GetNode<Label>("%Cost");
+		_stoneCost = GetNode<Label>("%StoneNumber");
+		_magicCost = GetNode<Label>("%MagicNumber");
+		_foodCost = GetNode<Label>("%FoodNumber");
 		_description = GetNode<Label>("%Description");
 		_category = GetNode<Label>("%Category");
 		_icon = GetNode<ColorRect>("%IconPanel");
@@ -111,14 +117,6 @@ public partial class CardView : Control
 		}
 	}
 
-	public override void _Process(double delta)
-	{
-		if (Dragging && !Input.IsMouseButtonPressed(MouseButton.Left))
-		{
-			Interactor.Instance?.CancelCardDrag();
-		}
-	}
-
 	private void SetPivot()
 	{
 		PivotOffset = Size * 0.5f;
@@ -150,11 +148,23 @@ public partial class CardView : Control
 		}
 
 		_title.Text = Card.DisplayName;
-		_cost.Text = Card.MagicCost <= 0 ? "FREE" : Card.MagicCost.ToString();
+		SetCostLabel(_woodCost, Card.WoodCost, Card.AccentColor);
+		SetCostLabel(_stoneCost, Card.StoneCost, Card.AccentColor);
+		SetCostLabel(_magicCost, Card.MagicCost, Card.AccentColor);
+		SetCostLabel(_foodCost, Card.FoodCost, Card.AccentColor);
 		_description.Text = Card.Description;
 		_category.Text = Card.Category.ToUpper();
 		_style.BorderColor = Card.AccentColor;
 		_icon.Color = Card.AccentColor.Darkened(0.65f);
-		_cost.AddThemeColorOverride("font_color", Card.AccentColor.Lightened(0.3f));
+	}
+
+	private static void SetCostLabel(Label label, int amount, Color accent)
+	{
+		label.Text = amount > 0 ? amount.ToString() : "-";
+
+		if (amount > 0)
+		{
+			label.AddThemeColorOverride("font_color", accent.Lightened(0.3f));
+		}
 	}
 }

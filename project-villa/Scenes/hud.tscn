@@ -22,11 +22,13 @@ expand_margin_top = 4.0
 expand_margin_right = 10.0
 expand_margin_bottom = 4.0
 
-[node name="HUD" type="CanvasLayer" unique_id=324807081 node_paths=PackedStringArray("PauseButton", "ShopButton", "DeckLabel", "ResourcesLabel", "CardMessageLabel")]
+[node name="HUD" type="CanvasLayer" unique_id=324807081 node_paths=PackedStringArray("PauseButton", "ShopButton", "PassTurnButton", "TimeOfDay", "DeckLabel", "ResourcesLabel", "CardMessageLabel")]
 process_mode = 3
 script = ExtResource("1_hud")
-PauseButton = NodePath("InteractiveButtons/VBoxContainer/Pause")
-ShopButton = NodePath("InteractiveButtons/VBoxContainer/Shop")
+PauseButton = NodePath("HBoxContainer2/Pause")
+ShopButton = NodePath("HBoxContainer2/Shop")
+PassTurnButton = NodePath("HBoxContainer2/PassTurn")
+TimeOfDay = NodePath("HBoxContainer2/TimeOfDay")
 DeckLabel = NodePath("HBoxContainer/Stats/HBoxContainer/deck")
 ResourcesLabel = NodePath("resources")
 CardMessageLabel = NodePath("CardMessage")
@@ -84,36 +86,9 @@ size_flags_vertical = 3
 script = ExtResource("5_hand")
 CardViewScene = ExtResource("6_cardview")
 StartingDeck = ExtResource("7_deck")
+HandSize = 4
 ControllerPath = NodePath("../../../CardSystem/CardPlayController")
 Controller = NodePath("../../../CardSystem/CardPlayController")
-
-[node name="InteractiveButtons" type="MarginContainer" parent="." unique_id=1777540999]
-custom_minimum_size = Vector2(80, 100)
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -100.0
-offset_right = 80.0
-offset_bottom = 100.0
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="InteractiveButtons" unique_id=1468223091]
-layout_mode = 2
-alignment = 1
-
-[node name="Pause" type="Button" parent="InteractiveButtons/VBoxContainer" unique_id=191809415]
-custom_minimum_size = Vector2(72, 32)
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_fonts/font = ExtResource("6_43w4t")
-text = "Pause"
-
-[node name="Shop" type="Button" parent="InteractiveButtons/VBoxContainer" unique_id=2056004137]
-custom_minimum_size = Vector2(72, 32)
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_fonts/font = ExtResource("6_43w4t")
-text = "Shop"
 
 [node name="resources" type="RichTextLabel" parent="." unique_id=1479460138]
 custom_minimum_size = Vector2(260, 0)
@@ -174,5 +149,36 @@ visible = false
 stream = ExtResource("9_5ep0j")
 script = ExtResource("10_4f5kr")
 
-[connection signal="pressed" from="InteractiveButtons/VBoxContainer/Pause" to="ClickSound" method="PlaySound"]
-[connection signal="pressed" from="InteractiveButtons/VBoxContainer/Shop" to="ClickSound" method="PlaySound"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=438078633]
+offset_left = 13.0
+offset_top = 8.0
+offset_right = 254.0
+offset_bottom = 41.0
+
+[node name="Pause" type="Button" parent="HBoxContainer2" unique_id=191809415]
+custom_minimum_size = Vector2(72, 32)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("6_43w4t")
+text = "Pause"
+
+[node name="Shop" type="Button" parent="HBoxContainer2" unique_id=2056004137]
+custom_minimum_size = Vector2(72, 32)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("6_43w4t")
+text = "Shop"
+
+[node name="PassTurn" type="Button" parent="HBoxContainer2" unique_id=285377424]
+custom_minimum_size = Vector2(72, 32)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("6_43w4t")
+text = "Pass Turn"
+
+[node name="TimeOfDay" type="Label" parent="HBoxContainer2" unique_id=1837401614]
+layout_mode = 2
+text = "Time Of Day: Dusk"
+
+[connection signal="pressed" from="HBoxContainer2/Pause" to="ClickSound" method="PlaySound"]
+[connection signal="pressed" from="HBoxContainer2/Shop" to="ClickSound" method="PlaySound"]

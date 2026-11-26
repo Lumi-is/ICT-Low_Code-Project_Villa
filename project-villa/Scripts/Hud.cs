@@ -1,12 +1,16 @@
 using System.Collections.Generic;
 using Godot;
+using ProjectVilla.Cards;
 
 [GlobalClass]
 public partial class Hud : CanvasLayer
 {
+	public static Hud instance;
 	[ExportGroup("UI References")]
 	[Export] public Button PauseButton;
 	[Export] public Button ShopButton;
+	[Export] public Button PassTurnButton;
+	[Export] public Label TimeOfDay;
 	[Export] public RichTextLabel DeckLabel;
 	[Export] public RichTextLabel ResourcesLabel;
 	[Export] public Label CardMessageLabel;
@@ -19,8 +23,8 @@ public partial class Hud : CanvasLayer
 
 	private static readonly string[] _resourceIcons =
 	{
-		"res://Graphics/building_material_icon.png",
-		"res://Graphics/building_material_icon.png",
+		"res://Graphics/wood_icon.png",
+		"res://Graphics/stone_icon.png",
 		"res://Graphics/magic_icon.png",
 		"res://Graphics/food_icon.png"
 	};
@@ -29,21 +33,29 @@ public partial class Hud : CanvasLayer
 	private int _handCount;
 	private Tween _messageTween;
 
+	public CardHand CardHand => GetNodeOrNull<CardHand>("HBoxContainer/CardHandSection/CardHand");
+
 	public int Resources => ResourceManager.Magic;
 
 	public int DeckCount => _deckCount;
 
 	public int HandCount => _handCount;
 
+	public int MessageVersion { get; private set; }
+
 	public override void _Ready()
 	{
+		instance = this;
 		ProcessMode = ProcessModeEnum.Always;
 		ResourceManager.Reset();
 
+		/*
 		PauseButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Pause");
 		ShopButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/Shop");
+		PassTurnButton ??= GetNode<Button>("BottomPanel/HBoxContainer/InteractiveButtons/VBoxContainer/PassTurn");
 		DeckLabel ??= GetNode<RichTextLabel>("BottomPanel/HBoxContainer/Stats/HBoxContainer/deck");
 		ResourcesLabel ??= GetNode<RichTextLabel>("BottomPanel/HBoxContainer/Stats/HBoxContainer/resources");
+		*/
 		ResourcesLabel.BbcodeEnabled = true;
 		CardMessageLabel ??= GetNodeOrNull<Label>("CardMessage");
 
@@ -58,6 +70,11 @@ public partial class Hud : CanvasLayer
 		if (ShopButton != null)
 		{
 			ShopButton.Pressed += OnShopButtonPressed;
+		}
+
+		if(PassTurnButton != null)
+		{
+			PassTurnButton.Pressed += OnPassTurnButtonPressed;
 		}
 
 		UpdateResourcesUI();
@@ -78,6 +95,17 @@ public partial class Hud : CanvasLayer
 	private void OnShopButtonPressed()
 	{
 		ShopMenu?.OpenShop();
+	}
+
+	private void OnPassTurnButtonPressed()
+	{
+		// Send signal to do stuff
+		TurnManager.instance.OnPassTurnPressed();
+	}
+
+	public void SetTimeOfDayLabel(string s)
+	{
+		TimeOfDay.Text = "Time Of Day: "+ s;
 	}
 
 	public void UpdateResourcesUI()
@@ -140,8 +168,53 @@ public partial class Hud : CanvasLayer
 		UpdateDeckUI();
 	}
 
-	public void ShowCardMessage(string message, float holdSeconds = 2.2f)
+	public int GiveCards(int amount)
 	{
+		CardHand hand = CardHand;
+
+		if (hand == null || ShopMenu == null || amount <= 0)
+		{
+			return 0;
+		}
+
+		int deckBefore = hand.DeckCount;
+		int addedToHand = hand.GiveCards(amount, ShopMenu.AvailableCardPool);
+		int addedToDeck = hand.DeckCount - deckBefore;
+		int total = addedToHand + addedToDeck;
+
+		if (total > 0)
+		{
+			if (addedToHand > 0 && addedToDeck > 0)
+			{
+				ShowMessage("Drew " + addedToHand + " " + CardWord(addedToHand) + ". " + addedToDeck + " went to deck.");
+			}
+			else if (addedToHand > 0)
+			{
+				ShowMessage("Drew " + addedToHand + " " + CardWord(addedToHand) + ".");
+			}
+			else
+			{
+				ShowMessage(addedToDeck + " " + CardWord(addedToDeck) + " went to deck.");
+			}
+		}
+
+		return total;
+	}
+
+	public int GiveCardsForTurn(int amount)
+	{
+		return GiveCards(amount);
+	}
+
+	private static string CardWord(int count)
+	{
+		return count == 1 ? "card" : "cards";
+	}
+
+	public void ShowMessage(string message, float holdSeconds = 2.2f)
+	{
+		MessageVersion++;
+
 		if (CardMessageLabel == null)
 		{
 			GD.Print("[HUD] " + message);

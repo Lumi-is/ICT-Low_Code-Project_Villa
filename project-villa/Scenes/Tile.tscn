@@ -17,6 +17,3 @@ graphics = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Graphics/Area2D" unique_id=1487479412]
 shape = SubResource("RectangleShape2D_ab2ii")
-
-[connection signal="mouse_entered" from="Graphics/Area2D" to="Graphics/Area2D" method="OnMouseEntered"]
-[connection signal="mouse_exited" from="Graphics/Area2D" to="Graphics/Area2D" method="OnMouseExited"]

@@ -9,12 +9,20 @@ public partial class BuildCard : Card
 
 	public override bool TryPlay(CardPlayController game, Vector2 playPos)
 	{
-		if (WorldGridManager.highlightedTile == null)
+		Tile target = WorldGridManager.GetTileAtWorldPosition(playPos);
+
+		if (target == null)
 		{
-			game.Hud?.ShowCardMessage("Hover over a tile first.");
+			game.Hud?.ShowMessage("Drop the card on a tile.");
 			return false;
 		}
 
-		return WorldGridManager.InstantiateObject(playPos, path);
+		if (!WorldGridManager.IsTileFree(target))
+		{
+			game.Hud?.ShowMessage("That tile is occupied.");
+			return false;
+		}
+
+		return WorldGridManager.InstantiateObject(playPos, path, target);
 	}
 }

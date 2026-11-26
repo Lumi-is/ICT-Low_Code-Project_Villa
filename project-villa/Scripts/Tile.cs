@@ -11,6 +11,7 @@ public partial class Tile : Node2D, IClickable
     public override void _Ready()
     {
         WorldGridManager.MoveOwner(this, WorldGridManager.CalculateSnapPos(GlobalPosition));
+        WorldGridManager.RegisterTile(this);
     }
 
 

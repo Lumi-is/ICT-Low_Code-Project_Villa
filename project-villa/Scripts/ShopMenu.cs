@@ -101,7 +101,7 @@ public partial class ShopMenu : CanvasLayer
 
 		if (hand == null)
 		{
-			hud.ShowCardMessage("There is no deck to add the card to.");
+			hud.ShowMessage("There is no deck to add the card to.");
 			return;
 		}
 
@@ -109,12 +109,12 @@ public partial class ShopMenu : CanvasLayer
 
 		if (!hud.TrySpendResources(card.ShopPrice))
 		{
-			hud.ShowCardMessage("Not enough resources.");
+			hud.ShowMessage("Not enough magic to buy this card.");
 			return;
 		}
 
 		hand.AddCard(card);
-		hud.ShowCardMessage("Bought " + card.DisplayName + ".");
+		hud.ShowMessage("Bought " + card.DisplayName + ".");
 		UpdateResourcesLabel();
 
 		CardContainer.RemoveChild(view);
@@ -132,7 +132,7 @@ public partial class ShopMenu : CanvasLayer
 
 		if (!hud.TrySpendResources(RefreshCost))
 		{
-			hud.ShowCardMessage("Not enough resources to refresh.");
+			hud.ShowMessage("Not enough magic to refresh.");
 			return;
 		}
 
@@ -142,7 +142,7 @@ public partial class ShopMenu : CanvasLayer
 			return;
 		}
 
-		hud.ShowCardMessage("Shop refreshed.");
+		hud.ShowMessage("Shop refreshed.");
 		UpdateResourcesLabel();
 	}
 
@@ -162,7 +162,7 @@ public partial class ShopMenu : CanvasLayer
 
 		if (ResourcesLabel != null && hud != null)
 		{
-			ResourcesLabel.Text = "Resources: " + hud.Resources;
+			ResourcesLabel.Text = "Magic: " + hud.Resources;
 		}
 	}
 }

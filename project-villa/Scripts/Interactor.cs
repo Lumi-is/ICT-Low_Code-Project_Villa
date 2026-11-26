@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
+using Grid;
 using ProjectVilla.Cards;
 
 public partial class Interactor : Node2D
@@ -17,10 +18,12 @@ public partial class Interactor : Node2D
 	private IClickable cClickable;
 	private CardView _draggedCard;
 	private Vector2 _dragOffset;
+	private Tile _dragHighlightedTile;
 
 	public override void _Ready()
 	{
 		Instance = this;
+		WorldGridManager.Reset();
 	}
 
 	public override void _ExitTree()
@@ -75,6 +78,7 @@ public partial class Interactor : Node2D
 
 		if (_draggedCard != null)
 		{
+			UpdateCardDragHighlight();
 			return;
 		}
 
@@ -87,6 +91,7 @@ public partial class Interactor : Node2D
 
 		if (colliders.Count == 0)
 		{
+			WorldGridManager.highlightedTile = null;
 			return;
 		}
 
@@ -154,6 +159,7 @@ public partial class Interactor : Node2D
 		_draggedCard = null;
 
 		Vector2 dropPosition = GetGlobalMousePosition();
+		ClearCardDragHighlight();
 		view.EndDrag();
 		view.Hand?.PlayCard(view, dropPosition);
 	}
@@ -167,6 +173,40 @@ public partial class Interactor : Node2D
 
 		_draggedCard.EndDrag();
 		_draggedCard = null;
+		ClearCardDragHighlight();
+	}
+
+	private void UpdateCardDragHighlight()
+	{
+		Tile tile = WorldGridManager.GetTileAtWorldPosition(mousePos);
+
+		if (tile == _dragHighlightedTile)
+		{
+			return;
+		}
+
+		_dragHighlightedTile?.Reset();
+		_dragHighlightedTile = tile;
+
+		if (tile != null)
+		{
+			tile.Highlight();
+		}
+		else
+		{
+			WorldGridManager.highlightedTile = null;
+		}
+	}
+
+	private void ClearCardDragHighlight()
+	{
+		if (_dragHighlightedTile != null)
+		{
+			_dragHighlightedTile.Reset();
+			_dragHighlightedTile = null;
+		}
+
+		WorldGridManager.highlightedTile = null;
 	}
 
 	private static void ResetCanvasPriority(object item, Sprite2D graphics)
