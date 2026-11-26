@@ -99,7 +99,7 @@ z_index = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.933, 0.847, 1)
 theme_override_font_sizes/font_size = 16
-text = "Resources:"
+text = "Magic:"
 horizontal_alignment = 1
 
 [node name="CardContainer" type="HBoxContainer" parent="UI/Background/VBoxContainer" unique_id=333552654]
