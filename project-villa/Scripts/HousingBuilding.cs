@@ -1,15 +1,31 @@
 using Godot;
+using Grid;
 
 [GlobalClass]
-public partial class HousingBuilding : Node2D, IBuilding
+public partial class HousingBuilding : Building
 {
-    public void OnBuild()
+    public override void OnTurnStart()
     {
         
     }
 
-    public void OnTurnStart()
+    public void Highlight()
     {
         
+    }
+
+    public void Reset()
+    {
+        
+    }
+
+    public void OnClickEvent()
+    {
+        
+    }
+
+    public Sprite2D GetGraphics()
+    {
+        return null;
     }
 }

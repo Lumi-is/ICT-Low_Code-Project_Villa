@@ -109,14 +109,14 @@ public partial class TurnManager : Node
 					Hud hud = HUD != null ? HUD : Hud.instance;
 					hud?.GiveCardsForTurn(CardsPerTurn);
 				}
-				canvasModulate.Color = canvasModulate.Color.Lerp(duskColor, 0.01f);
+				canvasModulate.Color = canvasModulate.Color.Lerp(duskColor, (float)delta);
 				break;
 
 			case "playerActionPhase":
 				// What to do
 				Hud.instance.SetTimeOfDayLabel("Midnight");
 
-				canvasModulate.Color = canvasModulate.Color.Lerp(midNightColor, 0.01f);
+				canvasModulate.Color = canvasModulate.Color.Lerp(midNightColor, (float)delta);
 
 				// Increments phase when player presses "pass turn" 
 				break;
@@ -129,7 +129,7 @@ public partial class TurnManager : Node
 				{
 					// Do stuff thats only done once = Aka. animations.
 				}
-				canvasModulate.Color = canvasModulate.Color.Lerp(morningColor, 0.01f);
+				canvasModulate.Color = canvasModulate.Color.Lerp(morningColor, (float)delta);
 				break;
 
 			case "enemyActionPhase":
@@ -169,7 +169,7 @@ public partial class TurnManager : Node
 
 				// Go through every enemy, do their actions one by one and move to the next. When all enemies have done their actions, this phase ends. 
 				
-				canvasModulate.Color = canvasModulate.Color.Lerp(noonColor, 0.01f);
+				canvasModulate.Color = canvasModulate.Color.Lerp(noonColor, (float)delta);
 
 				
 				break;

@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://p2g1wquqbqwl" path="res://Scripts/TurnManager.cs" id="2_x8jca"]
 [ext_resource type="PackedScene" uid="uid://mqc7jiu727hb" path="res://Scenes/Troop/TroopRook.tscn" id="7_i20cl"]
 [ext_resource type="PackedScene" uid="uid://dnyqmqg47kjtm" path="res://Scenes/Troop/TroopBishop.tscn" id="7_ij6p1"]
-[ext_resource type="PackedScene" uid="uid://indd0jq1d8ma" path="res://Scenes/Tile.tscn" id="7_y1la5"]
+[ext_resource type="PackedScene" uid="uid://b1dlxd57vr2xj" path="res://Scenes/Tile.tscn" id="7_y1la5"]
 
 [node name="Root" type="Node2D" unique_id=1171577489]
 

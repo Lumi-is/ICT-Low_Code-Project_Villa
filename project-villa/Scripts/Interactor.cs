@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
@@ -13,6 +14,15 @@ public partial class Interactor : Node2D
 	private PhysicsPointQueryParameters2D query;
 	private Array<Dictionary> results;
 	private List<GodotObject> colliders = new();
+
+	[Export]
+	public int DraggablePriority = 4096;
+	[Export]
+	public int BuildingPriority = 4;
+	[Export]
+	public int TroopPriority = 2;
+	[Export]
+	public int TilePriority = 0;
 
 	private IDraggable cDraggable;
 	private IClickable cClickable;
@@ -86,7 +96,7 @@ public partial class Interactor : Node2D
 
 		if (cClickable != null && cDraggable == null)
 		{
-			ResetCanvasPriority(cClickable, cClickable.GetGraphics());
+			CheckTypeAndSetPrio(cClickable, 0);
 		}
 
 		if (colliders.Count == 0)
@@ -98,7 +108,7 @@ public partial class Interactor : Node2D
 		if (Input.IsActionJustPressed("Mouse1") && colliders[0] is IDraggable draggable)
 		{
 			cDraggable = draggable;
-			SetCanvasPriority(draggable, draggable.GetGraphics(), 2);
+			SetCanvasPriority(draggable, draggable.GetGraphics(), DraggablePriority);
 		}
 
 		if (Input.IsActionPressed("Mouse1") && cDraggable != null)
@@ -109,20 +119,52 @@ public partial class Interactor : Node2D
 		if (Input.IsActionJustReleased("Mouse1") && cDraggable != null)
 		{
 			cDraggable.Release();
-			ResetCanvasPriority(cDraggable, cDraggable.GetGraphics());
+			CheckTypeAndSetPrio(cDraggable, 1);
 			cDraggable = null;
 		}
 
 		if (colliders.Count == 1 && colliders[0] is IClickable clickable && cDraggable == null)
 		{
 			cClickable = clickable;
-			SetCanvasPriority(clickable, clickable.GetGraphics(), 1);
+
+			CheckTypeAndSetPrio(clickable, 1);
+			
 			clickable.Highlight();
 
 			if (Input.IsActionJustPressed("Mouse2"))
 			{
 				clickable.OnClickEvent();
 			}
+		}
+	}
+
+	private void CheckTypeAndSetPrio(IClickable clickable, int i)
+	{
+		if(clickable is IBuilding)
+		{
+			// Move this to
+			SetCanvasPriority(clickable, clickable.GetGraphics(), BuildingPriority + i);
+		} else if(clickable is Troop)
+		{
+			SetCanvasPriority(clickable, clickable.GetGraphics(), TroopPriority + i);
+		} else if(clickable is Tile)
+		{
+			SetCanvasPriority(clickable, clickable.GetGraphics(), TilePriority + i);
+		}
+	}
+
+	private void CheckTypeAndSetPrio(IDraggable clickable, int i)
+	{
+		if(clickable is IBuilding)
+		{
+			// Move this to
+			SetCanvasPriority(clickable, clickable.GetGraphics(), BuildingPriority + i);
+		} else if(clickable is Troop)
+		{
+			SetCanvasPriority(clickable, clickable.GetGraphics(), TroopPriority + i);
+		} else if(clickable is Tile)
+		{
+			SetCanvasPriority(clickable, clickable.GetGraphics(), TilePriority + i);
 		}
 	}
 
