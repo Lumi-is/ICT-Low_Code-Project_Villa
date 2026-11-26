@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dnyqmqg47kjtm"]
 
-[ext_resource type="Texture2D" uid="uid://cc3b2xphng4po" path="res://Graphics/Temporary/chess_piece_bishop.png" id="1_87t73"]
+[ext_resource type="Texture2D" uid="uid://dqcvqh8dms8u2" path="res://Graphics/bishop_dragon_fly_up.png" id="1_87t73"]
 [ext_resource type="Script" uid="uid://b7w5vcjlwkkwk" path="res://Scripts/Troop.cs" id="2_483v5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ab2ii"]

@@ -4,6 +4,7 @@ using Grid;
 
 public partial class Troop : Node2D, IClickable, IDraggable
 {
+	[Export] public bool isPlayerControlled;
 	[Export] public string troopType;
 	[Export] public Sprite2D graphics;
 
@@ -34,6 +35,7 @@ public partial class Troop : Node2D, IClickable, IDraggable
 	public override void _Ready()
 	{
 		TurnManager.troopList.Add(this);
+		WorldGridManager.troopGrid[WorldGridManager.GetNearestCell(GlobalPosition)[0]+256,WorldGridManager.GetNearestCell(GlobalPosition)[1]+256] = this;
 		
 		if (troopType == "rook")
 		{
@@ -66,6 +68,8 @@ public partial class Troop : Node2D, IClickable, IDraggable
 
 	public void Drag(Vector2 mousePos)
 	{
+		if(!isPlayerControlled) return;
+
 		if(dragStartLocation == null)
 		{
 			dragStartLocation = GlobalPosition;
@@ -73,12 +77,30 @@ public partial class Troop : Node2D, IClickable, IDraggable
 		WorldGridManager.MoveOwner(this, mousePos);
 	}
 
+	public void Destruct()
+	{
+		GD.Print(Name + " is about to get destroyed.");
+		GetOwner().QueueFree();
+		GD.Print("Poof!");
+	}
+
 	// Should be able to move only X amount of tiles. How to do?
 	public void Release()
 	{
+		if(!isPlayerControlled) return;
+
 		if(CheckForCell(GetGlobalMousePosition(), (Vector2)dragStartLocation) && !hasMoved)
 		{
+			// Make cards for creating troops, make troops add themselves to grid 
+			var nearestCellToRelease = WorldGridManager.GetNearestCell(GetGlobalMousePosition());
+			Troop troop = WorldGridManager.troopGrid[nearestCellToRelease[0]+256,nearestCellToRelease[1]+256];
+
+			Hud.instance.ShowMessage("Enemy troop was destroyed.");
+			troop.Destruct(); 
+
+			WorldGridManager.troopGrid[nearestCellToRelease[0]+256,nearestCellToRelease[1]+256] = this;
 			WorldGridManager.MoveOwner(this,WorldGridManager.CalculateSnapPos(GetGlobalMousePosition()));
+
 			hasMoved = true;
 		} else 
 		{
@@ -104,16 +126,23 @@ public partial class Troop : Node2D, IClickable, IDraggable
 		// Check for whether or not player is trying to move the troop too far away from original position
 		if(2 + cellOffset[0] >= viableLocations.Length || 2 + cellOffset[1] >= viableLocations.Length || 2 - cellOffset[0] < 0 || 2 - cellOffset[1] < 0) return false;
 
-		Type cellContents = WorldGridManager.GetCellContents(releasePos);
+		Type cellContents = WorldGridManager.GetCellContentsType(releasePos);
 
 		if(viableLocations[2 + cellOffset[1]][2 + cellOffset[0]] && cellContents == null)
 		{
+			
 			return true;
-		} else if(WorldGridManager.GetCellContents(releasePos) == typeof(Troop))
+		} else if(WorldGridManager.GetCellContentsType(releasePos) == typeof(Troop))
 		{
-			//WorldGridManager.troopGrid[nearestCellToRelease[0]+256,nearestCellToRelease[1]+256].Destruct(); 
-			WorldGridManager.troopGrid[nearestCellToRelease[0]+256,nearestCellToRelease[1]+256] = this;
-			return true;
+			Troop troop = WorldGridManager.troopGrid[nearestCellToRelease[0]+256,nearestCellToRelease[1]+256];
+			if(!troop.isPlayerControlled)
+			{
+				return true;
+			} else
+			{
+				return false;
+			}
+			
 		} else
 		{
 			return false;

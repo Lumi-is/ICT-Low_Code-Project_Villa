@@ -122,7 +122,7 @@ namespace Grid
 			}
 		}
 
-		public static Type GetCellContents(Vector2 pos)
+		public static Type GetCellContentsType(Vector2 pos)
 		{
 			var nearestCell = GetNearestCell(pos);
 

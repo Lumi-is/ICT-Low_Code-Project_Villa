@@ -15,6 +15,7 @@ texture = ExtResource("1_vn7u4")
 
 [node name="Logic" type="Area2D" parent="Sprite2D" unique_id=1036655040 node_paths=PackedStringArray("graphics")]
 script = ExtResource("1_v5yy3")
+isPlayerControlled = true
 troopType = "rook"
 graphics = NodePath("..")
 
