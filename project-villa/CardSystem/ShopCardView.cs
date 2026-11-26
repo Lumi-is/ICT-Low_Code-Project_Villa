@@ -78,7 +78,7 @@ public partial class ShopCardView : Control
 		_cost.Text = Card.MagicCost <= 0 ? "FREE" : Card.MagicCost.ToString();
 		_description.Text = Card.Description;
 		_category.Text = Card.Category.ToUpper();
-		_price.Text = Card.ShopPrice <= 0 ? "Price: Free" : "Price: " + Card.ShopPrice;
+		_price.Text = Card.ShopPrice <= 0 ? "Magic: Free" : "Magic: " + Card.ShopPrice;
 		_style.BorderColor = Card.AccentColor;
 		_icon.Color = Card.AccentColor.Darkened(0.65f);
 		_cost.AddThemeColorOverride("font_color", Card.AccentColor.Lightened(0.3f));
