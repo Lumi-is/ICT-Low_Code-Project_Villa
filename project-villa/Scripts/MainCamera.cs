@@ -28,21 +28,21 @@ public partial class MainCamera : Camera2D
 		{
 			if (Input.IsActionPressed("Right"))
 			{
-				velocity.X += speed;
+				velocity.X = speed;
 			}
 
 			if (Input.IsActionPressed("Left"))
 			{
-				velocity.X -= speed;
+				velocity.X = -speed;
 			}
 
 			if (Input.IsActionPressed("Down"))
 			{
-				velocity.Y += speed;
+				velocity.Y = speed;
 			}
 			if (Input.IsActionPressed("Up"))
 			{
-				velocity.Y -= speed;
+				velocity.Y = -speed;
 			}
 		}
 

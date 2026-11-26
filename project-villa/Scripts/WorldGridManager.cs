@@ -12,7 +12,7 @@ namespace Grid
 		public static List<List<Tile>> groundLevelGrid;
 		public static List<List<Tile>> treeLevelGrid;
 		public static IBuilding[,] buildingGrid = new IBuilding[512,512];
-		public static List<IBuilding> buildingList;
+		public static List<IBuilding> buildingList = new();
 
 		public static Vector2 GetNearestCell(Vector2 position)
 		{

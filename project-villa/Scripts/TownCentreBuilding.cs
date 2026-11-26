@@ -17,6 +17,12 @@ public partial class TownCentreBuilding : Node2D, IBuilding
 	[Export]
 	public int level3Requirement = 15;
 	public static int amountOfHousing;
+
+    public override void _Ready()
+    {
+		WorldGridManager.buildingList.Add(this);
+    }
+
 	public override void _Process(double delta)
 	{
 		amountOfHousing = 0;
@@ -49,4 +55,24 @@ public partial class TownCentreBuilding : Node2D, IBuilding
 	{
 		
 	}
+
+	public void Highlight()
+    {
+        
+    }
+
+    public void Reset()
+    {
+        
+    }
+
+    public void OnClickEvent()
+    {
+        
+    }
+
+    public Sprite2D GetGraphics()
+    {
+        return null;
+    }
 }
