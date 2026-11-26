@@ -4,10 +4,13 @@
 
 [resource]
 script = ExtResource("1_2n6hx")
-DisplayName = "Build Housing"
-Description = "Builds a basic housing unit."
+DisplayName = "TEST"
+Description = "Card description here
+Card description here
+Card description here"
 Category = "Building"
 AccentColor = Color(0.38205117, 0.20563805, 0.11729828, 1)
 WoodCost = 10
 ShopPrice = 15
 metadata/_custom_type_script = "uid://d0ae25o8vdvxw"
+metadata/test = false

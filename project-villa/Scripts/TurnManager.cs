@@ -25,6 +25,7 @@ public partial class TurnManager : Node
 
 
 	public static List<Enemy> enemyList = new();
+	public static List<Troop> troopList = new();
 
 
 	[Export] public Interactor Interactor;
@@ -100,6 +101,11 @@ public partial class TurnManager : Node
 
 				if(StartTimer(IncrementPhase, 3))
 				{
+					foreach(Troop troop in troopList)
+					{
+						troop.hasMoved = false;
+					}
+
 					Hud hud = HUD != null ? HUD : Hud.instance;
 					hud?.GiveCardsForTurn(CardsPerTurn);
 				}

@@ -1,10 +1,9 @@
 [gd_scene format=3 uid="uid://c4nq1ykcoav21"]
 
 [ext_resource type="Script" uid="uid://ceyjoe7qrghv" path="res://Scripts/ShopMenu.cs" id="1_xysl7"]
-[ext_resource type="PackedScene" path="res://Scenes/Cards/ShopCardView.tscn" id="2_shopcard"]
+[ext_resource type="PackedScene" uid="uid://dhkyqceritrn3" path="res://Scenes/Cards/ShopCardView.tscn" id="2_shopcard"]
 [ext_resource type="Script" uid="uid://c4csssh6ee8g" path="res://CardSystem/Card.cs" id="3_card"]
 [ext_resource type="Script" uid="uid://d0ae25o8vdvxw" path="res://Scripts/BuildCard.cs" id="4_hm266"]
-[ext_resource type="Resource" uid="uid://d3mc5fjhl78v8" path="res://Resources/Cards/BuildCard.tres" id="5_nrmsl"]
 [ext_resource type="Script" uid="uid://dus116ba6peu5" path="res://CardSystem/DrawCardsCard.cs" id="6_hik0y"]
 
 [sub_resource type="Resource" id="Resource_hvmkm"]
@@ -17,6 +16,14 @@ WoodCost = 10
 ShopPrice = 10
 metadata/_custom_type_script = "uid://d0ae25o8vdvxw"
 
+[sub_resource type="Resource" id="Resource_h1qh4"]
+script = ExtResource("4_hm266")
+DisplayName = "Build Housing"
+Description = "Builds a basic housing."
+Category = "Building"
+AccentColor = Color(0.17731172, 0.4567201, 0.80958873, 1)
+metadata/_custom_type_script = "uid://d0ae25o8vdvxw"
+
 [sub_resource type="Resource" id="Resource_4m1id"]
 script = ExtResource("6_hik0y")
 Count = 2
@@ -27,12 +34,21 @@ MagicCost = 2
 ShopPrice = 5
 metadata/_custom_type_script = "uid://dus116ba6peu5"
 
+[sub_resource type="Resource" id="Resource_xbhrw"]
+script = ExtResource("4_hm266")
+path = "res://Scenes/MineBuilding.tscn"
+DisplayName = "Build Mine"
+Description = "Builds a basic mine."
+Category = "Building"
+AccentColor = Color(0.010405089, 0.01612739, 0.011930878, 1)
+metadata/_custom_type_script = "uid://d0ae25o8vdvxw"
+
 [node name="ShopMenu" type="CanvasLayer" unique_id=820137950]
 process_mode = 3
 layer = 2
 script = ExtResource("1_xysl7")
 CardDisplayPrefab = ExtResource("2_shopcard")
-AvailableCardPool = Array[ExtResource("3_card")]([SubResource("Resource_hvmkm"), ExtResource("5_nrmsl"), SubResource("Resource_4m1id")])
+AvailableCardPool = Array[ExtResource("3_card")]([SubResource("Resource_hvmkm"), SubResource("Resource_h1qh4"), SubResource("Resource_4m1id"), SubResource("Resource_xbhrw")])
 
 [node name="UI" type="Control" parent="." unique_id=639949560]
 z_index = 2
@@ -87,7 +103,7 @@ z_index = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.933, 0.847, 1)
 theme_override_font_sizes/font_size = 16
-text = "Resources:"
+text = "Magic:"
 horizontal_alignment = 1
 
 [node name="CardContainer" type="HBoxContainer" parent="UI/Background/VBoxContainer" unique_id=333552654]

@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://cd3wj3unba004" path="res://CardSystem/CardPlayController.cs" id="4_controller"]
 [ext_resource type="Script" uid="uid://b30yxp5ttwlyp" path="res://CardSystem/CardHand.cs" id="5_hand"]
 [ext_resource type="FontFile" uid="uid://di8bfppt6mo4w" path="res://Fonts/ambrosia1.ttf" id="6_43w4t"]
-[ext_resource type="PackedScene" path="res://Scenes/Cards/HudCardView.tscn" id="6_cardview"]
+[ext_resource type="PackedScene" uid="uid://dn22ulgutge6o" path="res://Scenes/Cards/HudCardView.tscn" id="6_cardview"]
 [ext_resource type="Resource" uid="uid://c8ge8lyhkxqd" path="res://Resources/Cards/StartingDeck.tres" id="7_deck"]
 [ext_resource type="AudioStream" uid="uid://cdc2m4h6mxbnq" path="res://Sound_effects/menu_selection.ogg" id="9_5ep0j"]
 [ext_resource type="Script" uid="uid://xbixrw6saxkf" path="res://Scripts/UiSound.cs" id="10_4f5kr"]
