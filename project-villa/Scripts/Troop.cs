@@ -93,10 +93,6 @@ public partial class Troop : Node2D, IClickable, IDraggable
 		{
 			// Make cards for creating troops, make troops add themselves to grid 
 			var nearestCellToRelease = WorldGridManager.GetNearestCell(GetGlobalMousePosition());
-			Troop troop = WorldGridManager.troopGrid[nearestCellToRelease[0]+256,nearestCellToRelease[1]+256];
-
-			Hud.instance.ShowMessage("Enemy troop was destroyed.");
-			troop.Destruct(); 
 
 			WorldGridManager.troopGrid[nearestCellToRelease[0]+256,nearestCellToRelease[1]+256] = this;
 			WorldGridManager.MoveOwner(this,WorldGridManager.CalculateSnapPos(GetGlobalMousePosition()));
@@ -137,6 +133,8 @@ public partial class Troop : Node2D, IClickable, IDraggable
 			Troop troop = WorldGridManager.troopGrid[nearestCellToRelease[0]+256,nearestCellToRelease[1]+256];
 			if(!troop.isPlayerControlled)
 			{
+				Hud.instance.ShowMessage("Enemy troop was destroyed.");
+				troop.Destruct(); 
 				return true;
 			} else
 			{
