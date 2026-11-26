@@ -4,16 +4,11 @@ using System;
 
 [GlobalClass]
 
-public partial class FarmBuilding : Node2D, IBuilding
+public partial class FarmBuilding : Building
 {
 	[Export] int foodAmount = 50;
-	
-	public void OnBuild()
-	{
-		WorldGridManager.buildingList.Add(this);
-	}
 
-	public void OnTurnStart()
+	public override void OnTurnStart()
 	{
 		ResourceManager.Add(ResourceManager.ResourceType.Food, foodAmount);
 	}

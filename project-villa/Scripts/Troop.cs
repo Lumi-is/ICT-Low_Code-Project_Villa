@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Grid;
 
@@ -96,19 +97,22 @@ public partial class Troop : Node2D, IClickable, IDraggable
 
 	private bool CheckForCell(Vector2 releasePos, Vector2 startPos)
 	{
-		// laske, sijaitseeko release position suhteessa lähtöpositioniin arvolla true vai false 2D arraysta
-		var offset = WorldGridManager.GetNearestCell(releasePos) - WorldGridManager.GetNearestCell(startPos);
-
-		// Debug
-		GD.Print("Offset: "+offset);
-		GD.Print("Release cell " + WorldGridManager.GetNearestCell(releasePos));
-		//GD.Print("Start cell "+WorldGridManager.GetNearestCell((Vector2)dragStartLocation));
+		var nearestCellToRelease = WorldGridManager.GetNearestCell(releasePos);
+		var nearestCellToStart = WorldGridManager.GetNearestCell(startPos);
+		int[] cellOffset = {nearestCellToRelease[0]-nearestCellToStart[0],nearestCellToRelease[1]-nearestCellToStart[1]};
 
 		// Check for whether or not player is trying to move the troop too far away from original position
-		if(2 + (int)offset.Y >= viableLocations.Length || 2 + (int)offset.X >= viableLocations.Length) return false;
+		if(2 + cellOffset[0] >= viableLocations.Length || 2 + cellOffset[1] >= viableLocations.Length || 2 - cellOffset[0] < 0 || 2 - cellOffset[1] < 0) return false;
 
-		if(viableLocations[2 + (int)offset.Y][2 + (int)offset.X])
+		Type cellContents = WorldGridManager.GetCellContents(releasePos);
+
+		if(viableLocations[2 + cellOffset[1]][2 + cellOffset[0]] && cellContents == null)
 		{
+			return true;
+		} else if(WorldGridManager.GetCellContents(releasePos) == typeof(Troop))
+		{
+			//WorldGridManager.troopGrid[nearestCellToRelease[0]+256,nearestCellToRelease[1]+256].Destruct(); 
+			WorldGridManager.troopGrid[nearestCellToRelease[0]+256,nearestCellToRelease[1]+256] = this;
 			return true;
 		} else
 		{
@@ -116,3 +120,4 @@ public partial class Troop : Node2D, IClickable, IDraggable
 		}
 	}
 }
+

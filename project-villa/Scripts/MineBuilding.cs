@@ -4,16 +4,13 @@ using System;
 
 [GlobalClass]
 
-public partial class MineBuilding : Node2D, IBuilding
+public partial class MineBuilding : Building
 {
 	[Export] int stoneAmount = 50;
 	
-	public void OnBuild()
-	{
-		WorldGridManager.buildingList.Add(this);
-	}
+	
 
-	public void OnTurnStart()
+	public override void OnTurnStart()
 	{
 		ResourceManager.Add(ResourceManager.ResourceType.Stone, stoneAmount);
 	}

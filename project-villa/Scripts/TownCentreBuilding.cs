@@ -10,7 +10,7 @@ using System;
 // For each to check WordGridManager, BuildingList for each building that has IBuilding, then check whick IBuilding is housing.
 // Where does the game draw cards? use that to draw cards.
 
-public partial class TownCentreBuilding : Node2D, IBuilding
+public partial class TownCentreBuilding : Building
 {
 	[Export]
 	public int level2Requirement = 5;
@@ -45,15 +45,10 @@ public partial class TownCentreBuilding : Node2D, IBuilding
 			}
 		}
 	}
-	
-	public void OnBuild()
-	{
-		
-	}
 
-	public void OnTurnStart()
+	public override void OnTurnStart()
 	{
-		
+		//add cards to player
 	}
 
 	public void Highlight()

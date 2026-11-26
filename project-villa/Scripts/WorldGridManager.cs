@@ -11,14 +11,15 @@ namespace Grid
 		public static Tile highlightedTile; 
 		public static List<List<Tile>> groundLevelGrid;
 		public static List<List<Tile>> treeLevelGrid;
-		public static IBuilding[,] buildingGrid = new IBuilding[512,512];
-		public static List<IBuilding> buildingList = new();
+		public static Building[,] buildingGrid = new Building[512,512];
+		public static Troop[,] troopGrid = new Troop[512,512];
+		public static List<Building> buildingList = new();
 
-		public static Vector2 GetNearestCell(Vector2 position)
+		public static int[] GetNearestCell(Vector2 position)
 		{
             var cellPos = CalculateSnapPos(position);
 
-			Vector2 nearestCell = new Vector2((cellPos.X - tileSize/2) / tileSize, (cellPos.Y - tileSize/2) / tileSize);
+			int[] nearestCell = {(int)((cellPos.X - tileSize/2) / tileSize), (int)((cellPos.Y - tileSize/2) / tileSize)};
 
 			return nearestCell;
 		}
@@ -82,12 +83,15 @@ namespace Grid
 
 			Node2D instantiable = (Node2D)scene.Instantiate();
 
-			if(instantiable is IBuilding)
+			if(instantiable is Building structure)
 			{
-				if(TryPlaceBuilding(highlightedTile.GlobalPosition, (IBuilding)instantiable) != null)
+				if(TryPlaceBuilding(highlightedTile.GlobalPosition, (Building)instantiable) != null)
 				{
 					highlightedTile.AddChild(instantiable);
+					
 					instantiable.GlobalPosition = highlightedTile.GlobalPosition;
+
+					structure.OnBuild();
 					
 					return true;
 				} else
@@ -97,20 +101,37 @@ namespace Grid
 				
 			} else 
 			{
-				// For possible non building instantiables
+				// For non building instantiables
 				MoveOwner(instantiable, CalculateSnapPos(pos));
 				return true;
 			}
 		}
 
-		public static IBuilding TryPlaceBuilding(Vector2 pos, IBuilding placeable)
+		public static Building TryPlaceBuilding(Vector2 pos, Building placeable)
 		{
-			Vector2 buildGridIndex = new(GetNearestCell(pos).X+256, GetNearestCell(pos).Y+256);
-			IBuilding building = buildingGrid[(int)buildGridIndex.X, (int)buildGridIndex.Y];
+			Vector2 buildGridIndex = new(GetNearestCell(pos)[0]+256, GetNearestCell(pos)[1]+256);
+			Building building = buildingGrid[(int)buildGridIndex.X, (int)buildGridIndex.Y];
 			if(building == null)
 			{
 				building = buildingGrid[(int)buildGridIndex.X, (int)buildGridIndex.Y] = placeable;
+				buildingList.Add(building);
 				return building;
+			} else
+			{
+				return null;
+			}
+		}
+
+		public static Type GetCellContents(Vector2 pos)
+		{
+			var nearestCell = GetNearestCell(pos);
+
+			if(buildingGrid[nearestCell[0] + 256, nearestCell[1] + 256] != null)
+			{
+				return typeof(Building);
+			} else if(troopGrid[nearestCell[0] + 256, nearestCell[1] + 256] != null)
+			{
+				return typeof(Troop);
 			} else
 			{
 				return null;
