@@ -15,6 +15,8 @@ namespace Grid
 		public static Troop[,] troopGrid = new Troop[512,512];
 		public static List<Building> buildingList = new();
 
+		private static readonly Dictionary<Vector2I, Tile> _tiles = new();
+
 		public static int[] GetNearestCell(Vector2 position)
 		{
             var cellPos = CalculateSnapPos(position);
@@ -60,6 +62,46 @@ namespace Grid
 			return cellPos;
 		}
 
+		public static void Reset()
+		{
+			highlightedTile = null;
+			_tiles.Clear();
+			Array.Clear(buildingGrid, 0, buildingGrid.Length);
+		}
+
+		public static void RegisterTile(Tile tile)
+		{
+			if (tile == null)
+			{
+				return;
+			}
+
+			Vector2I index = GetGridIndex(tile.GlobalPosition);
+
+			if (IsValidIndex(index))
+			{
+				_tiles[index] = tile;
+			}
+		}
+
+		public static Tile GetTileAtWorldPosition(Vector2 worldPosition)
+		{
+			Vector2I index = GetGridIndex(worldPosition);
+			_tiles.TryGetValue(index, out Tile tile);
+			return tile;
+		}
+
+		public static bool IsTileFree(Tile tile)
+		{
+			if (tile == null)
+			{
+				return false;
+			}
+
+			Vector2I index = GetGridIndex(tile.GlobalPosition);
+			return IsValidIndex(index) && buildingGrid[index.X, index.Y] == null;
+		}
+
 		public static void MoveOwner(Node2D someSnappable, Vector2 snapPos)
 		{
 			Node2D snappable;
@@ -76,20 +118,30 @@ namespace Grid
 		}
 
 
-		public static bool InstantiateObject(Vector2 pos, string path)
+		public static bool InstantiateObject(Vector2 pos, string path, Tile targetTile)
 		{
-			PackedScene scene;
-			scene = ResourceLoader.Load<PackedScene>(path);
+
+			if (targetTile == null)
+			{
+				return false;
+			}
+
+			PackedScene scene = ResourceLoader.Load<PackedScene>(path);
+
+			if (scene == null)
+			{
+				return false;
+			}
 
 			Node2D instantiable = (Node2D)scene.Instantiate();
 
 			if(instantiable is Building structure)
 			{
-				if(TryPlaceBuilding(highlightedTile.GlobalPosition, (Building)instantiable) != null)
+				if(TryPlaceBuilding(targetTile.GlobalPosition, (Building)instantiable) != null)
 				{
-					highlightedTile.AddChild(instantiable);
+					targetTile.AddChild(instantiable);
 					
-					instantiable.GlobalPosition = highlightedTile.GlobalPosition;
+					instantiable.GlobalPosition = targetTile.GlobalPosition;
 
 					structure.OnBuild();
 					
@@ -136,6 +188,18 @@ namespace Grid
 			{
 				return null;
 			}
+		}
+
+		private static Vector2I GetGridIndex(Vector2 worldPosition)
+		{
+			Vector2 cell = new(GetNearestCell(worldPosition)[0],GetNearestCell(worldPosition)[1]);
+			return new Vector2I(Mathf.RoundToInt(cell.X) + 256, Mathf.RoundToInt(cell.Y) + 256);
+		}
+
+		private static bool IsValidIndex(Vector2I index)
+		{
+			return index.X >= 0 && index.X < buildingGrid.GetLength(0)
+				&& index.Y >= 0 && index.Y < buildingGrid.GetLength(1);
 		}
 	}
 }
