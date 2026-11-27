@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://yq1nwpu76s2m"]
+
+[ext_resource type="Script" uid="uid://b7w5vcjlwkkwk" path="res://Scripts/Troop.cs" id="1_v5yy3"]
+[ext_resource type="Texture2D" uid="uid://c2urkkdf5qgvw" path="res://Graphics/rook_witches.png" id="1_vn7u4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bivv0"]
+radius = 256.0
+
+[node name="TroopRook" type="Area2D" unique_id=1716316270 node_paths=PackedStringArray("graphics")]
+scale = Vector2(0.25, 0.25)
+script = ExtResource("1_v5yy3")
+troopType = "rook"
+graphics = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=23153516]
+texture = ExtResource("1_vn7u4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1448086846]
+shape = SubResource("CircleShape2D_bivv0")

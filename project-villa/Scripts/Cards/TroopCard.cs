@@ -1,15 +1,15 @@
 using Godot;
-using Grid;
+using Global;
 using ProjectVilla.Cards;
 
 [GlobalClass]
-public partial class BuildCard : Card
+public partial class TroopCard : Card
 {
-	[Export] public string path = "res://Scenes/DefaultBuilding.tscn";
+	[Export] public string path = "res://Scenes/Troops/TroopRook.tscn";
 
 	public override bool TryPlay(CardPlayController game, Vector2 playPos)
 	{
-		Tile target = WorldGridManager.GetTileAtWorldPosition(playPos);
+		Tile target = WorldManager.GetTileAtWorldPosition(playPos);
 
 		if (target == null)
 		{
@@ -17,12 +17,12 @@ public partial class BuildCard : Card
 			return false;
 		}
 
-		if (!WorldGridManager.IsTileFree(target))
+		if (!WorldManager.IsTileFree(target))
 		{
 			game.Hud?.ShowMessage("That tile is occupied.");
 			return false;
 		}
 
-		return WorldGridManager.InstantiateObject(playPos, path, target);
+		return WorldManager.InstantiateObject(playPos, path, target);
 	}
 }

@@ -4,9 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://dx26brdgyprqv" path="res://Scenes/InteractionManager.tscn" id="1_x8jca"]
 [ext_resource type="PackedScene" uid="uid://kt10cktyfc0o" path="res://Scenes/hud.tscn" id="2_hud"]
 [ext_resource type="Script" uid="uid://p2g1wquqbqwl" path="res://Scripts/TurnManager.cs" id="2_x8jca"]
-[ext_resource type="PackedScene" uid="uid://mqc7jiu727hb" path="res://Scenes/Troop/TroopRook.tscn" id="7_i20cl"]
-[ext_resource type="PackedScene" uid="uid://dnyqmqg47kjtm" path="res://Scenes/Troop/TroopBishop.tscn" id="7_ij6p1"]
-[ext_resource type="PackedScene" uid="uid://b1dlxd57vr2xj" path="res://Scenes/Tile.tscn" id="7_y1la5"]
+[ext_resource type="PackedScene" uid="uid://yq1nwpu76s2m" path="res://Scenes/Troops/TroopRook.tscn" id="7_i20cl"]
+[ext_resource type="PackedScene" uid="uid://lhit70dgmqg2" path="res://Scenes/Troops/TroopBishop.tscn" id="7_ij6p1"]
+[ext_resource type="PackedScene" uid="uid://indd0jq1d8ma" path="res://Scenes/Tile.tscn" id="7_y1la5"]
 
 [node name="Root" type="Node2D" unique_id=1171577489]
 
@@ -15,12 +15,11 @@
 [node name="TurnManager" type="Node" parent="SceneManager" unique_id=408953221 node_paths=PackedStringArray("canvasModulate", "HUD")]
 script = ExtResource("2_x8jca")
 canvasModulate = NodePath("CanvasModulate")
-HUD = NodePath("../../HUD")
-CardsPerTurn = 2
 duskColor = Color(0.28446978, 0.44396332, 0.55254793, 1)
 midNightColor = Color(0.399723, 0.42872024, 0.6419647, 1)
 morningColor = Color(0.8037247, 0.6265545, 0.38329536, 1)
 noonColor = Color(0.8829534, 0.85620284, 0.67716914, 1)
+HUD = NodePath("../../HUD")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="SceneManager/TurnManager" unique_id=470864027]
 
@@ -30,12 +29,6 @@ noonColor = Color(0.8829534, 0.85620284, 0.67716914, 1)
 position_smoothing_enabled = true
 
 [node name="HUD" parent="." unique_id=1748293055 instance=ExtResource("2_hud")]
-
-[node name="TroopRook" parent="." unique_id=1531062354 instance=ExtResource("7_i20cl")]
-position = Vector2(-64, -64)
-
-[node name="TroopBishop" parent="." unique_id=2139210842 instance=ExtResource("7_ij6p1")]
-position = Vector2(192, -64)
 
 [node name="Tile" parent="." unique_id=510889725 instance=ExtResource("7_y1la5")]
 position = Vector2(-64, -64)
@@ -63,3 +56,9 @@ position = Vector2(64, -192)
 
 [node name="Tile9" parent="." unique_id=708746336 instance=ExtResource("7_y1la5")]
 position = Vector2(192, -192)
+
+[node name="TroopBishop" parent="." unique_id=1716316270 instance=ExtResource("7_ij6p1")]
+position = Vector2(-64, -64)
+
+[node name="TroopRook" parent="." unique_id=364071834 instance=ExtResource("7_i20cl")]
+position = Vector2(64, -64)

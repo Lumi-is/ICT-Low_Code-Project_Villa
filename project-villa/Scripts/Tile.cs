@@ -1,5 +1,5 @@
 using Godot;
-using Grid;
+using Global;
 
 [GlobalClass]
 public partial class Tile : Node2D, IClickable
@@ -10,8 +10,8 @@ public partial class Tile : Node2D, IClickable
 
     public override void _Ready()
     {
-        WorldGridManager.MoveOwner(this, WorldGridManager.CalculateSnapPos(GlobalPosition));
-        WorldGridManager.RegisterTile(this);
+        WorldManager.MoveOwner(this, WorldManager.CalculateSnapPos(GlobalPosition));
+        WorldManager.RegisterTile(this);
     }
 
 
@@ -23,7 +23,7 @@ public partial class Tile : Node2D, IClickable
 	{
 		// Replace this later with an animation + add sound
 		graphics.Scale = new Vector2(1.05f,1.05f);
-		WorldGridManager.highlightedTile = this;
+		WorldManager.highlightedTile = this;
 	}
 	public void OnClickEvent()
 	{

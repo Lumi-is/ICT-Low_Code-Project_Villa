@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
-using Grid;
+using Global;
 using ProjectVilla.Cards;
 
 public partial class Interactor : Node2D
@@ -33,7 +33,7 @@ public partial class Interactor : Node2D
 	public override void _Ready()
 	{
 		Instance = this;
-		WorldGridManager.Reset();
+		WorldManager.Reset();
 	}
 
 	public override void _ExitTree()
@@ -101,7 +101,7 @@ public partial class Interactor : Node2D
 
 		if (colliders.Count == 0)
 		{
-			WorldGridManager.highlightedTile = null;
+			WorldManager.highlightedTile = null;
 			return;
 		}
 
@@ -220,7 +220,7 @@ public partial class Interactor : Node2D
 
 	private void UpdateCardDragHighlight()
 	{
-		Tile tile = WorldGridManager.GetTileAtWorldPosition(mousePos);
+		Tile tile = WorldManager.GetTileAtWorldPosition(mousePos);
 
 		if (tile == _dragHighlightedTile)
 		{
@@ -236,7 +236,7 @@ public partial class Interactor : Node2D
 		}
 		else
 		{
-			WorldGridManager.highlightedTile = null;
+			WorldManager.highlightedTile = null;
 		}
 	}
 
@@ -248,7 +248,7 @@ public partial class Interactor : Node2D
 			_dragHighlightedTile = null;
 		}
 
-		WorldGridManager.highlightedTile = null;
+		WorldManager.highlightedTile = null;
 	}
 
 	private static void ResetCanvasPriority(object item, Sprite2D graphics)

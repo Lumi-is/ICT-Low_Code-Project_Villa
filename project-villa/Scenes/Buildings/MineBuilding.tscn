@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://bid6pm7nxp5fr"]
 
-[ext_resource type="Texture2D" uid="uid://blr10att2t2j3" path="res://Graphics/icon.svg" id="1_22mnr"]
+[ext_resource type="Texture2D" uid="uid://dtx4jf8gbresg" path="res://Graphics/mine_stage_3.png" id="1_f5sbr"]
 [ext_resource type="Script" uid="uid://ccijkk0sp35ry" path="res://Scripts/MineBuilding.cs" id="2_2smm0"]
 
 [node name="Mine" type="Sprite2D" unique_id=1118014515]
-texture = ExtResource("1_22mnr")
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_f5sbr")
 script = ExtResource("2_2smm0")

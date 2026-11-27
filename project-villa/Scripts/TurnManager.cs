@@ -1,4 +1,5 @@
 using Godot;
+using Global;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,6 @@ public partial class TurnManager : Node
 
 
 	public static List<Enemy> enemyList = new();
-	public static List<Troop> troopList = new();
 
 
 	[Export] public Interactor Interactor;
@@ -101,7 +101,7 @@ public partial class TurnManager : Node
 
 				if(StartTimer(IncrementPhase, 3))
 				{
-					foreach(Troop troop in troopList)
+					foreach(Troop troop in WorldManager.troopList)
 					{
 						troop.hasMoved = false;
 					}
