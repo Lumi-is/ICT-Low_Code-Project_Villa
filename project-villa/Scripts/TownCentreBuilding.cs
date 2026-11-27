@@ -1,5 +1,5 @@
 using Godot;
-using Grid;
+using Global;
 using System;
 
 [GlobalClass]
@@ -20,14 +20,14 @@ public partial class TownCentreBuilding : Building
 
     public override void _Ready()
     {
-		WorldGridManager.buildingList.Add(this);
+		WorldManager.buildingList.Add(this);
     }
 
 	public override void _Process(double delta)
 	{
 		amountOfHousing = 0;
 		
-		foreach (IBuilding building in WorldGridManager.buildingList)
+		foreach (IBuilding building in WorldManager.buildingList)
 		{
 			if (building is HousingBuilding)
 			{

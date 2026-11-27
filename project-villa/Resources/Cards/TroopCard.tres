@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="TroopCard" format=3 uid="uid://c0m1yp7oirr7g"]
+
+[ext_resource type="Script" uid="uid://bhiwttlhqrw13" path="res://Scripts/Cards/TroopCard.cs" id="1_qribq"]
+
+[resource]
+script = ExtResource("1_qribq")
+metadata/_custom_type_script = "uid://bhiwttlhqrw13"

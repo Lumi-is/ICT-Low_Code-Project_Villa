@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dmya1puvfvgnc"
-path="res://.godot/imported/round_house.png-75dc1ef040e765df984f7e07518bd7b6.ctex"
+uid="uid://bne377nto0xsh"
+path="res://.godot/imported/round_witch_house.png-9a9ac9f846ad11ffa8ca1ec6afae3736.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Graphics/round_house.png"
-dest_files=["res://.godot/imported/round_house.png-75dc1ef040e765df984f7e07518bd7b6.ctex"]
+source_file="res://Graphics/round_witch_house.png"
+dest_files=["res://.godot/imported/round_witch_house.png-9a9ac9f846ad11ffa8ca1ec6afae3736.ctex"]
 
 [params]
 

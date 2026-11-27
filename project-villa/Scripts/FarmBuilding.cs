@@ -1,5 +1,5 @@
 using Godot;
-using Grid;
+using Global;
 using System;
 
 [GlobalClass]

@@ -3,21 +3,23 @@
 [ext_resource type="Script" uid="uid://ceyjoe7qrghv" path="res://Scripts/ShopMenu.cs" id="1_xysl7"]
 [ext_resource type="PackedScene" uid="uid://dhkyqceritrn3" path="res://Scenes/Cards/ShopCardView.tscn" id="2_shopcard"]
 [ext_resource type="Script" uid="uid://c4csssh6ee8g" path="res://CardSystem/Card.cs" id="3_card"]
-[ext_resource type="Script" uid="uid://d0ae25o8vdvxw" path="res://Scripts/BuildCard.cs" id="4_hm266"]
+[ext_resource type="Script" uid="uid://d0ae25o8vdvxw" path="res://Scripts/Cards/BuildCard.cs" id="4_hm266"]
 [ext_resource type="Script" uid="uid://dus116ba6peu5" path="res://CardSystem/DrawCardsCard.cs" id="6_hik0y"]
+[ext_resource type="Script" uid="uid://c0w1j5lyn14oe" path="res://Scripts/Cards/SpellCards/ExplosiveSpell.cs" id="6_xbhrw"]
+[ext_resource type="Script" uid="uid://bhiwttlhqrw13" path="res://Scripts/Cards/TroopCard.cs" id="7_hm266"]
 
 [sub_resource type="Resource" id="Resource_hvmkm"]
 script = ExtResource("4_hm266")
-path = "res://Scenes/FarmBuilding.tscn"
+path = "res://Scenes/Buildings/FarmBuilding.tscn"
 DisplayName = "Build Farm"
 Description = "Builds a basic farm."
 AccentColor = Color(0.6358732, 0.4848755, 0.3047083, 1)
 WoodCost = 10
-ShopPrice = 10
 metadata/_custom_type_script = "uid://d0ae25o8vdvxw"
 
 [sub_resource type="Resource" id="Resource_h1qh4"]
 script = ExtResource("4_hm266")
+path = "res://Scenes/Buildings/DefaultBuilding.tscn"
 DisplayName = "Build Housing"
 Description = "Builds a basic housing."
 Category = "Building"
@@ -26,7 +28,6 @@ metadata/_custom_type_script = "uid://d0ae25o8vdvxw"
 
 [sub_resource type="Resource" id="Resource_4m1id"]
 script = ExtResource("6_hik0y")
-Count = 2
 DisplayName = "Draw Cards"
 Description = "Draws two cards. If your hand is full, they go to the deck."
 AccentColor = Color(0.9328466, 0.6482666, 0.74777347, 1)
@@ -36,19 +37,45 @@ metadata/_custom_type_script = "uid://dus116ba6peu5"
 
 [sub_resource type="Resource" id="Resource_xbhrw"]
 script = ExtResource("4_hm266")
-path = "res://Scenes/MineBuilding.tscn"
+path = "res://Scenes/Buildings/MineBuilding.tscn"
 DisplayName = "Build Mine"
 Description = "Builds a basic mine."
 Category = "Building"
 AccentColor = Color(0.010405089, 0.01612739, 0.011930878, 1)
 metadata/_custom_type_script = "uid://d0ae25o8vdvxw"
 
+[sub_resource type="Resource" id="Resource_hm266"]
+script = ExtResource("6_xbhrw")
+DisplayName = "Explosive Spell"
+Description = "Destroys any object on the tile where this spell is played."
+AccentColor = Color(0.8784314, 0.2509804, 0.3529412, 1)
+metadata/_custom_type_script = "uid://c0w1j5lyn14oe"
+
+[sub_resource type="Resource" id="Resource_nrmsl"]
+script = ExtResource("7_hm266")
+DisplayName = "Walking Troops"
+Description = "Spawns a troop which walks straight, either horizontally or vertically. 
+Max 2 steps / Turn.  "
+AccentColor = Color(0.73253906, 0.45267946, 0.2298018, 1)
+FoodCost = 20
+metadata/_custom_type_script = "uid://bhiwttlhqrw13"
+
+[sub_resource type="Resource" id="Resource_hik0y"]
+script = ExtResource("7_hm266")
+path = "res://Scenes/Troops/TroopBishop.tscn"
+DisplayName = "Flying Dragon"
+Description = "Spawns a troop which can fly diagonally.
+Max 2 steps / Turn.  "
+AccentColor = Color(0.5380332, 0.2695164, 0.28350747, 1)
+FoodCost = 25
+metadata/_custom_type_script = "uid://bhiwttlhqrw13"
+
 [node name="ShopMenu" type="CanvasLayer" unique_id=820137950]
 process_mode = 3
 layer = 2
 script = ExtResource("1_xysl7")
 CardDisplayPrefab = ExtResource("2_shopcard")
-AvailableCardPool = Array[ExtResource("3_card")]([SubResource("Resource_hvmkm"), SubResource("Resource_h1qh4"), SubResource("Resource_4m1id"), SubResource("Resource_xbhrw")])
+AvailableCardPool = Array[ExtResource("3_card")]([SubResource("Resource_hvmkm"), SubResource("Resource_h1qh4"), SubResource("Resource_4m1id"), SubResource("Resource_xbhrw"), SubResource("Resource_hm266"), SubResource("Resource_nrmsl"), SubResource("Resource_hik0y")])
 
 [node name="UI" type="Control" parent="." unique_id=639949560]
 z_index = 2

@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bbenn1ta8xasl"]
+
+[ext_resource type="Texture2D" uid="uid://bne377nto0xsh" path="res://Graphics/round_witch_house.png" id="1_jour0"]
+[ext_resource type="Script" uid="uid://df6m2rqx3pjd4" path="res://Scripts/HousingBuilding.cs" id="2_4yqw8"]
+
+[node name="Building" type="Sprite2D" unique_id=1941866764]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_jour0")
+script = ExtResource("2_4yqw8")

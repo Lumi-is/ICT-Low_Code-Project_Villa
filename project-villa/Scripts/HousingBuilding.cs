@@ -1,5 +1,5 @@
 using Godot;
-using Grid;
+using Global;
 
 [GlobalClass]
 public partial class HousingBuilding : Building

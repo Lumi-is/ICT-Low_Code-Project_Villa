@@ -1,5 +1,5 @@
 using Godot;
-using Grid;
+using Global;
 using System;
 
 public partial class ExampleInteractable : Node2D, IClickable, IDraggable

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Godot;
 
-namespace Grid
+namespace Global
 {
-	static class WorldGridManager
+	static class WorldManager
 	{
 		public static float tileSize = 128;
 
@@ -14,14 +14,15 @@ namespace Grid
 		public static Building[,] buildingGrid = new Building[512,512];
 		public static Troop[,] troopGrid = new Troop[512,512];
 		public static List<Building> buildingList = new();
+		public static List<Troop> troopList = new();
 
 		private static readonly Dictionary<Vector2I, Tile> _tiles = new();
 
-		public static int[] GetNearestCell(Vector2 position)
+		public static Vector2I GetNearestCell(Vector2 position)
 		{
             var cellPos = CalculateSnapPos(position);
 
-			int[] nearestCell = {(int)((cellPos.X - tileSize/2) / tileSize), (int)((cellPos.Y - tileSize/2) / tileSize)};
+			Vector2I nearestCell = new Vector2I((int)((cellPos.X - tileSize/2) / tileSize), (int)((cellPos.Y - tileSize/2) / tileSize)); 
 
 			return nearestCell;
 		}
@@ -137,7 +138,7 @@ namespace Grid
 
 			if(instantiable is Building structure)
 			{
-				if(TryPlaceBuilding(targetTile.GlobalPosition, (Building)instantiable) != null)
+				if(TryPlace((Building)instantiable, targetTile.GlobalPosition))
 				{
 					targetTile.AddChild(instantiable);
 					
@@ -151,26 +152,50 @@ namespace Grid
 					return false;
 				}
 				
-			} else 
+			} 
+			else if (instantiable is Troop troop)
 			{
-				// For non building instantiables
-				MoveOwner(instantiable, CalculateSnapPos(pos));
-				return true;
+				if(TryPlace((Troop)instantiable, targetTile.GlobalPosition))
+				{
+					// What should be the troop parent...?
+
+					targetTile.AddChild(instantiable);
+
+					instantiable.GlobalPosition = targetTile.GlobalPosition;
+
+					return true;
+				} else
+				{
+					return false;
+				}
+			}
+			else 
+			{ 
+				return false;
 			}
 		}
 
-		public static Building TryPlaceBuilding(Vector2 pos, Building placeable)
+		public static bool TryPlace(object placeable, Vector2 pos)
 		{
-			Vector2 buildGridIndex = new(GetNearestCell(pos)[0]+256, GetNearestCell(pos)[1]+256);
-			Building building = buildingGrid[(int)buildGridIndex.X, (int)buildGridIndex.Y];
-			if(building == null)
+			Vector2 gridIndex = new(GetNearestCell(pos)[0]+256, GetNearestCell(pos)[1]+256);
+			Building building = buildingGrid[(int)gridIndex.X, (int)gridIndex.Y];
+			Troop troop = troopGrid[(int)gridIndex.X, (int)gridIndex.Y];
+
+			if(building == null && troop == null && placeable is Building)
 			{
-				building = buildingGrid[(int)buildGridIndex.X, (int)buildGridIndex.Y] = placeable;
+				building = buildingGrid[(int)gridIndex.X, (int)gridIndex.Y] = (Building)placeable;
 				buildingList.Add(building);
-				return building;
-			} else
+				return true;
+			} else if (building == null && troop == null && placeable is Troop)
 			{
-				return null;
+				troop = troopGrid[(int)gridIndex.X, (int)gridIndex.Y] = (Troop)placeable;
+				troopList.Add(troop);
+				
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 

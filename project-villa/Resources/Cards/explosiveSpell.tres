@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="ExplosiveSpell" format=3 uid="uid://duoitmtoogxrq"]
+
+[ext_resource type="Script" uid="uid://c0w1j5lyn14oe" path="res://Scripts/Cards/SpellCards/ExplosiveSpell.cs" id="1_l5toe"]
+
+[resource]
+script = ExtResource("1_l5toe")
+metadata/_custom_type_script = "uid://c0w1j5lyn14oe"
