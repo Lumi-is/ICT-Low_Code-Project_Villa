@@ -1,0 +1,100 @@
+[gd_scene format=3 uid="uid://co6jlqnbiqxep"]
+
+[ext_resource type="Script" uid="uid://b4a8h360qyd7o" path="res://Scripts/CreditsMenu.cs" id="1_oouge"]
+[ext_resource type="AudioStream" uid="uid://bhqq46dbi6hou" path="res://Sound_effects/menu_hover_over.wav" id="2_5i1iq"]
+[ext_resource type="Script" uid="uid://xbixrw6saxkf" path="res://Scripts/UiSound.cs" id="3_jj3p2"]
+[ext_resource type="AudioStream" uid="uid://cdc2m4h6mxbnq" path="res://Sound_effects/menu_selection.ogg" id="4_xuvmf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iwtcp"]
+bg_color = Color(0.078431375, 0.105882354, 0.14901961, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8784314, 0.72156864, 0.3529412, 1)
+corner_detail = 14
+
+[node name="CreditsMenu" type="CanvasLayer" unique_id=219715393]
+layer = 5
+script = ExtResource("1_oouge")
+
+[node name="UI" type="Control" parent="." unique_id=136286064]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Overlay" type="ColorRect" parent="UI" unique_id=1833912477]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="Panel" type="PanelContainer" parent="UI" unique_id=604420176]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -200.0
+offset_right = 220.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_iwtcp")
+
+[node name="Margin" type="MarginContainer" parent="UI/Panel" unique_id=489229571]
+layout_mode = 2
+
+[node name="Vbox" type="VBoxContainer" parent="UI/Panel/Margin" unique_id=2111650087]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="UI/Panel/Margin/Vbox" unique_id=592337154]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Credits"
+
+[node name="CreditsText" type="Label" parent="UI/Panel/Margin/Vbox" unique_id=114737574]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Hexes & Huts - City Deck Builder
+
+Team G10
+Samuli Paulamäki - Programming, sound design
+Lumi Polso - Game design, music, programming
+Olivia Lindström - Visual design, sprites
+David Rezvaniuk - Programming, testing
+Tomass Umanecs - VFX, UI/UX
+Course: Koodittoman sovelluskehityksen perusteet, Turun AMK
+
+Art: Olivia Lindström (CC0 4.0)
+Sounds: Robinhood76 (CC BY-NC 4.0), cb9382 (CC0 1.0), bremandare (CC0 1.0), theuncertainman (CC BY 4.0), fabian13cz (CC0 1.0), Mateusz_Chenc (CC BY 4.0), heyheytheree (CC BY 4.0), suntemple (CC0 1.0), Blankened (CC0 1.0), via Freesound.org.
+
+Thanks for playing!"
+autowrap_mode = 2
+
+[node name="BackButton" type="Button" parent="UI/Panel/Margin/Vbox" unique_id=482501977]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+text = "Back"
+
+[node name="HoverSound" type="AudioStreamPlayer" parent="." unique_id=529319558]
+stream = ExtResource("2_5i1iq")
+script = ExtResource("3_jj3p2")
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=1537557390]
+stream = ExtResource("4_xuvmf")
+script = ExtResource("3_jj3p2")
+
+[connection signal="mouse_entered" from="UI/Panel/Margin/Vbox/BackButton" to="HoverSound" method="PlaySound"]
+[connection signal="pressed" from="UI/Panel/Margin/Vbox/BackButton" to="ClickSound" method="PlaySound"]

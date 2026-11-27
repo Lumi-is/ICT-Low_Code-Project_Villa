@@ -64,7 +64,6 @@ theme_override_font_sizes/font_size = 16
 text = "Play"
 
 [node name="OptionsButton" type="Button" parent="VBoxContainer" unique_id=1549103103]
-visible = false
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -90,5 +89,7 @@ script = ExtResource("5_df05h")
 
 [connection signal="mouse_entered" from="VBoxContainer/StartButton" to="HoverSound" method="PlaySound"]
 [connection signal="pressed" from="VBoxContainer/StartButton" to="ClickSound" method="PlaySound"]
+[connection signal="mouse_entered" from="VBoxContainer/OptionsButton" to="HoverSound" method="PlaySound"]
+[connection signal="pressed" from="VBoxContainer/OptionsButton" to="ClickSound" method="PlaySound"]
 [connection signal="mouse_entered" from="VBoxContainer/QuitButton" to="HoverSound" method="PlaySound"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="ClickSound" method="PlaySound"]

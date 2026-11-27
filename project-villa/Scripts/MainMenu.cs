@@ -11,6 +11,11 @@ public partial class MainMenu : Control
 	[Export] public Button PlayButton;
 	[Export] public Button QuitButton;
 
+	[Export] private Button _optionsButton;
+
+[Export(PropertyHint.File, "*.tscn")]
+public string OptionsScenePath = "res://Scenes/OptionsMenu.tscn";
+
 	public override void _Ready()
 	{
 		PlayButton ??= GetNode<Button>("VBoxContainer/StartButton");
@@ -18,7 +23,31 @@ public partial class MainMenu : Control
 
 		PlayButton.Pressed += OnPlayButtonPressed;
 		QuitButton.Pressed += OnQuitButtonPressed;
+		_optionsButton ??= GetNode<Button>("VBoxContainer/OptionsButton");
+		_optionsButton.Pressed += OnOptionsPressed;
 	}
+
+private void OnOptionsPressed()
+{
+	PackedScene scene = GD.Load<PackedScene>(OptionsScenePath);
+	if (scene == null)
+	{
+		return;
+	}
+
+	OptionsMenu options = scene.Instantiate<OptionsMenu>();
+	options.Closed += OnOptionsClosed;
+
+	GetNode<Control>("VBoxContainer").Hide();
+	GetNode<Control>("GameTitle").Hide();
+	AddChild(options);
+}
+
+private void OnOptionsClosed()
+{
+	GetNode<Control>("VBoxContainer").Show();
+	GetNode<Control>("GameTitle").Show();
+}
 
 	private void OnPlayButtonPressed()
 	{

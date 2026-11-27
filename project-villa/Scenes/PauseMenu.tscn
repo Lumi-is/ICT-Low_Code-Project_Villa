@@ -9,8 +9,6 @@
 process_mode = 3
 layer = 3
 script = ExtResource("1_lj4oq")
-ResumeButton = NodePath("UI/MenuButtons/ResumeButton")
-QuitButton = NodePath("UI/MenuButtons/QuitButton")
 
 [node name="UI" type="Control" parent="." unique_id=366856618]
 z_index = 3
@@ -55,6 +53,11 @@ size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_ey1tb")
 text = "Resume"
 
+[node name="OptionsButton" type="Button" parent="UI/MenuButtons" unique_id=1820103955]
+custom_minimum_size = Vector2(200, 48)
+layout_mode = 2
+text = "Options"
+
 [node name="QuitButton" type="Button" parent="UI/MenuButtons" unique_id=972337551]
 z_index = 3
 custom_minimum_size = Vector2(200, 48)
@@ -68,4 +71,5 @@ stream = ExtResource("3_siy43")
 script = ExtResource("4_yxrls")
 
 [connection signal="pressed" from="UI/MenuButtons/ResumeButton" to="ClickSound" method="PlaySound"]
+[connection signal="pressed" from="UI/MenuButtons/OptionsButton" to="ClickSound" method="PlaySound"]
 [connection signal="pressed" from="UI/MenuButtons/QuitButton" to="ClickSound" method="PlaySound"]
